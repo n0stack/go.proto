@@ -471,8 +471,9 @@ var _ grpc.ClientConn
 // is compatible with the grpc package it is being compiled against.
 const _ = grpc.SupportPackageIsVersion4
 
-// Client API for Qcow2Service service
-
+// Qcow2ServiceClient is the client API for Qcow2Service service.
+//
+// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type Qcow2ServiceClient interface {
 	CreateQcow2WithPacker(ctx context.Context, in *CreateQcow2WithPackerRequest, opts ...grpc.CallOption) (*Qcow2, error)
 	CreateQcow2WithDownload(ctx context.Context, in *CreateQcow2WithDownloadRequest, opts ...grpc.CallOption) (*Qcow2, error)
@@ -491,7 +492,7 @@ func NewQcow2ServiceClient(cc *grpc.ClientConn) Qcow2ServiceClient {
 
 func (c *qcow2ServiceClient) CreateQcow2WithPacker(ctx context.Context, in *CreateQcow2WithPackerRequest, opts ...grpc.CallOption) (*Qcow2, error) {
 	out := new(Qcow2)
-	err := grpc.Invoke(ctx, "/n0stack.node.qcow2.Qcow2Service/CreateQcow2WithPacker", in, out, c.cc, opts...)
+	err := c.cc.Invoke(ctx, "/n0stack.node.qcow2.Qcow2Service/CreateQcow2WithPacker", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -500,7 +501,7 @@ func (c *qcow2ServiceClient) CreateQcow2WithPacker(ctx context.Context, in *Crea
 
 func (c *qcow2ServiceClient) CreateQcow2WithDownload(ctx context.Context, in *CreateQcow2WithDownloadRequest, opts ...grpc.CallOption) (*Qcow2, error) {
 	out := new(Qcow2)
-	err := grpc.Invoke(ctx, "/n0stack.node.qcow2.Qcow2Service/CreateQcow2WithDownload", in, out, c.cc, opts...)
+	err := c.cc.Invoke(ctx, "/n0stack.node.qcow2.Qcow2Service/CreateQcow2WithDownload", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -509,7 +510,7 @@ func (c *qcow2ServiceClient) CreateQcow2WithDownload(ctx context.Context, in *Cr
 
 func (c *qcow2ServiceClient) GetQcow2(ctx context.Context, in *GetQcow2Request, opts ...grpc.CallOption) (*Qcow2, error) {
 	out := new(Qcow2)
-	err := grpc.Invoke(ctx, "/n0stack.node.qcow2.Qcow2Service/GetQcow2", in, out, c.cc, opts...)
+	err := c.cc.Invoke(ctx, "/n0stack.node.qcow2.Qcow2Service/GetQcow2", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -518,7 +519,7 @@ func (c *qcow2ServiceClient) GetQcow2(ctx context.Context, in *GetQcow2Request, 
 
 func (c *qcow2ServiceClient) ApplyQcow2(ctx context.Context, in *ApplyQcow2Request, opts ...grpc.CallOption) (*Qcow2, error) {
 	out := new(Qcow2)
-	err := grpc.Invoke(ctx, "/n0stack.node.qcow2.Qcow2Service/ApplyQcow2", in, out, c.cc, opts...)
+	err := c.cc.Invoke(ctx, "/n0stack.node.qcow2.Qcow2Service/ApplyQcow2", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -527,7 +528,7 @@ func (c *qcow2ServiceClient) ApplyQcow2(ctx context.Context, in *ApplyQcow2Reque
 
 func (c *qcow2ServiceClient) DeleteQcow2(ctx context.Context, in *DeleteQcow2Request, opts ...grpc.CallOption) (*empty.Empty, error) {
 	out := new(empty.Empty)
-	err := grpc.Invoke(ctx, "/n0stack.node.qcow2.Qcow2Service/DeleteQcow2", in, out, c.cc, opts...)
+	err := c.cc.Invoke(ctx, "/n0stack.node.qcow2.Qcow2Service/DeleteQcow2", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}

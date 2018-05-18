@@ -329,8 +329,9 @@ var _ grpc.ClientConn
 // is compatible with the grpc package it is being compiled against.
 const _ = grpc.SupportPackageIsVersion4
 
-// Client API for NodeService service
-
+// NodeServiceClient is the client API for NodeService service.
+//
+// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type NodeServiceClient interface {
 	// clusterレベルのList
 	// すべてのノードから同じ結果が帰ってくる必要がある
@@ -351,7 +352,7 @@ func NewNodeServiceClient(cc *grpc.ClientConn) NodeServiceClient {
 
 func (c *nodeServiceClient) ListNodes(ctx context.Context, in *ListNodesRequest, opts ...grpc.CallOption) (*ListNodesResponse, error) {
 	out := new(ListNodesResponse)
-	err := grpc.Invoke(ctx, "/n0stack.node.NodeService/ListNodes", in, out, c.cc, opts...)
+	err := c.cc.Invoke(ctx, "/n0stack.node.NodeService/ListNodes", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -360,7 +361,7 @@ func (c *nodeServiceClient) ListNodes(ctx context.Context, in *ListNodesRequest,
 
 func (c *nodeServiceClient) GetNode(ctx context.Context, in *GetNodeRequest, opts ...grpc.CallOption) (*Node, error) {
 	out := new(Node)
-	err := grpc.Invoke(ctx, "/n0stack.node.NodeService/GetNode", in, out, c.cc, opts...)
+	err := c.cc.Invoke(ctx, "/n0stack.node.NodeService/GetNode", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -369,7 +370,7 @@ func (c *nodeServiceClient) GetNode(ctx context.Context, in *GetNodeRequest, opt
 
 func (c *nodeServiceClient) GetConnection(ctx context.Context, in *GetConnectionRequest, opts ...grpc.CallOption) (*Connection, error) {
 	out := new(Connection)
-	err := grpc.Invoke(ctx, "/n0stack.node.NodeService/GetConnection", in, out, c.cc, opts...)
+	err := c.cc.Invoke(ctx, "/n0stack.node.NodeService/GetConnection", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}

@@ -492,8 +492,9 @@ var _ grpc.ClientConn
 // is compatible with the grpc package it is being compiled against.
 const _ = grpc.SupportPackageIsVersion4
 
-// Client API for KVMService service
-
+// KVMServiceClient is the client API for KVMService service.
+//
+// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type KVMServiceClient interface {
 	GetKVM(ctx context.Context, in *GetKVMRequest, opts ...grpc.CallOption) (*KVM, error)
 	ApplyKVM(ctx context.Context, in *ApplyKVMRequest, opts ...grpc.CallOption) (*KVM, error)
@@ -517,7 +518,7 @@ func NewKVMServiceClient(cc *grpc.ClientConn) KVMServiceClient {
 
 func (c *kVMServiceClient) GetKVM(ctx context.Context, in *GetKVMRequest, opts ...grpc.CallOption) (*KVM, error) {
 	out := new(KVM)
-	err := grpc.Invoke(ctx, "/n0stack.node.kvm.KVMService/GetKVM", in, out, c.cc, opts...)
+	err := c.cc.Invoke(ctx, "/n0stack.node.kvm.KVMService/GetKVM", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -526,7 +527,7 @@ func (c *kVMServiceClient) GetKVM(ctx context.Context, in *GetKVMRequest, opts .
 
 func (c *kVMServiceClient) ApplyKVM(ctx context.Context, in *ApplyKVMRequest, opts ...grpc.CallOption) (*KVM, error) {
 	out := new(KVM)
-	err := grpc.Invoke(ctx, "/n0stack.node.kvm.KVMService/ApplyKVM", in, out, c.cc, opts...)
+	err := c.cc.Invoke(ctx, "/n0stack.node.kvm.KVMService/ApplyKVM", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -535,7 +536,7 @@ func (c *kVMServiceClient) ApplyKVM(ctx context.Context, in *ApplyKVMRequest, op
 
 func (c *kVMServiceClient) DeleteKVM(ctx context.Context, in *DeleteKVMRequest, opts ...grpc.CallOption) (*empty.Empty, error) {
 	out := new(empty.Empty)
-	err := grpc.Invoke(ctx, "/n0stack.node.kvm.KVMService/DeleteKVM", in, out, c.cc, opts...)
+	err := c.cc.Invoke(ctx, "/n0stack.node.kvm.KVMService/DeleteKVM", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -544,7 +545,7 @@ func (c *kVMServiceClient) DeleteKVM(ctx context.Context, in *DeleteKVMRequest, 
 
 func (c *kVMServiceClient) Boot(ctx context.Context, in *ActionKVMRequest, opts ...grpc.CallOption) (*KVM, error) {
 	out := new(KVM)
-	err := grpc.Invoke(ctx, "/n0stack.node.kvm.KVMService/Boot", in, out, c.cc, opts...)
+	err := c.cc.Invoke(ctx, "/n0stack.node.kvm.KVMService/Boot", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -553,7 +554,7 @@ func (c *kVMServiceClient) Boot(ctx context.Context, in *ActionKVMRequest, opts 
 
 func (c *kVMServiceClient) Reboot(ctx context.Context, in *ActionKVMRequest, opts ...grpc.CallOption) (*KVM, error) {
 	out := new(KVM)
-	err := grpc.Invoke(ctx, "/n0stack.node.kvm.KVMService/Reboot", in, out, c.cc, opts...)
+	err := c.cc.Invoke(ctx, "/n0stack.node.kvm.KVMService/Reboot", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -562,7 +563,7 @@ func (c *kVMServiceClient) Reboot(ctx context.Context, in *ActionKVMRequest, opt
 
 func (c *kVMServiceClient) HardReboot(ctx context.Context, in *ActionKVMRequest, opts ...grpc.CallOption) (*KVM, error) {
 	out := new(KVM)
-	err := grpc.Invoke(ctx, "/n0stack.node.kvm.KVMService/HardReboot", in, out, c.cc, opts...)
+	err := c.cc.Invoke(ctx, "/n0stack.node.kvm.KVMService/HardReboot", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -571,7 +572,7 @@ func (c *kVMServiceClient) HardReboot(ctx context.Context, in *ActionKVMRequest,
 
 func (c *kVMServiceClient) Shutdown(ctx context.Context, in *ActionKVMRequest, opts ...grpc.CallOption) (*KVM, error) {
 	out := new(KVM)
-	err := grpc.Invoke(ctx, "/n0stack.node.kvm.KVMService/Shutdown", in, out, c.cc, opts...)
+	err := c.cc.Invoke(ctx, "/n0stack.node.kvm.KVMService/Shutdown", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -580,7 +581,7 @@ func (c *kVMServiceClient) Shutdown(ctx context.Context, in *ActionKVMRequest, o
 
 func (c *kVMServiceClient) HardShutdown(ctx context.Context, in *ActionKVMRequest, opts ...grpc.CallOption) (*KVM, error) {
 	out := new(KVM)
-	err := grpc.Invoke(ctx, "/n0stack.node.kvm.KVMService/HardShutdown", in, out, c.cc, opts...)
+	err := c.cc.Invoke(ctx, "/n0stack.node.kvm.KVMService/HardShutdown", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -589,7 +590,7 @@ func (c *kVMServiceClient) HardShutdown(ctx context.Context, in *ActionKVMReques
 
 func (c *kVMServiceClient) Save(ctx context.Context, in *ActionKVMRequest, opts ...grpc.CallOption) (*KVM, error) {
 	out := new(KVM)
-	err := grpc.Invoke(ctx, "/n0stack.node.kvm.KVMService/Save", in, out, c.cc, opts...)
+	err := c.cc.Invoke(ctx, "/n0stack.node.kvm.KVMService/Save", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}

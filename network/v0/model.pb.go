@@ -366,8 +366,9 @@ var _ grpc.ClientConn
 // is compatible with the grpc package it is being compiled against.
 const _ = grpc.SupportPackageIsVersion4
 
-// Client API for NetworkService service
-
+// NetworkServiceClient is the client API for NetworkService service.
+//
+// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type NetworkServiceClient interface {
 	Get(ctx context.Context, in *GetRequest, opts ...grpc.CallOption) (*Network, error)
 	Apply(ctx context.Context, in *ApplyRequest, opts ...grpc.CallOption) (*Network, error)
@@ -384,7 +385,7 @@ func NewNetworkServiceClient(cc *grpc.ClientConn) NetworkServiceClient {
 
 func (c *networkServiceClient) Get(ctx context.Context, in *GetRequest, opts ...grpc.CallOption) (*Network, error) {
 	out := new(Network)
-	err := grpc.Invoke(ctx, "/n0stack.network.NetworkService/Get", in, out, c.cc, opts...)
+	err := c.cc.Invoke(ctx, "/n0stack.network.NetworkService/Get", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -393,7 +394,7 @@ func (c *networkServiceClient) Get(ctx context.Context, in *GetRequest, opts ...
 
 func (c *networkServiceClient) Apply(ctx context.Context, in *ApplyRequest, opts ...grpc.CallOption) (*Network, error) {
 	out := new(Network)
-	err := grpc.Invoke(ctx, "/n0stack.network.NetworkService/Apply", in, out, c.cc, opts...)
+	err := c.cc.Invoke(ctx, "/n0stack.network.NetworkService/Apply", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -402,7 +403,7 @@ func (c *networkServiceClient) Apply(ctx context.Context, in *ApplyRequest, opts
 
 func (c *networkServiceClient) Delete(ctx context.Context, in *DeleteRequest, opts ...grpc.CallOption) (*empty.Empty, error) {
 	out := new(empty.Empty)
-	err := grpc.Invoke(ctx, "/n0stack.network.NetworkService/Delete", in, out, c.cc, opts...)
+	err := c.cc.Invoke(ctx, "/n0stack.network.NetworkService/Delete", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}

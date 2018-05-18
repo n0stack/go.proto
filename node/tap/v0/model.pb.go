@@ -367,8 +367,9 @@ var _ grpc.ClientConn
 // is compatible with the grpc package it is being compiled against.
 const _ = grpc.SupportPackageIsVersion4
 
-// Client API for TapService service
-
+// TapServiceClient is the client API for TapService service.
+//
+// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type TapServiceClient interface {
 	GetTap(ctx context.Context, in *GetTapRequest, opts ...grpc.CallOption) (*Tap, error)
 	ApplyTap(ctx context.Context, in *ApplyTapRequest, opts ...grpc.CallOption) (*Tap, error)
@@ -385,7 +386,7 @@ func NewTapServiceClient(cc *grpc.ClientConn) TapServiceClient {
 
 func (c *tapServiceClient) GetTap(ctx context.Context, in *GetTapRequest, opts ...grpc.CallOption) (*Tap, error) {
 	out := new(Tap)
-	err := grpc.Invoke(ctx, "/n0stack.node.tap.TapService/GetTap", in, out, c.cc, opts...)
+	err := c.cc.Invoke(ctx, "/n0stack.node.tap.TapService/GetTap", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -394,7 +395,7 @@ func (c *tapServiceClient) GetTap(ctx context.Context, in *GetTapRequest, opts .
 
 func (c *tapServiceClient) ApplyTap(ctx context.Context, in *ApplyTapRequest, opts ...grpc.CallOption) (*Tap, error) {
 	out := new(Tap)
-	err := grpc.Invoke(ctx, "/n0stack.node.tap.TapService/ApplyTap", in, out, c.cc, opts...)
+	err := c.cc.Invoke(ctx, "/n0stack.node.tap.TapService/ApplyTap", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -403,7 +404,7 @@ func (c *tapServiceClient) ApplyTap(ctx context.Context, in *ApplyTapRequest, op
 
 func (c *tapServiceClient) DeleteTap(ctx context.Context, in *DeleteTapRequest, opts ...grpc.CallOption) (*empty.Empty, error) {
 	out := new(empty.Empty)
-	err := grpc.Invoke(ctx, "/n0stack.node.tap.TapService/DeleteTap", in, out, c.cc, opts...)
+	err := c.cc.Invoke(ctx, "/n0stack.node.tap.TapService/DeleteTap", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
