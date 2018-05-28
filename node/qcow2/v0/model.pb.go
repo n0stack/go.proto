@@ -535,8 +535,7 @@ func (c *qcow2ServiceClient) DeleteQcow2(ctx context.Context, in *DeleteQcow2Req
 	return out, nil
 }
 
-// Server API for Qcow2Service service
-
+// Qcow2ServiceServer is the server API for Qcow2Service service.
 type Qcow2ServiceServer interface {
 	CreateQcow2WithPacker(context.Context, *CreateQcow2WithPackerRequest) (*Qcow2, error)
 	CreateQcow2WithDownload(context.Context, *CreateQcow2WithDownloadRequest) (*Qcow2, error)

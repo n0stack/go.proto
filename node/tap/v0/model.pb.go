@@ -411,8 +411,7 @@ func (c *tapServiceClient) DeleteTap(ctx context.Context, in *DeleteTapRequest, 
 	return out, nil
 }
 
-// Server API for TapService service
-
+// TapServiceServer is the server API for TapService service.
 type TapServiceServer interface {
 	GetTap(context.Context, *GetTapRequest) (*Tap, error)
 	ApplyTap(context.Context, *ApplyTapRequest) (*Tap, error)

@@ -597,8 +597,7 @@ func (c *kVMServiceClient) Save(ctx context.Context, in *ActionKVMRequest, opts 
 	return out, nil
 }
 
-// Server API for KVMService service
-
+// KVMServiceServer is the server API for KVMService service.
 type KVMServiceServer interface {
 	GetKVM(context.Context, *GetKVMRequest) (*KVM, error)
 	ApplyKVM(context.Context, *ApplyKVMRequest) (*KVM, error)
