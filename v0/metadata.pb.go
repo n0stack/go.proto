@@ -20,13 +20,13 @@ const _ = proto.ProtoPackageIsVersion2 // please upgrade the proto package
 
 type Metadata struct {
 	// Make unique!!
-	Name        string            `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
-	Annotations map[string]string `protobuf:"bytes,2,rep,name=annotations" json:"annotations,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
-	Labels      map[string]string `protobuf:"bytes,3,rep,name=labels" json:"labels,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	Name        string            `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	Annotations map[string]string `protobuf:"bytes,2,rep,name=annotations,proto3" json:"annotations,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
+	Labels      map[string]string `protobuf:"bytes,3,rep,name=labels,proto3" json:"labels,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
 	// Version is used for optimistic lock.
 	// Start from 0.
 	// Getした値とApplyする値が一致した場合、受け入れられる
-	Version              int64    `protobuf:"varint,4,opt,name=version" json:"version,omitempty"`
+	Version              int64    `protobuf:"varint,4,opt,name=version,proto3" json:"version,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`

@@ -82,9 +82,9 @@ func (WatchComputesResponse_ComputeEvents) EnumDescriptor() ([]byte, []int) {
 }
 
 type Compute struct {
-	Metadata             *v0.Metadata   `protobuf:"bytes,1,opt,name=metadata" json:"metadata,omitempty"`
-	Spec                 *ComputeSpec   `protobuf:"bytes,2,opt,name=spec" json:"spec,omitempty"`
-	Status               *ComputeStatus `protobuf:"bytes,3,opt,name=status" json:"status,omitempty"`
+	Metadata             *v0.Metadata   `protobuf:"bytes,1,opt,name=metadata,proto3" json:"metadata,omitempty"`
+	Spec                 *ComputeSpec   `protobuf:"bytes,2,opt,name=spec,proto3" json:"spec,omitempty"`
+	Status               *ComputeStatus `protobuf:"bytes,3,opt,name=status,proto3" json:"status,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}       `json:"-"`
 	XXX_unrecognized     []byte         `json:"-"`
 	XXX_sizecache        int32          `json:"-"`
@@ -137,12 +137,12 @@ func (m *Compute) GetStatus() *ComputeStatus {
 
 type ComputeSpec struct {
 	// CPU
-	Vcpus uint32 `protobuf:"varint,1,opt,name=vcpus" json:"vcpus,omitempty"`
+	Vcpus uint32 `protobuf:"varint,1,opt,name=vcpus,proto3" json:"vcpus,omitempty"`
 	// Memory
-	MemoryBytes uint64 `protobuf:"varint,2,opt,name=memory_bytes,json=memoryBytes" json:"memory_bytes,omitempty"`
+	MemoryBytes uint64 `protobuf:"varint,2,opt,name=memory_bytes,json=memoryBytes,proto3" json:"memory_bytes,omitempty"`
 	// Volume
-	VolumeIds            []string           `protobuf:"bytes,3,rep,name=volume_ids,json=volumeIds" json:"volume_ids,omitempty"`
-	Nics                 []*ComputeSpec_NIC `protobuf:"bytes,4,rep,name=nics" json:"nics,omitempty"`
+	VolumeIds            []string           `protobuf:"bytes,3,rep,name=volume_ids,json=volumeIds,proto3" json:"volume_ids,omitempty"`
+	Nics                 []*ComputeSpec_NIC `protobuf:"bytes,4,rep,name=nics,proto3" json:"nics,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}           `json:"-"`
 	XXX_unrecognized     []byte             `json:"-"`
 	XXX_sizecache        int32              `json:"-"`
@@ -204,8 +204,8 @@ func (m *ComputeSpec) GetNics() []*ComputeSpec_NIC {
 // エンドポイントを分けたほうがいいと思うが、実装する内容もないし、ユーザーのリクエストが煩雑になるので保留
 // ただし、DHCPなどのためやNICの順番が入れ替わったりするときのためにmetadataやidはあったほうが便利だと考えている
 type ComputeSpec_NIC struct {
-	Metadata             *v0.Metadata          `protobuf:"bytes,1,opt,name=metadata" json:"metadata,omitempty"`
-	Spec                 *ComputeSpec_NIC_Spec `protobuf:"bytes,2,opt,name=spec" json:"spec,omitempty"`
+	Metadata             *v0.Metadata          `protobuf:"bytes,1,opt,name=metadata,proto3" json:"metadata,omitempty"`
+	Spec                 *ComputeSpec_NIC_Spec `protobuf:"bytes,2,opt,name=spec,proto3" json:"spec,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}              `json:"-"`
 	XXX_unrecognized     []byte                `json:"-"`
 	XXX_sizecache        int32                 `json:"-"`
@@ -250,11 +250,11 @@ func (m *ComputeSpec_NIC) GetSpec() *ComputeSpec_NIC_Spec {
 }
 
 type ComputeSpec_NIC_Spec struct {
-	NetworkId string `protobuf:"bytes,1,opt,name=network_id,json=networkId" json:"network_id,omitempty"`
+	NetworkId string `protobuf:"bytes,1,opt,name=network_id,json=networkId,proto3" json:"network_id,omitempty"`
 	// 重複するかは確認しない
 	// かわりに空を許可して、DHCPで自動割り当てを可能にする
 	// TODO: 割り当てられたIPをどうやって確認するか
-	Ipaddrs              []string `protobuf:"bytes,2,rep,name=ipaddrs" json:"ipaddrs,omitempty"`
+	Ipaddrs              []string `protobuf:"bytes,2,rep,name=ipaddrs,proto3" json:"ipaddrs,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -299,7 +299,7 @@ func (m *ComputeSpec_NIC_Spec) GetIpaddrs() []string {
 }
 
 type ComputeStatus struct {
-	State                ComputeStatus_ComputeState `protobuf:"varint,1,opt,name=state,enum=n0stack.provisioning.ComputeStatus_ComputeState" json:"state,omitempty"`
+	State                ComputeStatus_ComputeState `protobuf:"varint,1,opt,name=state,proto3,enum=n0stack.provisioning.ComputeStatus_ComputeState" json:"state,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}                   `json:"-"`
 	XXX_unrecognized     []byte                     `json:"-"`
 	XXX_sizecache        int32                      `json:"-"`
@@ -367,7 +367,7 @@ func (m *ListComputesRequest) XXX_DiscardUnknown() {
 var xxx_messageInfo_ListComputesRequest proto.InternalMessageInfo
 
 type ListComputesResponse struct {
-	Computes             []*Compute `protobuf:"bytes,1,rep,name=computes" json:"computes,omitempty"`
+	Computes             []*Compute `protobuf:"bytes,1,rep,name=computes,proto3" json:"computes,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}   `json:"-"`
 	XXX_unrecognized     []byte     `json:"-"`
 	XXX_sizecache        int32      `json:"-"`
@@ -405,7 +405,7 @@ func (m *ListComputesResponse) GetComputes() []*Compute {
 }
 
 type GetComputeRequest struct {
-	Name                 string   `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
+	Name                 string   `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -443,8 +443,8 @@ func (m *GetComputeRequest) GetName() string {
 }
 
 type ApplyComputeRequest struct {
-	Metadata             *v0.Metadata `protobuf:"bytes,1,opt,name=metadata" json:"metadata,omitempty"`
-	Spec                 *ComputeSpec `protobuf:"bytes,2,opt,name=spec" json:"spec,omitempty"`
+	Metadata             *v0.Metadata `protobuf:"bytes,1,opt,name=metadata,proto3" json:"metadata,omitempty"`
+	Spec                 *ComputeSpec `protobuf:"bytes,2,opt,name=spec,proto3" json:"spec,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}     `json:"-"`
 	XXX_unrecognized     []byte       `json:"-"`
 	XXX_sizecache        int32        `json:"-"`
@@ -489,7 +489,7 @@ func (m *ApplyComputeRequest) GetSpec() *ComputeSpec {
 }
 
 type DeleteComputeRequest struct {
-	Name                 string   `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
+	Name                 string   `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -557,8 +557,8 @@ func (m *WatchComputesRequest) XXX_DiscardUnknown() {
 var xxx_messageInfo_WatchComputesRequest proto.InternalMessageInfo
 
 type WatchComputesResponse struct {
-	Event                WatchComputesResponse_ComputeEvents `protobuf:"varint,1,opt,name=event,enum=n0stack.provisioning.WatchComputesResponse_ComputeEvents" json:"event,omitempty"`
-	Compute              *Compute                            `protobuf:"bytes,2,opt,name=compute" json:"compute,omitempty"`
+	Event                WatchComputesResponse_ComputeEvents `protobuf:"varint,1,opt,name=event,proto3,enum=n0stack.provisioning.WatchComputesResponse_ComputeEvents" json:"event,omitempty"`
+	Compute              *Compute                            `protobuf:"bytes,2,opt,name=compute,proto3" json:"compute,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}                            `json:"-"`
 	XXX_unrecognized     []byte                              `json:"-"`
 	XXX_sizecache        int32                               `json:"-"`

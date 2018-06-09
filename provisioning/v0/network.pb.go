@@ -81,9 +81,9 @@ func (WatchNetworksResponse_NetworkEvents) EnumDescriptor() ([]byte, []int) {
 }
 
 type Network struct {
-	Metadata             *v0.Metadata   `protobuf:"bytes,1,opt,name=metadata" json:"metadata,omitempty"`
-	Spec                 *NetworkSpec   `protobuf:"bytes,2,opt,name=spec" json:"spec,omitempty"`
-	Status               *NetworkStatus `protobuf:"bytes,3,opt,name=status" json:"status,omitempty"`
+	Metadata             *v0.Metadata   `protobuf:"bytes,1,opt,name=metadata,proto3" json:"metadata,omitempty"`
+	Spec                 *NetworkSpec   `protobuf:"bytes,2,opt,name=spec,proto3" json:"spec,omitempty"`
+	Status               *NetworkStatus `protobuf:"bytes,3,opt,name=status,proto3" json:"status,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}       `json:"-"`
 	XXX_unrecognized     []byte         `json:"-"`
 	XXX_sizecache        int32          `json:"-"`
@@ -135,10 +135,10 @@ func (m *Network) GetStatus() *NetworkStatus {
 }
 
 type NetworkSpec struct {
-	Ipv4Cidr             string   `protobuf:"bytes,1,opt,name=ipv4_cidr,json=ipv4Cidr" json:"ipv4_cidr,omitempty"`
-	Ipv4Gateway          string   `protobuf:"bytes,2,opt,name=ipv4_gateway,json=ipv4Gateway" json:"ipv4_gateway,omitempty"`
-	NameServer           string   `protobuf:"bytes,5,opt,name=name_server,json=nameServer" json:"name_server,omitempty"`
-	Domain               string   `protobuf:"bytes,6,opt,name=domain" json:"domain,omitempty"`
+	Ipv4Cidr             string   `protobuf:"bytes,1,opt,name=ipv4_cidr,json=ipv4Cidr,proto3" json:"ipv4_cidr,omitempty"`
+	Ipv4Gateway          string   `protobuf:"bytes,2,opt,name=ipv4_gateway,json=ipv4Gateway,proto3" json:"ipv4_gateway,omitempty"`
+	NameServer           string   `protobuf:"bytes,5,opt,name=name_server,json=nameServer,proto3" json:"name_server,omitempty"`
+	Domain               string   `protobuf:"bytes,6,opt,name=domain,proto3" json:"domain,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -197,7 +197,7 @@ func (m *NetworkSpec) GetDomain() string {
 }
 
 type NetworkStatus struct {
-	State                NetworkStatus_NetworkState `protobuf:"varint,1,opt,name=state,enum=n0stack.provisioning.NetworkStatus_NetworkState" json:"state,omitempty"`
+	State                NetworkStatus_NetworkState `protobuf:"varint,1,opt,name=state,proto3,enum=n0stack.provisioning.NetworkStatus_NetworkState" json:"state,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}                   `json:"-"`
 	XXX_unrecognized     []byte                     `json:"-"`
 	XXX_sizecache        int32                      `json:"-"`
@@ -265,7 +265,7 @@ func (m *ListNetworkRequest) XXX_DiscardUnknown() {
 var xxx_messageInfo_ListNetworkRequest proto.InternalMessageInfo
 
 type ListNetworkResponse struct {
-	Networks             []*Network `protobuf:"bytes,1,rep,name=networks" json:"networks,omitempty"`
+	Networks             []*Network `protobuf:"bytes,1,rep,name=networks,proto3" json:"networks,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}   `json:"-"`
 	XXX_unrecognized     []byte     `json:"-"`
 	XXX_sizecache        int32      `json:"-"`
@@ -303,7 +303,7 @@ func (m *ListNetworkResponse) GetNetworks() []*Network {
 }
 
 type GetNetworkRequest struct {
-	Name                 string   `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
+	Name                 string   `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -341,8 +341,8 @@ func (m *GetNetworkRequest) GetName() string {
 }
 
 type ApplyNetworkRequest struct {
-	Metadata             *v0.Metadata `protobuf:"bytes,1,opt,name=metadata" json:"metadata,omitempty"`
-	Spec                 *NetworkSpec `protobuf:"bytes,2,opt,name=spec" json:"spec,omitempty"`
+	Metadata             *v0.Metadata `protobuf:"bytes,1,opt,name=metadata,proto3" json:"metadata,omitempty"`
+	Spec                 *NetworkSpec `protobuf:"bytes,2,opt,name=spec,proto3" json:"spec,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}     `json:"-"`
 	XXX_unrecognized     []byte       `json:"-"`
 	XXX_sizecache        int32        `json:"-"`
@@ -387,7 +387,7 @@ func (m *ApplyNetworkRequest) GetSpec() *NetworkSpec {
 }
 
 type DeleteNetworkRequest struct {
-	Name                 string   `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
+	Name                 string   `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -455,8 +455,8 @@ func (m *WatchNetworksRequest) XXX_DiscardUnknown() {
 var xxx_messageInfo_WatchNetworksRequest proto.InternalMessageInfo
 
 type WatchNetworksResponse struct {
-	Event                WatchNetworksResponse_NetworkEvents `protobuf:"varint,1,opt,name=event,enum=n0stack.provisioning.WatchNetworksResponse_NetworkEvents" json:"event,omitempty"`
-	Network              *Network                            `protobuf:"bytes,2,opt,name=network" json:"network,omitempty"`
+	Event                WatchNetworksResponse_NetworkEvents `protobuf:"varint,1,opt,name=event,proto3,enum=n0stack.provisioning.WatchNetworksResponse_NetworkEvents" json:"event,omitempty"`
+	Network              *Network                            `protobuf:"bytes,2,opt,name=network,proto3" json:"network,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}                            `json:"-"`
 	XXX_unrecognized     []byte                              `json:"-"`
 	XXX_sizecache        int32                               `json:"-"`

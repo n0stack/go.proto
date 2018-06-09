@@ -54,46 +54,24 @@ func (x VolumeStatus_VolumeState) String() string {
 	return proto.EnumName(VolumeStatus_VolumeState_name, int32(x))
 }
 func (VolumeStatus_VolumeState) EnumDescriptor() ([]byte, []int) {
-	return fileDescriptor_volume_27e0dca093fe00a2, []int{2, 0}
-}
-
-type WatchVolumesResponse_VolumeEvents int32
-
-const (
-	WatchVolumesResponse_APPLY  WatchVolumesResponse_VolumeEvents = 0
-	WatchVolumesResponse_DELETE WatchVolumesResponse_VolumeEvents = 1
-)
-
-var WatchVolumesResponse_VolumeEvents_name = map[int32]string{
-	0: "APPLY",
-	1: "DELETE",
-}
-var WatchVolumesResponse_VolumeEvents_value = map[string]int32{
-	"APPLY":  0,
-	"DELETE": 1,
-}
-
-func (x WatchVolumesResponse_VolumeEvents) String() string {
-	return proto.EnumName(WatchVolumesResponse_VolumeEvents_name, int32(x))
-}
-func (WatchVolumesResponse_VolumeEvents) EnumDescriptor() ([]byte, []int) {
-	return fileDescriptor_volume_27e0dca093fe00a2, []int{9, 0}
+	return fileDescriptor_volume_18c1d9bb414a6f7a, []int{2, 0}
 }
 
 type Volume struct {
-	Metadata             *v0.Metadata  `protobuf:"bytes,1,opt,name=metadata" json:"metadata,omitempty"`
-	Spec                 *VolumeSpec   `protobuf:"bytes,2,opt,name=spec" json:"spec,omitempty"`
-	Status               *VolumeStatus `protobuf:"bytes,3,opt,name=status" json:"status,omitempty"`
-	XXX_NoUnkeyedLiteral struct{}      `json:"-"`
-	XXX_unrecognized     []byte        `json:"-"`
-	XXX_sizecache        int32         `json:"-"`
+	Metadata             *v0.Metadata    `protobuf:"bytes,1,opt,name=metadata,proto3" json:"metadata,omitempty"`
+	Spec                 *VolumeSpec     `protobuf:"bytes,2,opt,name=spec,proto3" json:"spec,omitempty"`
+	Status               *VolumeStatus   `protobuf:"bytes,3,opt,name=status,proto3" json:"status,omitempty"`
+	Components           []*v0.Component `protobuf:"bytes,4,rep,name=components,proto3" json:"components,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}        `json:"-"`
+	XXX_unrecognized     []byte          `json:"-"`
+	XXX_sizecache        int32           `json:"-"`
 }
 
 func (m *Volume) Reset()         { *m = Volume{} }
 func (m *Volume) String() string { return proto.CompactTextString(m) }
 func (*Volume) ProtoMessage()    {}
 func (*Volume) Descriptor() ([]byte, []int) {
-	return fileDescriptor_volume_27e0dca093fe00a2, []int{0}
+	return fileDescriptor_volume_18c1d9bb414a6f7a, []int{0}
 }
 func (m *Volume) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_Volume.Unmarshal(m, b)
@@ -134,8 +112,15 @@ func (m *Volume) GetStatus() *VolumeStatus {
 	return nil
 }
 
+func (m *Volume) GetComponents() []*v0.Component {
+	if m != nil {
+		return m.Components
+	}
+	return nil
+}
+
 type VolumeSpec struct {
-	Bytes                uint64   `protobuf:"varint,1,opt,name=bytes" json:"bytes,omitempty"`
+	Bytes                uint64   `protobuf:"varint,1,opt,name=bytes,proto3" json:"bytes,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -145,7 +130,7 @@ func (m *VolumeSpec) Reset()         { *m = VolumeSpec{} }
 func (m *VolumeSpec) String() string { return proto.CompactTextString(m) }
 func (*VolumeSpec) ProtoMessage()    {}
 func (*VolumeSpec) Descriptor() ([]byte, []int) {
-	return fileDescriptor_volume_27e0dca093fe00a2, []int{1}
+	return fileDescriptor_volume_18c1d9bb414a6f7a, []int{1}
 }
 func (m *VolumeSpec) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_VolumeSpec.Unmarshal(m, b)
@@ -173,7 +158,7 @@ func (m *VolumeSpec) GetBytes() uint64 {
 }
 
 type VolumeStatus struct {
-	State                VolumeStatus_VolumeState `protobuf:"varint,1,opt,name=state,enum=n0stack.provisioning.VolumeStatus_VolumeState" json:"state,omitempty"`
+	State                VolumeStatus_VolumeState `protobuf:"varint,1,opt,name=state,proto3,enum=n0stack.provisioning.VolumeStatus_VolumeState" json:"state,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}                 `json:"-"`
 	XXX_unrecognized     []byte                   `json:"-"`
 	XXX_sizecache        int32                    `json:"-"`
@@ -183,7 +168,7 @@ func (m *VolumeStatus) Reset()         { *m = VolumeStatus{} }
 func (m *VolumeStatus) String() string { return proto.CompactTextString(m) }
 func (*VolumeStatus) ProtoMessage()    {}
 func (*VolumeStatus) Descriptor() ([]byte, []int) {
-	return fileDescriptor_volume_27e0dca093fe00a2, []int{2}
+	return fileDescriptor_volume_18c1d9bb414a6f7a, []int{2}
 }
 func (m *VolumeStatus) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_VolumeStatus.Unmarshal(m, b)
@@ -220,7 +205,7 @@ func (m *ListVolumesRequest) Reset()         { *m = ListVolumesRequest{} }
 func (m *ListVolumesRequest) String() string { return proto.CompactTextString(m) }
 func (*ListVolumesRequest) ProtoMessage()    {}
 func (*ListVolumesRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_volume_27e0dca093fe00a2, []int{3}
+	return fileDescriptor_volume_18c1d9bb414a6f7a, []int{3}
 }
 func (m *ListVolumesRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ListVolumesRequest.Unmarshal(m, b)
@@ -241,7 +226,7 @@ func (m *ListVolumesRequest) XXX_DiscardUnknown() {
 var xxx_messageInfo_ListVolumesRequest proto.InternalMessageInfo
 
 type ListVolumesResponse struct {
-	Volumes              []*Volume `protobuf:"bytes,1,rep,name=volumes" json:"volumes,omitempty"`
+	Volumes              []*Volume `protobuf:"bytes,1,rep,name=volumes,proto3" json:"volumes,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}  `json:"-"`
 	XXX_unrecognized     []byte    `json:"-"`
 	XXX_sizecache        int32     `json:"-"`
@@ -251,7 +236,7 @@ func (m *ListVolumesResponse) Reset()         { *m = ListVolumesResponse{} }
 func (m *ListVolumesResponse) String() string { return proto.CompactTextString(m) }
 func (*ListVolumesResponse) ProtoMessage()    {}
 func (*ListVolumesResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_volume_27e0dca093fe00a2, []int{4}
+	return fileDescriptor_volume_18c1d9bb414a6f7a, []int{4}
 }
 func (m *ListVolumesResponse) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ListVolumesResponse.Unmarshal(m, b)
@@ -279,7 +264,7 @@ func (m *ListVolumesResponse) GetVolumes() []*Volume {
 }
 
 type GetVolumeRequest struct {
-	Name                 string   `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
+	Name                 string   `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -289,7 +274,7 @@ func (m *GetVolumeRequest) Reset()         { *m = GetVolumeRequest{} }
 func (m *GetVolumeRequest) String() string { return proto.CompactTextString(m) }
 func (*GetVolumeRequest) ProtoMessage()    {}
 func (*GetVolumeRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_volume_27e0dca093fe00a2, []int{5}
+	return fileDescriptor_volume_18c1d9bb414a6f7a, []int{5}
 }
 func (m *GetVolumeRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_GetVolumeRequest.Unmarshal(m, b)
@@ -317,8 +302,8 @@ func (m *GetVolumeRequest) GetName() string {
 }
 
 type ApplyVolumeRequest struct {
-	Metadata             *v0.Metadata `protobuf:"bytes,1,opt,name=metadata" json:"metadata,omitempty"`
-	Spec                 *VolumeSpec  `protobuf:"bytes,2,opt,name=spec" json:"spec,omitempty"`
+	Metadata             *v0.Metadata `protobuf:"bytes,1,opt,name=metadata,proto3" json:"metadata,omitempty"`
+	Spec                 *VolumeSpec  `protobuf:"bytes,2,opt,name=spec,proto3" json:"spec,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}     `json:"-"`
 	XXX_unrecognized     []byte       `json:"-"`
 	XXX_sizecache        int32        `json:"-"`
@@ -328,7 +313,7 @@ func (m *ApplyVolumeRequest) Reset()         { *m = ApplyVolumeRequest{} }
 func (m *ApplyVolumeRequest) String() string { return proto.CompactTextString(m) }
 func (*ApplyVolumeRequest) ProtoMessage()    {}
 func (*ApplyVolumeRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_volume_27e0dca093fe00a2, []int{6}
+	return fileDescriptor_volume_18c1d9bb414a6f7a, []int{6}
 }
 func (m *ApplyVolumeRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ApplyVolumeRequest.Unmarshal(m, b)
@@ -363,7 +348,7 @@ func (m *ApplyVolumeRequest) GetSpec() *VolumeSpec {
 }
 
 type DeleteVolumeRequest struct {
-	Name                 string   `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
+	Name                 string   `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -373,7 +358,7 @@ func (m *DeleteVolumeRequest) Reset()         { *m = DeleteVolumeRequest{} }
 func (m *DeleteVolumeRequest) String() string { return proto.CompactTextString(m) }
 func (*DeleteVolumeRequest) ProtoMessage()    {}
 func (*DeleteVolumeRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_volume_27e0dca093fe00a2, []int{7}
+	return fileDescriptor_volume_18c1d9bb414a6f7a, []int{7}
 }
 func (m *DeleteVolumeRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_DeleteVolumeRequest.Unmarshal(m, b)
@@ -400,82 +385,6 @@ func (m *DeleteVolumeRequest) GetName() string {
 	return ""
 }
 
-type WatchVolumesRequest struct {
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
-}
-
-func (m *WatchVolumesRequest) Reset()         { *m = WatchVolumesRequest{} }
-func (m *WatchVolumesRequest) String() string { return proto.CompactTextString(m) }
-func (*WatchVolumesRequest) ProtoMessage()    {}
-func (*WatchVolumesRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_volume_27e0dca093fe00a2, []int{8}
-}
-func (m *WatchVolumesRequest) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_WatchVolumesRequest.Unmarshal(m, b)
-}
-func (m *WatchVolumesRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_WatchVolumesRequest.Marshal(b, m, deterministic)
-}
-func (dst *WatchVolumesRequest) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_WatchVolumesRequest.Merge(dst, src)
-}
-func (m *WatchVolumesRequest) XXX_Size() int {
-	return xxx_messageInfo_WatchVolumesRequest.Size(m)
-}
-func (m *WatchVolumesRequest) XXX_DiscardUnknown() {
-	xxx_messageInfo_WatchVolumesRequest.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_WatchVolumesRequest proto.InternalMessageInfo
-
-type WatchVolumesResponse struct {
-	Event                WatchVolumesResponse_VolumeEvents `protobuf:"varint,1,opt,name=event,enum=n0stack.provisioning.WatchVolumesResponse_VolumeEvents" json:"event,omitempty"`
-	Volume               *Volume                           `protobuf:"bytes,2,opt,name=volume" json:"volume,omitempty"`
-	XXX_NoUnkeyedLiteral struct{}                          `json:"-"`
-	XXX_unrecognized     []byte                            `json:"-"`
-	XXX_sizecache        int32                             `json:"-"`
-}
-
-func (m *WatchVolumesResponse) Reset()         { *m = WatchVolumesResponse{} }
-func (m *WatchVolumesResponse) String() string { return proto.CompactTextString(m) }
-func (*WatchVolumesResponse) ProtoMessage()    {}
-func (*WatchVolumesResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_volume_27e0dca093fe00a2, []int{9}
-}
-func (m *WatchVolumesResponse) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_WatchVolumesResponse.Unmarshal(m, b)
-}
-func (m *WatchVolumesResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_WatchVolumesResponse.Marshal(b, m, deterministic)
-}
-func (dst *WatchVolumesResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_WatchVolumesResponse.Merge(dst, src)
-}
-func (m *WatchVolumesResponse) XXX_Size() int {
-	return xxx_messageInfo_WatchVolumesResponse.Size(m)
-}
-func (m *WatchVolumesResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_WatchVolumesResponse.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_WatchVolumesResponse proto.InternalMessageInfo
-
-func (m *WatchVolumesResponse) GetEvent() WatchVolumesResponse_VolumeEvents {
-	if m != nil {
-		return m.Event
-	}
-	return WatchVolumesResponse_APPLY
-}
-
-func (m *WatchVolumesResponse) GetVolume() *Volume {
-	if m != nil {
-		return m.Volume
-	}
-	return nil
-}
-
 func init() {
 	proto.RegisterType((*Volume)(nil), "n0stack.provisioning.Volume")
 	proto.RegisterType((*VolumeSpec)(nil), "n0stack.provisioning.VolumeSpec")
@@ -485,10 +394,7 @@ func init() {
 	proto.RegisterType((*GetVolumeRequest)(nil), "n0stack.provisioning.GetVolumeRequest")
 	proto.RegisterType((*ApplyVolumeRequest)(nil), "n0stack.provisioning.ApplyVolumeRequest")
 	proto.RegisterType((*DeleteVolumeRequest)(nil), "n0stack.provisioning.DeleteVolumeRequest")
-	proto.RegisterType((*WatchVolumesRequest)(nil), "n0stack.provisioning.WatchVolumesRequest")
-	proto.RegisterType((*WatchVolumesResponse)(nil), "n0stack.provisioning.WatchVolumesResponse")
 	proto.RegisterEnum("n0stack.provisioning.VolumeStatus_VolumeState", VolumeStatus_VolumeState_name, VolumeStatus_VolumeState_value)
-	proto.RegisterEnum("n0stack.provisioning.WatchVolumesResponse_VolumeEvents", WatchVolumesResponse_VolumeEvents_name, WatchVolumesResponse_VolumeEvents_value)
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -507,7 +413,6 @@ type VolumeServiceClient interface {
 	GetVolume(ctx context.Context, in *GetVolumeRequest, opts ...grpc.CallOption) (*Volume, error)
 	ApplyVolume(ctx context.Context, in *ApplyVolumeRequest, opts ...grpc.CallOption) (*Volume, error)
 	DeleteVolume(ctx context.Context, in *DeleteVolumeRequest, opts ...grpc.CallOption) (*empty.Empty, error)
-	WatchVolumes(ctx context.Context, in *WatchVolumesRequest, opts ...grpc.CallOption) (VolumeService_WatchVolumesClient, error)
 }
 
 type volumeServiceClient struct {
@@ -554,45 +459,12 @@ func (c *volumeServiceClient) DeleteVolume(ctx context.Context, in *DeleteVolume
 	return out, nil
 }
 
-func (c *volumeServiceClient) WatchVolumes(ctx context.Context, in *WatchVolumesRequest, opts ...grpc.CallOption) (VolumeService_WatchVolumesClient, error) {
-	stream, err := c.cc.NewStream(ctx, &_VolumeService_serviceDesc.Streams[0], "/n0stack.provisioning.VolumeService/WatchVolumes", opts...)
-	if err != nil {
-		return nil, err
-	}
-	x := &volumeServiceWatchVolumesClient{stream}
-	if err := x.ClientStream.SendMsg(in); err != nil {
-		return nil, err
-	}
-	if err := x.ClientStream.CloseSend(); err != nil {
-		return nil, err
-	}
-	return x, nil
-}
-
-type VolumeService_WatchVolumesClient interface {
-	Recv() (*WatchVolumesResponse, error)
-	grpc.ClientStream
-}
-
-type volumeServiceWatchVolumesClient struct {
-	grpc.ClientStream
-}
-
-func (x *volumeServiceWatchVolumesClient) Recv() (*WatchVolumesResponse, error) {
-	m := new(WatchVolumesResponse)
-	if err := x.ClientStream.RecvMsg(m); err != nil {
-		return nil, err
-	}
-	return m, nil
-}
-
 // VolumeServiceServer is the server API for VolumeService service.
 type VolumeServiceServer interface {
 	ListVolumes(context.Context, *ListVolumesRequest) (*ListVolumesResponse, error)
 	GetVolume(context.Context, *GetVolumeRequest) (*Volume, error)
 	ApplyVolume(context.Context, *ApplyVolumeRequest) (*Volume, error)
 	DeleteVolume(context.Context, *DeleteVolumeRequest) (*empty.Empty, error)
-	WatchVolumes(*WatchVolumesRequest, VolumeService_WatchVolumesServer) error
 }
 
 func RegisterVolumeServiceServer(s *grpc.Server, srv VolumeServiceServer) {
@@ -671,27 +543,6 @@ func _VolumeService_DeleteVolume_Handler(srv interface{}, ctx context.Context, d
 	return interceptor(ctx, in, info, handler)
 }
 
-func _VolumeService_WatchVolumes_Handler(srv interface{}, stream grpc.ServerStream) error {
-	m := new(WatchVolumesRequest)
-	if err := stream.RecvMsg(m); err != nil {
-		return err
-	}
-	return srv.(VolumeServiceServer).WatchVolumes(m, &volumeServiceWatchVolumesServer{stream})
-}
-
-type VolumeService_WatchVolumesServer interface {
-	Send(*WatchVolumesResponse) error
-	grpc.ServerStream
-}
-
-type volumeServiceWatchVolumesServer struct {
-	grpc.ServerStream
-}
-
-func (x *volumeServiceWatchVolumesServer) Send(m *WatchVolumesResponse) error {
-	return x.ServerStream.SendMsg(m)
-}
-
 var _VolumeService_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "n0stack.provisioning.VolumeService",
 	HandlerType: (*VolumeServiceServer)(nil),
@@ -713,57 +564,47 @@ var _VolumeService_serviceDesc = grpc.ServiceDesc{
 			Handler:    _VolumeService_DeleteVolume_Handler,
 		},
 	},
-	Streams: []grpc.StreamDesc{
-		{
-			StreamName:    "WatchVolumes",
-			Handler:       _VolumeService_WatchVolumes_Handler,
-			ServerStreams: true,
-		},
-	},
+	Streams:  []grpc.StreamDesc{},
 	Metadata: "provisioning/v0/volume.proto",
 }
 
 func init() {
-	proto.RegisterFile("provisioning/v0/volume.proto", fileDescriptor_volume_27e0dca093fe00a2)
+	proto.RegisterFile("provisioning/v0/volume.proto", fileDescriptor_volume_18c1d9bb414a6f7a)
 }
 
-var fileDescriptor_volume_27e0dca093fe00a2 = []byte{
-	// 585 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x09, 0x6e, 0x88, 0x02, 0xff, 0xbc, 0x54, 0x51, 0x6e, 0xd3, 0x40,
-	0x10, 0xb5, 0x9b, 0x26, 0x25, 0xe3, 0x16, 0xb9, 0xd3, 0x80, 0x2a, 0xd3, 0x8f, 0x6a, 0x25, 0xaa,
-	0x16, 0x09, 0x3b, 0x0a, 0x15, 0x08, 0xfa, 0xe5, 0x2a, 0xa6, 0x8a, 0x70, 0x42, 0xe4, 0x40, 0x23,
-	0xf8, 0x73, 0xdc, 0x25, 0xb5, 0x48, 0x6c, 0x93, 0xdd, 0x58, 0xca, 0x4d, 0xb8, 0x02, 0xd7, 0xe0,
-	0x2a, 0x5c, 0x04, 0xd9, 0xeb, 0x14, 0x27, 0x75, 0x92, 0x7e, 0xf1, 0x67, 0xcf, 0xbe, 0xf7, 0xf6,
-	0xcd, 0xec, 0xd3, 0xc0, 0x51, 0x34, 0x09, 0x63, 0x9f, 0xf9, 0x61, 0xe0, 0x07, 0x43, 0x23, 0xae,
-	0x1b, 0x71, 0x38, 0x9a, 0x8e, 0xa9, 0x1e, 0x4d, 0x42, 0x1e, 0x62, 0x2d, 0xa8, 0x33, 0xee, 0x7a,
-	0xdf, 0xf5, 0x3c, 0x4a, 0x7b, 0x36, 0x0c, 0xc3, 0xe1, 0x88, 0x1a, 0x29, 0x66, 0x30, 0xfd, 0x66,
-	0xd0, 0x71, 0xc4, 0x67, 0x82, 0xa2, 0xed, 0xc7, 0x75, 0x63, 0x4c, 0xb9, 0x7b, 0xe3, 0x72, 0x57,
-	0x94, 0xc8, 0x2f, 0x19, 0x2a, 0xd7, 0xa9, 0x2c, 0xbe, 0x84, 0x47, 0xf3, 0xc3, 0x43, 0xf9, 0x58,
-	0x3e, 0x55, 0x1a, 0xfb, 0xfa, 0xfc, 0x8e, 0x76, 0x76, 0xe0, 0xdc, 0x41, 0xf0, 0x1c, 0xb6, 0x59,
-	0x44, 0xbd, 0xc3, 0xad, 0x14, 0x7a, 0xac, 0x17, 0xd9, 0xd1, 0x85, 0x74, 0x2f, 0xa2, 0x9e, 0x93,
-	0xa2, 0xf1, 0x1d, 0x54, 0x18, 0x77, 0xf9, 0x94, 0x1d, 0x96, 0x52, 0x1e, 0x59, 0xcb, 0x4b, 0x91,
-	0x4e, 0xc6, 0x20, 0x04, 0xe0, 0x9f, 0x1e, 0xd6, 0xa0, 0x3c, 0x98, 0x71, 0xca, 0x52, 0xaf, 0xdb,
-	0x8e, 0xf8, 0x21, 0x3f, 0x65, 0xd8, 0xcd, 0x93, 0xb1, 0x09, 0xe5, 0x84, 0x4e, 0x53, 0xd8, 0xe3,
-	0x86, 0xbe, 0xf9, 0xbe, 0xdc, 0x0f, 0x75, 0x04, 0x99, 0x5c, 0x82, 0x92, 0xab, 0xa2, 0x02, 0x3b,
-	0x5d, 0xab, 0xd3, 0x6c, 0x75, 0xae, 0x54, 0x09, 0xf7, 0xa0, 0x6a, 0x5e, 0x9b, 0x2d, 0xdb, 0xbc,
-	0xb4, 0x2d, 0x55, 0x46, 0x80, 0xca, 0x7b, 0xb3, 0x65, 0x5b, 0x4d, 0x75, 0x2b, 0xc1, 0x7d, 0xee,
-	0x7c, 0xe8, 0x7c, 0xec, 0x77, 0xd4, 0x12, 0xa9, 0x01, 0xda, 0x3e, 0xe3, 0x42, 0x87, 0x39, 0xf4,
-	0xc7, 0x94, 0x32, 0x4e, 0xda, 0x70, 0xb0, 0x50, 0x65, 0x51, 0x18, 0x30, 0x8a, 0xaf, 0x61, 0x47,
-	0xbc, 0x76, 0xd2, 0x5f, 0xe9, 0x54, 0x69, 0x1c, 0xad, 0x33, 0xee, 0xcc, 0xc1, 0xe4, 0x04, 0xd4,
-	0x2b, 0x9a, 0xa9, 0x65, 0x57, 0x20, 0xc2, 0x76, 0xe0, 0x8e, 0xc5, 0x04, 0xaa, 0x4e, 0xfa, 0x4d,
-	0x66, 0x80, 0x66, 0x14, 0x8d, 0x66, 0x8b, 0xc8, 0xff, 0x11, 0x01, 0x72, 0x06, 0x07, 0x4d, 0x3a,
-	0xa2, 0x9c, 0x6e, 0x76, 0xf9, 0x04, 0x0e, 0xfa, 0x2e, 0xf7, 0x6e, 0x97, 0x66, 0xf6, 0x5b, 0x86,
-	0xda, 0x62, 0x3d, 0x9b, 0x5a, 0x1b, 0xca, 0x34, 0xa6, 0x01, 0xcf, 0x1e, 0xfb, 0x4d, 0xb1, 0xa3,
-	0x22, 0x6a, 0x66, 0xd3, 0x4a, 0xd8, 0xcc, 0x11, 0x2a, 0x78, 0x0e, 0x15, 0x31, 0xd7, 0xac, 0xc3,
-	0xf5, 0x6f, 0x90, 0x61, 0xc9, 0xf3, 0x79, 0x02, 0x85, 0x18, 0x56, 0xa1, 0x6c, 0x76, 0xbb, 0xf6,
-	0x17, 0x55, 0x4a, 0xb2, 0xd1, 0xb4, 0x6c, 0xeb, 0x93, 0xa5, 0xca, 0x8d, 0x3f, 0x25, 0xd8, 0xcb,
-	0x66, 0x43, 0x27, 0xb1, 0xef, 0x51, 0xbc, 0x01, 0x25, 0x17, 0x05, 0x3c, 0x2d, 0xbe, 0xed, 0x7e,
-	0x86, 0xb4, 0xb3, 0x07, 0x20, 0x45, 0x9b, 0x44, 0xc2, 0x1e, 0x54, 0xef, 0x12, 0x82, 0x27, 0xc5,
-	0xcc, 0xe5, 0x08, 0x69, 0x6b, 0x3b, 0x27, 0x12, 0xf6, 0x41, 0xc9, 0xc5, 0x69, 0x95, 0xf5, 0xfb,
-	0x89, 0xdb, 0x28, 0xdc, 0x83, 0xdd, 0x7c, 0x58, 0x70, 0x45, 0xab, 0x05, 0x81, 0xd2, 0x9e, 0xea,
-	0x62, 0x17, 0xea, 0xf3, 0x5d, 0xa8, 0x5b, 0xc9, 0x2e, 0x24, 0x12, 0xfa, 0xb0, 0x9b, 0xcf, 0xc0,
-	0x2a, 0xd1, 0x82, 0xe8, 0x69, 0x2f, 0x1e, 0x1e, 0x29, 0x22, 0xd5, 0xe5, 0xcb, 0x8b, 0xaf, 0x6f,
-	0x87, 0x3e, 0xbf, 0x9d, 0x0e, 0x74, 0x2f, 0x1c, 0x1b, 0x19, 0x57, 0x6c, 0x67, 0x7d, 0x18, 0x1a,
-	0x4b, 0x1b, 0xfe, 0x22, 0xca, 0x17, 0x06, 0x95, 0x14, 0xf7, 0xea, 0x6f, 0x00, 0x00, 0x00, 0xff,
-	0xff, 0x8f, 0x84, 0x04, 0xe0, 0x09, 0x06, 0x00, 0x00,
+var fileDescriptor_volume_18c1d9bb414a6f7a = []byte{
+	// 520 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x09, 0x6e, 0x88, 0x02, 0xff, 0xbc, 0x94, 0xcf, 0x6e, 0xda, 0x40,
+	0x10, 0xc6, 0x21, 0x10, 0x52, 0xc6, 0x49, 0x45, 0x26, 0xa8, 0x42, 0x34, 0x07, 0xb4, 0x87, 0x88,
+	0x1c, 0xba, 0x46, 0xb4, 0xaa, 0xd4, 0xe6, 0x04, 0x85, 0x46, 0xa8, 0x84, 0x56, 0x46, 0x4d, 0xa4,
+	0xde, 0x8c, 0xb3, 0xa5, 0x56, 0xb1, 0x77, 0xcb, 0xae, 0x2d, 0xf1, 0x26, 0x7d, 0xb9, 0xbe, 0x47,
+	0x8f, 0x95, 0x77, 0x6d, 0xea, 0x24, 0x04, 0x7a, 0xea, 0xcd, 0x9e, 0xfd, 0x7d, 0xf3, 0xe7, 0xdb,
+	0xd5, 0xc0, 0xa9, 0x58, 0xf2, 0xd8, 0x97, 0x3e, 0x0f, 0xfd, 0x70, 0x6e, 0xc7, 0x1d, 0x3b, 0xe6,
+	0x8b, 0x28, 0x60, 0x54, 0x2c, 0xb9, 0xe2, 0x58, 0x0f, 0x3b, 0x52, 0xb9, 0xde, 0x77, 0x9a, 0xa7,
+	0x9a, 0xcf, 0xe7, 0x9c, 0xcf, 0x17, 0xcc, 0xd6, 0xcc, 0x2c, 0xfa, 0x6a, 0xb3, 0x40, 0xa8, 0x95,
+	0x91, 0x34, 0x31, 0xee, 0xd8, 0x1e, 0x0f, 0x04, 0x0f, 0x59, 0xa8, 0xd2, 0xd8, 0x71, 0xdc, 0xb1,
+	0x03, 0xa6, 0xdc, 0x5b, 0x57, 0xb9, 0x26, 0x44, 0x7e, 0x15, 0xa1, 0x72, 0xad, 0x4b, 0xe1, 0x0b,
+	0x78, 0x92, 0x1d, 0x36, 0x8a, 0xad, 0x62, 0xdb, 0xea, 0x1e, 0xd3, 0xac, 0xee, 0x55, 0x7a, 0xe0,
+	0xac, 0x11, 0x7c, 0x05, 0x65, 0x29, 0x98, 0xd7, 0xd8, 0xd3, 0x68, 0x8b, 0x6e, 0x6a, 0x91, 0x9a,
+	0xd4, 0x53, 0xc1, 0x3c, 0x47, 0xd3, 0xf8, 0x16, 0x2a, 0x52, 0xb9, 0x2a, 0x92, 0x8d, 0x92, 0xd6,
+	0x91, 0xad, 0x3a, 0x4d, 0x3a, 0xa9, 0x02, 0xbb, 0x00, 0xeb, 0x89, 0x64, 0xa3, 0xdc, 0x2a, 0xb5,
+	0xad, 0x2e, 0xae, 0xf5, 0xef, 0xb2, 0x23, 0x27, 0x47, 0x11, 0x02, 0xf0, 0xb7, 0x07, 0xac, 0xc3,
+	0xfe, 0x6c, 0xa5, 0x98, 0xd4, 0xf3, 0x95, 0x1d, 0xf3, 0x43, 0x7e, 0x16, 0xe1, 0x30, 0x5f, 0x10,
+	0x07, 0xb0, 0x9f, 0x94, 0x64, 0x1a, 0x7b, 0xda, 0xa5, 0xbb, 0x7b, 0xcc, 0xfd, 0x30, 0xc7, 0x88,
+	0x49, 0x1f, 0xac, 0x5c, 0x14, 0x2d, 0x38, 0xf8, 0x34, 0x9c, 0x0c, 0x46, 0x93, 0xcb, 0x5a, 0x01,
+	0x8f, 0xa0, 0xda, 0xbb, 0xee, 0x8d, 0xc6, 0xbd, 0xfe, 0x78, 0x58, 0x2b, 0x22, 0x40, 0xe5, 0x7d,
+	0x6f, 0x34, 0x1e, 0x0e, 0x6a, 0x7b, 0x09, 0xf7, 0x79, 0xf2, 0x61, 0xf2, 0xf1, 0x66, 0x52, 0x2b,
+	0x91, 0x3a, 0xe0, 0xd8, 0x97, 0xca, 0xe4, 0x91, 0x0e, 0xfb, 0x11, 0x31, 0xa9, 0xc8, 0x15, 0x9c,
+	0xdc, 0x89, 0x4a, 0xc1, 0x43, 0xc9, 0xf0, 0x35, 0x1c, 0x98, 0x57, 0x93, 0xcc, 0x97, 0x98, 0x73,
+	0xba, 0xad, 0x71, 0x27, 0x83, 0xc9, 0x19, 0xd4, 0x2e, 0x59, 0x9a, 0x2d, 0x2d, 0x81, 0x08, 0xe5,
+	0xd0, 0x0d, 0x8c, 0x03, 0x55, 0x47, 0x7f, 0x93, 0x15, 0x60, 0x4f, 0x88, 0xc5, 0xea, 0x2e, 0xf9,
+	0x3f, 0x9e, 0x0d, 0x39, 0x87, 0x93, 0x01, 0x5b, 0x30, 0xc5, 0x76, 0x76, 0xd9, 0xfd, 0xbd, 0x07,
+	0x47, 0xa9, 0x9e, 0x2d, 0x63, 0xdf, 0x63, 0x78, 0x0b, 0x56, 0xce, 0x2e, 0x6c, 0x6f, 0xae, 0xf9,
+	0xd0, 0xe7, 0xe6, 0xf9, 0x3f, 0x90, 0xc6, 0x7b, 0x52, 0xc0, 0x29, 0x54, 0xd7, 0x2e, 0xe2, 0xd9,
+	0x66, 0xe5, 0x7d, 0x9b, 0x9b, 0x5b, 0x6f, 0x88, 0x14, 0xf0, 0x06, 0xac, 0x9c, 0xe5, 0x8f, 0xb5,
+	0xfe, 0xf0, 0x56, 0x76, 0x26, 0x9e, 0xc2, 0x61, 0xde, 0x50, 0x7c, 0x64, 0xd4, 0x0d, 0xa6, 0x37,
+	0x9f, 0x51, 0xb3, 0x77, 0x68, 0xb6, 0x77, 0xe8, 0x30, 0xd9, 0x3b, 0xa4, 0xd0, 0xbf, 0xf8, 0xf2,
+	0x66, 0xee, 0xab, 0x6f, 0xd1, 0x8c, 0x7a, 0x3c, 0xb0, 0xd3, 0x84, 0x66, 0x3d, 0xd1, 0x39, 0xb7,
+	0xef, 0xad, 0xb8, 0x0b, 0x91, 0x0f, 0xcc, 0x2a, 0x9a, 0x7b, 0xf9, 0x27, 0x00, 0x00, 0xff, 0xff,
+	0x23, 0x04, 0x12, 0x01, 0x0a, 0x05, 0x00, 0x00,
 }

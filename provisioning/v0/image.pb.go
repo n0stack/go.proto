@@ -26,9 +26,9 @@ var _ = math.Inf
 const _ = proto.ProtoPackageIsVersion2 // please upgrade the proto package
 
 type Image struct {
-	Metadata             *v0.Metadata `protobuf:"bytes,1,opt,name=metadata" json:"metadata,omitempty"`
-	Spec                 *ImageSpec   `protobuf:"bytes,2,opt,name=spec" json:"spec,omitempty"`
-	Status               *ImageStatus `protobuf:"bytes,3,opt,name=status" json:"status,omitempty"`
+	Metadata             *v0.Metadata `protobuf:"bytes,1,opt,name=metadata,proto3" json:"metadata,omitempty"`
+	Spec                 *ImageSpec   `protobuf:"bytes,2,opt,name=spec,proto3" json:"spec,omitempty"`
+	Status               *ImageStatus `protobuf:"bytes,3,opt,name=status,proto3" json:"status,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}     `json:"-"`
 	XXX_unrecognized     []byte       `json:"-"`
 	XXX_sizecache        int32        `json:"-"`
@@ -111,7 +111,7 @@ func (m *ImageSpec) XXX_DiscardUnknown() {
 var xxx_messageInfo_ImageSpec proto.InternalMessageInfo
 
 type ImageStatus struct {
-	Revisions            map[string]string `protobuf:"bytes,1,rep,name=revisions" json:"revisions,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	Revisions            map[string]string `protobuf:"bytes,1,rep,name=revisions,proto3" json:"revisions,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
 	XXX_NoUnkeyedLiteral struct{}          `json:"-"`
 	XXX_unrecognized     []byte            `json:"-"`
 	XXX_sizecache        int32             `json:"-"`
@@ -179,7 +179,7 @@ func (m *ListImagesRequest) XXX_DiscardUnknown() {
 var xxx_messageInfo_ListImagesRequest proto.InternalMessageInfo
 
 type ListImagesResponse struct {
-	Images               []*Image `protobuf:"bytes,1,rep,name=images" json:"images,omitempty"`
+	Images               []*Image `protobuf:"bytes,1,rep,name=images,proto3" json:"images,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -217,7 +217,7 @@ func (m *ListImagesResponse) GetImages() []*Image {
 }
 
 type GetImageRequest struct {
-	Name                 string   `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
+	Name                 string   `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -255,8 +255,8 @@ func (m *GetImageRequest) GetName() string {
 }
 
 type ApplyImageRequest struct {
-	Metadata             *v0.Metadata `protobuf:"bytes,1,opt,name=metadata" json:"metadata,omitempty"`
-	Spec                 *ImageSpec   `protobuf:"bytes,2,opt,name=spec" json:"spec,omitempty"`
+	Metadata             *v0.Metadata `protobuf:"bytes,1,opt,name=metadata,proto3" json:"metadata,omitempty"`
+	Spec                 *ImageSpec   `protobuf:"bytes,2,opt,name=spec,proto3" json:"spec,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}     `json:"-"`
 	XXX_unrecognized     []byte       `json:"-"`
 	XXX_sizecache        int32        `json:"-"`
@@ -301,7 +301,7 @@ func (m *ApplyImageRequest) GetSpec() *ImageSpec {
 }
 
 type DeleteImageRequest struct {
-	Name                 string   `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
+	Name                 string   `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
