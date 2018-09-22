@@ -7,7 +7,6 @@ import proto "github.com/golang/protobuf/proto"
 import fmt "fmt"
 import math "math"
 import empty "github.com/golang/protobuf/ptypes/empty"
-import v01 "github.com/n0stack/proto.go/resource/v0"
 import v0 "github.com/n0stack/proto.go/v0"
 
 import (
@@ -34,24 +33,27 @@ const (
 	// unknown state because failed to connect for scheduled node after RUNNING.
 	VolumeStatus_UNKNOWN   VolumeStatus_VolumeState = 1
 	VolumeStatus_AVAILABLE VolumeStatus_VolumeState = 2
+	VolumeStatus_IN_USE    VolumeStatus_VolumeState = 3
 )
 
 var VolumeStatus_VolumeState_name = map[int32]string{
 	0: "FAILED",
 	1: "UNKNOWN",
 	2: "AVAILABLE",
+	3: "IN_USE",
 }
 var VolumeStatus_VolumeState_value = map[string]int32{
 	"FAILED":    0,
 	"UNKNOWN":   1,
 	"AVAILABLE": 2,
+	"IN_USE":    3,
 }
 
 func (x VolumeStatus_VolumeState) String() string {
 	return proto.EnumName(VolumeStatus_VolumeState_name, int32(x))
 }
 func (VolumeStatus_VolumeState) EnumDescriptor() ([]byte, []int) {
-	return fileDescriptor_volume_e7cf64116ac5eabb, []int{2, 0}
+	return fileDescriptor_volume_206f90236a36991f, []int{2, 0}
 }
 
 type Volume struct {
@@ -67,7 +69,7 @@ func (m *Volume) Reset()         { *m = Volume{} }
 func (m *Volume) String() string { return proto.CompactTextString(m) }
 func (*Volume) ProtoMessage()    {}
 func (*Volume) Descriptor() ([]byte, []int) {
-	return fileDescriptor_volume_e7cf64116ac5eabb, []int{0}
+	return fileDescriptor_volume_206f90236a36991f, []int{0}
 }
 func (m *Volume) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_Volume.Unmarshal(m, b)
@@ -109,17 +111,18 @@ func (m *Volume) GetStatus() *VolumeStatus {
 }
 
 type VolumeSpec struct {
-	Storage              *v01.Storage `protobuf:"bytes,1,opt,name=storage" json:"storage,omitempty"`
-	XXX_NoUnkeyedLiteral struct{}     `json:"-"`
-	XXX_unrecognized     []byte       `json:"-"`
-	XXX_sizecache        int32        `json:"-"`
+	RequestBytes         uint64   `protobuf:"varint,1,opt,name=request_bytes,json=requestBytes" json:"request_bytes,omitempty"`
+	LimitBytes           uint64   `protobuf:"varint,2,opt,name=limit_bytes,json=limitBytes" json:"limit_bytes,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
 }
 
 func (m *VolumeSpec) Reset()         { *m = VolumeSpec{} }
 func (m *VolumeSpec) String() string { return proto.CompactTextString(m) }
 func (*VolumeSpec) ProtoMessage()    {}
 func (*VolumeSpec) Descriptor() ([]byte, []int) {
-	return fileDescriptor_volume_e7cf64116ac5eabb, []int{1}
+	return fileDescriptor_volume_206f90236a36991f, []int{1}
 }
 func (m *VolumeSpec) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_VolumeSpec.Unmarshal(m, b)
@@ -139,11 +142,18 @@ func (m *VolumeSpec) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_VolumeSpec proto.InternalMessageInfo
 
-func (m *VolumeSpec) GetStorage() *v01.Storage {
+func (m *VolumeSpec) GetRequestBytes() uint64 {
 	if m != nil {
-		return m.Storage
+		return m.RequestBytes
 	}
-	return nil
+	return 0
+}
+
+func (m *VolumeSpec) GetLimitBytes() uint64 {
+	if m != nil {
+		return m.LimitBytes
+	}
+	return 0
 }
 
 type VolumeStatus struct {
@@ -159,7 +169,7 @@ func (m *VolumeStatus) Reset()         { *m = VolumeStatus{} }
 func (m *VolumeStatus) String() string { return proto.CompactTextString(m) }
 func (*VolumeStatus) ProtoMessage()    {}
 func (*VolumeStatus) Descriptor() ([]byte, []int) {
-	return fileDescriptor_volume_e7cf64116ac5eabb, []int{2}
+	return fileDescriptor_volume_206f90236a36991f, []int{2}
 }
 func (m *VolumeStatus) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_VolumeStatus.Unmarshal(m, b)
@@ -200,6 +210,106 @@ func (m *VolumeStatus) GetStorageName() string {
 	return ""
 }
 
+type CreateEmptyVolumeRequest struct {
+	Metadata             *v0.Metadata `protobuf:"bytes,1,opt,name=metadata" json:"metadata,omitempty"`
+	Spec                 *VolumeSpec  `protobuf:"bytes,2,opt,name=spec" json:"spec,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}     `json:"-"`
+	XXX_unrecognized     []byte       `json:"-"`
+	XXX_sizecache        int32        `json:"-"`
+}
+
+func (m *CreateEmptyVolumeRequest) Reset()         { *m = CreateEmptyVolumeRequest{} }
+func (m *CreateEmptyVolumeRequest) String() string { return proto.CompactTextString(m) }
+func (*CreateEmptyVolumeRequest) ProtoMessage()    {}
+func (*CreateEmptyVolumeRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_volume_206f90236a36991f, []int{3}
+}
+func (m *CreateEmptyVolumeRequest) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_CreateEmptyVolumeRequest.Unmarshal(m, b)
+}
+func (m *CreateEmptyVolumeRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_CreateEmptyVolumeRequest.Marshal(b, m, deterministic)
+}
+func (dst *CreateEmptyVolumeRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_CreateEmptyVolumeRequest.Merge(dst, src)
+}
+func (m *CreateEmptyVolumeRequest) XXX_Size() int {
+	return xxx_messageInfo_CreateEmptyVolumeRequest.Size(m)
+}
+func (m *CreateEmptyVolumeRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_CreateEmptyVolumeRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_CreateEmptyVolumeRequest proto.InternalMessageInfo
+
+func (m *CreateEmptyVolumeRequest) GetMetadata() *v0.Metadata {
+	if m != nil {
+		return m.Metadata
+	}
+	return nil
+}
+
+func (m *CreateEmptyVolumeRequest) GetSpec() *VolumeSpec {
+	if m != nil {
+		return m.Spec
+	}
+	return nil
+}
+
+type CreateVolumeWithDownloadingRequest struct {
+	Metadata             *v0.Metadata `protobuf:"bytes,1,opt,name=metadata" json:"metadata,omitempty"`
+	Spec                 *VolumeSpec  `protobuf:"bytes,2,opt,name=spec" json:"spec,omitempty"`
+	SourceUrl            string       `protobuf:"bytes,3,opt,name=source_url,json=sourceUrl" json:"source_url,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}     `json:"-"`
+	XXX_unrecognized     []byte       `json:"-"`
+	XXX_sizecache        int32        `json:"-"`
+}
+
+func (m *CreateVolumeWithDownloadingRequest) Reset()         { *m = CreateVolumeWithDownloadingRequest{} }
+func (m *CreateVolumeWithDownloadingRequest) String() string { return proto.CompactTextString(m) }
+func (*CreateVolumeWithDownloadingRequest) ProtoMessage()    {}
+func (*CreateVolumeWithDownloadingRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_volume_206f90236a36991f, []int{4}
+}
+func (m *CreateVolumeWithDownloadingRequest) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_CreateVolumeWithDownloadingRequest.Unmarshal(m, b)
+}
+func (m *CreateVolumeWithDownloadingRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_CreateVolumeWithDownloadingRequest.Marshal(b, m, deterministic)
+}
+func (dst *CreateVolumeWithDownloadingRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_CreateVolumeWithDownloadingRequest.Merge(dst, src)
+}
+func (m *CreateVolumeWithDownloadingRequest) XXX_Size() int {
+	return xxx_messageInfo_CreateVolumeWithDownloadingRequest.Size(m)
+}
+func (m *CreateVolumeWithDownloadingRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_CreateVolumeWithDownloadingRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_CreateVolumeWithDownloadingRequest proto.InternalMessageInfo
+
+func (m *CreateVolumeWithDownloadingRequest) GetMetadata() *v0.Metadata {
+	if m != nil {
+		return m.Metadata
+	}
+	return nil
+}
+
+func (m *CreateVolumeWithDownloadingRequest) GetSpec() *VolumeSpec {
+	if m != nil {
+		return m.Spec
+	}
+	return nil
+}
+
+func (m *CreateVolumeWithDownloadingRequest) GetSourceUrl() string {
+	if m != nil {
+		return m.SourceUrl
+	}
+	return ""
+}
+
 type ListVolumesRequest struct {
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
@@ -210,7 +320,7 @@ func (m *ListVolumesRequest) Reset()         { *m = ListVolumesRequest{} }
 func (m *ListVolumesRequest) String() string { return proto.CompactTextString(m) }
 func (*ListVolumesRequest) ProtoMessage()    {}
 func (*ListVolumesRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_volume_e7cf64116ac5eabb, []int{3}
+	return fileDescriptor_volume_206f90236a36991f, []int{5}
 }
 func (m *ListVolumesRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ListVolumesRequest.Unmarshal(m, b)
@@ -241,7 +351,7 @@ func (m *ListVolumesResponse) Reset()         { *m = ListVolumesResponse{} }
 func (m *ListVolumesResponse) String() string { return proto.CompactTextString(m) }
 func (*ListVolumesResponse) ProtoMessage()    {}
 func (*ListVolumesResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_volume_e7cf64116ac5eabb, []int{4}
+	return fileDescriptor_volume_206f90236a36991f, []int{6}
 }
 func (m *ListVolumesResponse) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ListVolumesResponse.Unmarshal(m, b)
@@ -279,7 +389,7 @@ func (m *GetVolumeRequest) Reset()         { *m = GetVolumeRequest{} }
 func (m *GetVolumeRequest) String() string { return proto.CompactTextString(m) }
 func (*GetVolumeRequest) ProtoMessage()    {}
 func (*GetVolumeRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_volume_e7cf64116ac5eabb, []int{5}
+	return fileDescriptor_volume_206f90236a36991f, []int{7}
 }
 func (m *GetVolumeRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_GetVolumeRequest.Unmarshal(m, b)
@@ -306,7 +416,7 @@ func (m *GetVolumeRequest) GetName() string {
 	return ""
 }
 
-type ApplyVolumeRequest struct {
+type UpdateVolumeRequest struct {
 	Metadata             *v0.Metadata `protobuf:"bytes,1,opt,name=metadata" json:"metadata,omitempty"`
 	Spec                 *VolumeSpec  `protobuf:"bytes,2,opt,name=spec" json:"spec,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}     `json:"-"`
@@ -314,38 +424,38 @@ type ApplyVolumeRequest struct {
 	XXX_sizecache        int32        `json:"-"`
 }
 
-func (m *ApplyVolumeRequest) Reset()         { *m = ApplyVolumeRequest{} }
-func (m *ApplyVolumeRequest) String() string { return proto.CompactTextString(m) }
-func (*ApplyVolumeRequest) ProtoMessage()    {}
-func (*ApplyVolumeRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_volume_e7cf64116ac5eabb, []int{6}
+func (m *UpdateVolumeRequest) Reset()         { *m = UpdateVolumeRequest{} }
+func (m *UpdateVolumeRequest) String() string { return proto.CompactTextString(m) }
+func (*UpdateVolumeRequest) ProtoMessage()    {}
+func (*UpdateVolumeRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_volume_206f90236a36991f, []int{8}
 }
-func (m *ApplyVolumeRequest) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_ApplyVolumeRequest.Unmarshal(m, b)
+func (m *UpdateVolumeRequest) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_UpdateVolumeRequest.Unmarshal(m, b)
 }
-func (m *ApplyVolumeRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_ApplyVolumeRequest.Marshal(b, m, deterministic)
+func (m *UpdateVolumeRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_UpdateVolumeRequest.Marshal(b, m, deterministic)
 }
-func (dst *ApplyVolumeRequest) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_ApplyVolumeRequest.Merge(dst, src)
+func (dst *UpdateVolumeRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_UpdateVolumeRequest.Merge(dst, src)
 }
-func (m *ApplyVolumeRequest) XXX_Size() int {
-	return xxx_messageInfo_ApplyVolumeRequest.Size(m)
+func (m *UpdateVolumeRequest) XXX_Size() int {
+	return xxx_messageInfo_UpdateVolumeRequest.Size(m)
 }
-func (m *ApplyVolumeRequest) XXX_DiscardUnknown() {
-	xxx_messageInfo_ApplyVolumeRequest.DiscardUnknown(m)
+func (m *UpdateVolumeRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_UpdateVolumeRequest.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_ApplyVolumeRequest proto.InternalMessageInfo
+var xxx_messageInfo_UpdateVolumeRequest proto.InternalMessageInfo
 
-func (m *ApplyVolumeRequest) GetMetadata() *v0.Metadata {
+func (m *UpdateVolumeRequest) GetMetadata() *v0.Metadata {
 	if m != nil {
 		return m.Metadata
 	}
 	return nil
 }
 
-func (m *ApplyVolumeRequest) GetSpec() *VolumeSpec {
+func (m *UpdateVolumeRequest) GetSpec() *VolumeSpec {
 	if m != nil {
 		return m.Spec
 	}
@@ -363,7 +473,7 @@ func (m *DeleteVolumeRequest) Reset()         { *m = DeleteVolumeRequest{} }
 func (m *DeleteVolumeRequest) String() string { return proto.CompactTextString(m) }
 func (*DeleteVolumeRequest) ProtoMessage()    {}
 func (*DeleteVolumeRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_volume_e7cf64116ac5eabb, []int{7}
+	return fileDescriptor_volume_206f90236a36991f, []int{9}
 }
 func (m *DeleteVolumeRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_DeleteVolumeRequest.Unmarshal(m, b)
@@ -390,70 +500,17 @@ func (m *DeleteVolumeRequest) GetName() string {
 	return ""
 }
 
-type DownloadVolumeRequest struct {
-	Metadata             *v0.Metadata `protobuf:"bytes,1,opt,name=metadata" json:"metadata,omitempty"`
-	Spec                 *VolumeSpec  `protobuf:"bytes,2,opt,name=spec" json:"spec,omitempty"`
-	SourceUrl            string       `protobuf:"bytes,3,opt,name=source_url,json=sourceUrl" json:"source_url,omitempty"`
-	XXX_NoUnkeyedLiteral struct{}     `json:"-"`
-	XXX_unrecognized     []byte       `json:"-"`
-	XXX_sizecache        int32        `json:"-"`
-}
-
-func (m *DownloadVolumeRequest) Reset()         { *m = DownloadVolumeRequest{} }
-func (m *DownloadVolumeRequest) String() string { return proto.CompactTextString(m) }
-func (*DownloadVolumeRequest) ProtoMessage()    {}
-func (*DownloadVolumeRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_volume_e7cf64116ac5eabb, []int{8}
-}
-func (m *DownloadVolumeRequest) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_DownloadVolumeRequest.Unmarshal(m, b)
-}
-func (m *DownloadVolumeRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_DownloadVolumeRequest.Marshal(b, m, deterministic)
-}
-func (dst *DownloadVolumeRequest) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_DownloadVolumeRequest.Merge(dst, src)
-}
-func (m *DownloadVolumeRequest) XXX_Size() int {
-	return xxx_messageInfo_DownloadVolumeRequest.Size(m)
-}
-func (m *DownloadVolumeRequest) XXX_DiscardUnknown() {
-	xxx_messageInfo_DownloadVolumeRequest.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_DownloadVolumeRequest proto.InternalMessageInfo
-
-func (m *DownloadVolumeRequest) GetMetadata() *v0.Metadata {
-	if m != nil {
-		return m.Metadata
-	}
-	return nil
-}
-
-func (m *DownloadVolumeRequest) GetSpec() *VolumeSpec {
-	if m != nil {
-		return m.Spec
-	}
-	return nil
-}
-
-func (m *DownloadVolumeRequest) GetSourceUrl() string {
-	if m != nil {
-		return m.SourceUrl
-	}
-	return ""
-}
-
 func init() {
 	proto.RegisterType((*Volume)(nil), "n0stack.provisioning.Volume")
 	proto.RegisterType((*VolumeSpec)(nil), "n0stack.provisioning.VolumeSpec")
 	proto.RegisterType((*VolumeStatus)(nil), "n0stack.provisioning.VolumeStatus")
+	proto.RegisterType((*CreateEmptyVolumeRequest)(nil), "n0stack.provisioning.CreateEmptyVolumeRequest")
+	proto.RegisterType((*CreateVolumeWithDownloadingRequest)(nil), "n0stack.provisioning.CreateVolumeWithDownloadingRequest")
 	proto.RegisterType((*ListVolumesRequest)(nil), "n0stack.provisioning.ListVolumesRequest")
 	proto.RegisterType((*ListVolumesResponse)(nil), "n0stack.provisioning.ListVolumesResponse")
 	proto.RegisterType((*GetVolumeRequest)(nil), "n0stack.provisioning.GetVolumeRequest")
-	proto.RegisterType((*ApplyVolumeRequest)(nil), "n0stack.provisioning.ApplyVolumeRequest")
+	proto.RegisterType((*UpdateVolumeRequest)(nil), "n0stack.provisioning.UpdateVolumeRequest")
 	proto.RegisterType((*DeleteVolumeRequest)(nil), "n0stack.provisioning.DeleteVolumeRequest")
-	proto.RegisterType((*DownloadVolumeRequest)(nil), "n0stack.provisioning.DownloadVolumeRequest")
 	proto.RegisterEnum("n0stack.provisioning.VolumeStatus_VolumeState", VolumeStatus_VolumeState_name, VolumeStatus_VolumeState_value)
 }
 
@@ -468,11 +525,14 @@ const _ = grpc.SupportPackageIsVersion4
 // Client API for VolumeService service
 
 type VolumeServiceClient interface {
+	CreateEmptyVolume(ctx context.Context, in *CreateEmptyVolumeRequest, opts ...grpc.CallOption) (*Volume, error)
+	CreateVolumeWithDownloading(ctx context.Context, in *CreateVolumeWithDownloadingRequest, opts ...grpc.CallOption) (*Volume, error)
 	ListVolumes(ctx context.Context, in *ListVolumesRequest, opts ...grpc.CallOption) (*ListVolumesResponse, error)
 	GetVolume(ctx context.Context, in *GetVolumeRequest, opts ...grpc.CallOption) (*Volume, error)
-	ApplyVolume(ctx context.Context, in *ApplyVolumeRequest, opts ...grpc.CallOption) (*Volume, error)
+	UpdateVolume(ctx context.Context, in *UpdateVolumeRequest, opts ...grpc.CallOption) (*Volume, error)
 	DeleteVolume(ctx context.Context, in *DeleteVolumeRequest, opts ...grpc.CallOption) (*empty.Empty, error)
-	DownloadVolume(ctx context.Context, in *DownloadVolumeRequest, opts ...grpc.CallOption) (*Volume, error)
+	SetInuseVolume(ctx context.Context, in *empty.Empty, opts ...grpc.CallOption) (*Volume, error)
+	SetAvailableVolume(ctx context.Context, in *empty.Empty, opts ...grpc.CallOption) (*Volume, error)
 }
 
 type volumeServiceClient struct {
@@ -481,6 +541,24 @@ type volumeServiceClient struct {
 
 func NewVolumeServiceClient(cc *grpc.ClientConn) VolumeServiceClient {
 	return &volumeServiceClient{cc}
+}
+
+func (c *volumeServiceClient) CreateEmptyVolume(ctx context.Context, in *CreateEmptyVolumeRequest, opts ...grpc.CallOption) (*Volume, error) {
+	out := new(Volume)
+	err := grpc.Invoke(ctx, "/n0stack.provisioning.VolumeService/CreateEmptyVolume", in, out, c.cc, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *volumeServiceClient) CreateVolumeWithDownloading(ctx context.Context, in *CreateVolumeWithDownloadingRequest, opts ...grpc.CallOption) (*Volume, error) {
+	out := new(Volume)
+	err := grpc.Invoke(ctx, "/n0stack.provisioning.VolumeService/CreateVolumeWithDownloading", in, out, c.cc, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
 }
 
 func (c *volumeServiceClient) ListVolumes(ctx context.Context, in *ListVolumesRequest, opts ...grpc.CallOption) (*ListVolumesResponse, error) {
@@ -501,9 +579,9 @@ func (c *volumeServiceClient) GetVolume(ctx context.Context, in *GetVolumeReques
 	return out, nil
 }
 
-func (c *volumeServiceClient) ApplyVolume(ctx context.Context, in *ApplyVolumeRequest, opts ...grpc.CallOption) (*Volume, error) {
+func (c *volumeServiceClient) UpdateVolume(ctx context.Context, in *UpdateVolumeRequest, opts ...grpc.CallOption) (*Volume, error) {
 	out := new(Volume)
-	err := grpc.Invoke(ctx, "/n0stack.provisioning.VolumeService/ApplyVolume", in, out, c.cc, opts...)
+	err := grpc.Invoke(ctx, "/n0stack.provisioning.VolumeService/UpdateVolume", in, out, c.cc, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -519,9 +597,18 @@ func (c *volumeServiceClient) DeleteVolume(ctx context.Context, in *DeleteVolume
 	return out, nil
 }
 
-func (c *volumeServiceClient) DownloadVolume(ctx context.Context, in *DownloadVolumeRequest, opts ...grpc.CallOption) (*Volume, error) {
+func (c *volumeServiceClient) SetInuseVolume(ctx context.Context, in *empty.Empty, opts ...grpc.CallOption) (*Volume, error) {
 	out := new(Volume)
-	err := grpc.Invoke(ctx, "/n0stack.provisioning.VolumeService/DownloadVolume", in, out, c.cc, opts...)
+	err := grpc.Invoke(ctx, "/n0stack.provisioning.VolumeService/SetInuseVolume", in, out, c.cc, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *volumeServiceClient) SetAvailableVolume(ctx context.Context, in *empty.Empty, opts ...grpc.CallOption) (*Volume, error) {
+	out := new(Volume)
+	err := grpc.Invoke(ctx, "/n0stack.provisioning.VolumeService/SetAvailableVolume", in, out, c.cc, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -531,15 +618,54 @@ func (c *volumeServiceClient) DownloadVolume(ctx context.Context, in *DownloadVo
 // Server API for VolumeService service
 
 type VolumeServiceServer interface {
+	CreateEmptyVolume(context.Context, *CreateEmptyVolumeRequest) (*Volume, error)
+	CreateVolumeWithDownloading(context.Context, *CreateVolumeWithDownloadingRequest) (*Volume, error)
 	ListVolumes(context.Context, *ListVolumesRequest) (*ListVolumesResponse, error)
 	GetVolume(context.Context, *GetVolumeRequest) (*Volume, error)
-	ApplyVolume(context.Context, *ApplyVolumeRequest) (*Volume, error)
+	UpdateVolume(context.Context, *UpdateVolumeRequest) (*Volume, error)
 	DeleteVolume(context.Context, *DeleteVolumeRequest) (*empty.Empty, error)
-	DownloadVolume(context.Context, *DownloadVolumeRequest) (*Volume, error)
+	SetInuseVolume(context.Context, *empty.Empty) (*Volume, error)
+	SetAvailableVolume(context.Context, *empty.Empty) (*Volume, error)
 }
 
 func RegisterVolumeServiceServer(s *grpc.Server, srv VolumeServiceServer) {
 	s.RegisterService(&_VolumeService_serviceDesc, srv)
+}
+
+func _VolumeService_CreateEmptyVolume_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateEmptyVolumeRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(VolumeServiceServer).CreateEmptyVolume(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/n0stack.provisioning.VolumeService/CreateEmptyVolume",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(VolumeServiceServer).CreateEmptyVolume(ctx, req.(*CreateEmptyVolumeRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _VolumeService_CreateVolumeWithDownloading_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateVolumeWithDownloadingRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(VolumeServiceServer).CreateVolumeWithDownloading(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/n0stack.provisioning.VolumeService/CreateVolumeWithDownloading",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(VolumeServiceServer).CreateVolumeWithDownloading(ctx, req.(*CreateVolumeWithDownloadingRequest))
+	}
+	return interceptor(ctx, in, info, handler)
 }
 
 func _VolumeService_ListVolumes_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
@@ -578,20 +704,20 @@ func _VolumeService_GetVolume_Handler(srv interface{}, ctx context.Context, dec 
 	return interceptor(ctx, in, info, handler)
 }
 
-func _VolumeService_ApplyVolume_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ApplyVolumeRequest)
+func _VolumeService_UpdateVolume_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateVolumeRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(VolumeServiceServer).ApplyVolume(ctx, in)
+		return srv.(VolumeServiceServer).UpdateVolume(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/n0stack.provisioning.VolumeService/ApplyVolume",
+		FullMethod: "/n0stack.provisioning.VolumeService/UpdateVolume",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(VolumeServiceServer).ApplyVolume(ctx, req.(*ApplyVolumeRequest))
+		return srv.(VolumeServiceServer).UpdateVolume(ctx, req.(*UpdateVolumeRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -614,20 +740,38 @@ func _VolumeService_DeleteVolume_Handler(srv interface{}, ctx context.Context, d
 	return interceptor(ctx, in, info, handler)
 }
 
-func _VolumeService_DownloadVolume_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(DownloadVolumeRequest)
+func _VolumeService_SetInuseVolume_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(empty.Empty)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(VolumeServiceServer).DownloadVolume(ctx, in)
+		return srv.(VolumeServiceServer).SetInuseVolume(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/n0stack.provisioning.VolumeService/DownloadVolume",
+		FullMethod: "/n0stack.provisioning.VolumeService/SetInuseVolume",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(VolumeServiceServer).DownloadVolume(ctx, req.(*DownloadVolumeRequest))
+		return srv.(VolumeServiceServer).SetInuseVolume(ctx, req.(*empty.Empty))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _VolumeService_SetAvailableVolume_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(empty.Empty)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(VolumeServiceServer).SetAvailableVolume(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/n0stack.provisioning.VolumeService/SetAvailableVolume",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(VolumeServiceServer).SetAvailableVolume(ctx, req.(*empty.Empty))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -637,6 +781,14 @@ var _VolumeService_serviceDesc = grpc.ServiceDesc{
 	HandlerType: (*VolumeServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
+			MethodName: "CreateEmptyVolume",
+			Handler:    _VolumeService_CreateEmptyVolume_Handler,
+		},
+		{
+			MethodName: "CreateVolumeWithDownloading",
+			Handler:    _VolumeService_CreateVolumeWithDownloading_Handler,
+		},
+		{
 			MethodName: "ListVolumes",
 			Handler:    _VolumeService_ListVolumes_Handler,
 		},
@@ -645,16 +797,20 @@ var _VolumeService_serviceDesc = grpc.ServiceDesc{
 			Handler:    _VolumeService_GetVolume_Handler,
 		},
 		{
-			MethodName: "ApplyVolume",
-			Handler:    _VolumeService_ApplyVolume_Handler,
+			MethodName: "UpdateVolume",
+			Handler:    _VolumeService_UpdateVolume_Handler,
 		},
 		{
 			MethodName: "DeleteVolume",
 			Handler:    _VolumeService_DeleteVolume_Handler,
 		},
 		{
-			MethodName: "DownloadVolume",
-			Handler:    _VolumeService_DownloadVolume_Handler,
+			MethodName: "SetInuseVolume",
+			Handler:    _VolumeService_SetInuseVolume_Handler,
+		},
+		{
+			MethodName: "SetAvailableVolume",
+			Handler:    _VolumeService_SetAvailableVolume_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
@@ -662,46 +818,51 @@ var _VolumeService_serviceDesc = grpc.ServiceDesc{
 }
 
 func init() {
-	proto.RegisterFile("provisioning/v0/volume.proto", fileDescriptor_volume_e7cf64116ac5eabb)
+	proto.RegisterFile("provisioning/v0/volume.proto", fileDescriptor_volume_206f90236a36991f)
 }
 
-var fileDescriptor_volume_e7cf64116ac5eabb = []byte{
-	// 583 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xbc, 0x55, 0xd1, 0x4e, 0x13, 0x41,
-	0x14, 0xed, 0x52, 0x2c, 0xf4, 0x2e, 0x90, 0x72, 0x41, 0x53, 0x0a, 0x26, 0x38, 0x0f, 0x04, 0x62,
-	0x9c, 0x25, 0x45, 0x4d, 0x94, 0xa7, 0x92, 0xa2, 0x21, 0x96, 0x9a, 0x6c, 0x03, 0x24, 0x26, 0x86,
-	0x2c, 0xdb, 0x71, 0xdd, 0xb8, 0xbb, 0xb3, 0xee, 0xcc, 0xd6, 0xf0, 0x2d, 0x7e, 0x81, 0xdf, 0xe2,
-	0x07, 0xf8, 0x3b, 0xa6, 0x33, 0xb3, 0xb8, 0x40, 0xa1, 0x3e, 0xf1, 0xd6, 0xde, 0x39, 0xe7, 0xdc,
-	0x73, 0x67, 0x4e, 0xee, 0xc2, 0x46, 0x9a, 0xf1, 0x51, 0x28, 0x42, 0x9e, 0x84, 0x49, 0xe0, 0x8c,
-	0x76, 0x9d, 0x11, 0x8f, 0xf2, 0x98, 0xd1, 0x34, 0xe3, 0x92, 0xe3, 0x6a, 0xb2, 0x2b, 0xa4, 0xe7,
-	0x7f, 0xa3, 0x65, 0x54, 0x6b, 0x3d, 0xe0, 0x3c, 0x88, 0x98, 0xa3, 0x30, 0x17, 0xf9, 0x17, 0x87,
-	0xc5, 0xa9, 0xbc, 0xd4, 0x94, 0xd6, 0x5a, 0xc6, 0x04, 0xcf, 0x33, 0x9f, 0x8d, 0xc5, 0x84, 0xe4,
-	0x99, 0x17, 0x18, 0xb5, 0xd6, 0xf2, 0x68, 0xd7, 0x89, 0x99, 0xf4, 0x86, 0x9e, 0xf4, 0x74, 0x89,
-	0xfc, 0xb2, 0xa0, 0x76, 0xaa, 0x3a, 0xe2, 0x0b, 0x98, 0x2f, 0x0e, 0x9b, 0xd6, 0xa6, 0xb5, 0x6d,
-	0xb7, 0x97, 0x69, 0xd1, 0xfe, 0xd8, 0x1c, 0xb8, 0x57, 0x10, 0x7c, 0x09, 0xb3, 0x22, 0x65, 0x7e,
-	0x73, 0x46, 0x41, 0x37, 0xe9, 0x24, 0xa7, 0x54, 0x4b, 0x0f, 0x52, 0xe6, 0xbb, 0x0a, 0x8d, 0x6f,
-	0xa1, 0x26, 0xa4, 0x27, 0x73, 0xd1, 0xac, 0x2a, 0x1e, 0xb9, 0x97, 0xa7, 0x90, 0xae, 0x61, 0x90,
-	0x0e, 0xc0, 0x3f, 0x3d, 0xdc, 0x83, 0x39, 0x33, 0x9d, 0x71, 0xbb, 0x76, 0x25, 0x55, 0xdc, 0x00,
-	0x1d, 0x68, 0x80, 0x5b, 0x20, 0xc9, 0x6f, 0x0b, 0x16, 0xca, 0xda, 0xd8, 0x85, 0x47, 0x63, 0x75,
-	0xad, 0xb1, 0xd4, 0xa6, 0xd3, 0xed, 0x94, 0xfe, 0x30, 0x57, 0x93, 0x71, 0x1d, 0xea, 0x09, 0x1f,
-	0xb2, 0xf3, 0xc4, 0x8b, 0x99, 0xba, 0x90, 0xba, 0x3b, 0x3f, 0x2e, 0xf4, 0xbd, 0x98, 0xe1, 0x33,
-	0x58, 0x30, 0xed, 0xf5, 0x79, 0x55, 0x9d, 0xdb, 0xa6, 0x36, 0x86, 0x90, 0x57, 0x60, 0x97, 0x54,
-	0x11, 0xa0, 0xf6, 0xae, 0x73, 0xd4, 0x3b, 0xec, 0x36, 0x2a, 0x68, 0xc3, 0xdc, 0x49, 0xff, 0x43,
-	0xff, 0xe3, 0x59, 0xbf, 0x61, 0xe1, 0x22, 0xd4, 0x3b, 0xa7, 0x9d, 0xa3, 0x5e, 0xe7, 0xa0, 0x77,
-	0xd8, 0x98, 0x21, 0xab, 0x80, 0xbd, 0x50, 0x48, 0x4d, 0x15, 0x2e, 0xfb, 0x9e, 0x33, 0x21, 0xc9,
-	0x31, 0xac, 0x5c, 0xab, 0x8a, 0x94, 0x27, 0x82, 0xe1, 0x6b, 0x98, 0xd3, 0xd1, 0x12, 0x4d, 0x6b,
-	0xb3, 0xba, 0x6d, 0xb7, 0x37, 0xee, 0x9b, 0xd5, 0x2d, 0xc0, 0x64, 0x0b, 0x1a, 0xef, 0x99, 0x51,
-	0x33, 0x2d, 0x10, 0x61, 0x56, 0x8d, 0x62, 0xa9, 0x51, 0xd4, 0x6f, 0x72, 0x09, 0xd8, 0x49, 0xd3,
-	0xe8, 0xf2, 0x3a, 0xf2, 0x21, 0x42, 0x45, 0x76, 0x60, 0xa5, 0xcb, 0x22, 0x26, 0xd9, 0x74, 0x97,
-	0x3f, 0x2d, 0x78, 0xdc, 0xe5, 0x3f, 0x92, 0x88, 0x7b, 0xc3, 0x87, 0x77, 0x8a, 0x4f, 0x01, 0x74,
-	0x34, 0xcf, 0xf3, 0x2c, 0x32, 0x49, 0xa8, 0xeb, 0xca, 0x49, 0x16, 0xb5, 0xff, 0x54, 0x61, 0xd1,
-	0x70, 0x58, 0x36, 0x0a, 0x7d, 0x86, 0x43, 0xb0, 0x4b, 0x8f, 0x89, 0xdb, 0x93, 0xfb, 0xdc, 0x4e,
-	0x41, 0x6b, 0xe7, 0x3f, 0x90, 0x3a, 0x19, 0xa4, 0x82, 0x03, 0xa8, 0x5f, 0xbd, 0x31, 0x6e, 0x4d,
-	0x66, 0xde, 0x0c, 0x41, 0xeb, 0xde, 0xfc, 0x90, 0x0a, 0x9e, 0x81, 0x5d, 0x0a, 0xc4, 0x5d, 0xd6,
-	0x6f, 0x67, 0x66, 0xaa, 0xf0, 0x00, 0x16, 0xca, 0xcf, 0x8d, 0x77, 0x8c, 0x3a, 0x21, 0x12, 0xad,
-	0x27, 0x54, 0xaf, 0x4e, 0x5a, 0xac, 0x4e, 0x7a, 0x38, 0x5e, 0x9d, 0xa4, 0x82, 0x9f, 0x61, 0xe9,
-	0x7a, 0x2e, 0xf0, 0xf9, 0x1d, 0xb2, 0x93, 0xd2, 0x33, 0xcd, 0xf3, 0xc1, 0xfe, 0xa7, 0x37, 0x41,
-	0x28, 0xbf, 0xe6, 0x17, 0xd4, 0xe7, 0xb1, 0x63, 0xb0, 0x7a, 0x81, 0xd3, 0x80, 0x3b, 0x37, 0x3e,
-	0x02, 0xfb, 0x69, 0xb9, 0x70, 0x51, 0x53, 0xb8, 0xbd, 0xbf, 0x01, 0x00, 0x00, 0xff, 0xff, 0xc0,
-	0x42, 0x41, 0xb3, 0x2c, 0x06, 0x00, 0x00,
+var fileDescriptor_volume_206f90236a36991f = []byte{
+	// 662 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xbc, 0x95, 0xdf, 0x6e, 0xd3, 0x4c,
+	0x10, 0xc5, 0x93, 0xa6, 0x4d, 0x9b, 0x71, 0x5a, 0xa5, 0xd3, 0xea, 0x53, 0x94, 0xf6, 0x13, 0x65,
+	0x91, 0xaa, 0xf6, 0x02, 0xbb, 0x0a, 0x08, 0x01, 0xbd, 0x4a, 0x49, 0x80, 0x88, 0x34, 0x48, 0x8e,
+	0xd2, 0x0a, 0x6e, 0x22, 0xc7, 0x59, 0x5c, 0x0b, 0xdb, 0x6b, 0xbc, 0xeb, 0x54, 0xe5, 0x86, 0xd7,
+	0x81, 0x27, 0xe2, 0x35, 0x78, 0x04, 0xe4, 0x5d, 0xa7, 0xb8, 0x6d, 0xfe, 0x20, 0x21, 0xf5, 0x2e,
+	0x99, 0x39, 0x73, 0xe6, 0x68, 0xf7, 0x67, 0x2d, 0xec, 0x86, 0x11, 0x1b, 0xbb, 0xdc, 0x65, 0x81,
+	0x1b, 0x38, 0xc6, 0xf8, 0xc8, 0x18, 0x33, 0x2f, 0xf6, 0xa9, 0x1e, 0x46, 0x4c, 0x30, 0xdc, 0x0e,
+	0x8e, 0xb8, 0xb0, 0xec, 0xcf, 0x7a, 0x56, 0x55, 0xdb, 0x71, 0x18, 0x73, 0x3c, 0x6a, 0x48, 0xcd,
+	0x30, 0xfe, 0x64, 0x50, 0x3f, 0x14, 0x57, 0x6a, 0xa4, 0xb6, 0x39, 0x3e, 0x32, 0x7c, 0x2a, 0xac,
+	0x91, 0x25, 0x2c, 0x55, 0x22, 0x3f, 0xf2, 0x50, 0x3c, 0x93, 0xb6, 0xf8, 0x18, 0xd6, 0x26, 0xcd,
+	0x6a, 0x7e, 0x2f, 0x7f, 0xa0, 0xd5, 0x37, 0xf5, 0xc9, 0x8e, 0xd3, 0xb4, 0x61, 0x5e, 0x4b, 0xf0,
+	0x29, 0x2c, 0xf3, 0x90, 0xda, 0xd5, 0x25, 0x29, 0xdd, 0xd3, 0xa7, 0xc5, 0xd1, 0x95, 0x75, 0x2f,
+	0xa4, 0xb6, 0x29, 0xd5, 0xf8, 0x12, 0x8a, 0x5c, 0x58, 0x22, 0xe6, 0xd5, 0x82, 0x9c, 0x23, 0x73,
+	0xe7, 0xa4, 0xd2, 0x4c, 0x27, 0x88, 0x09, 0xf0, 0xc7, 0x0f, 0x1f, 0xc1, 0x7a, 0x44, 0xbf, 0xc4,
+	0x94, 0x8b, 0xc1, 0xf0, 0x4a, 0x50, 0x2e, 0x33, 0x2f, 0x9b, 0xe5, 0xb4, 0x78, 0x92, 0xd4, 0xf0,
+	0x01, 0x68, 0x9e, 0xeb, 0xbb, 0x13, 0xc9, 0x92, 0x94, 0x80, 0x2c, 0x49, 0x01, 0xf9, 0x99, 0x87,
+	0x72, 0x76, 0x19, 0x36, 0x61, 0x25, 0x59, 0x47, 0xa5, 0xdd, 0x46, 0x5d, 0x5f, 0x9c, 0x2f, 0xf3,
+	0x87, 0x9a, 0x6a, 0x18, 0x77, 0xa0, 0x14, 0xb0, 0x11, 0x1d, 0x04, 0x96, 0x4f, 0xe5, 0xd6, 0x92,
+	0xb9, 0x96, 0x14, 0xba, 0x96, 0x4f, 0xf1, 0x21, 0x94, 0xb9, 0x60, 0x91, 0xe5, 0xa4, 0xfd, 0x82,
+	0xec, 0x6b, 0x69, 0x2d, 0x91, 0x90, 0x06, 0x68, 0x19, 0x57, 0x04, 0x28, 0xbe, 0x6e, 0xb4, 0x3b,
+	0xad, 0x66, 0x25, 0x87, 0x1a, 0xac, 0xf6, 0xbb, 0xef, 0xba, 0xef, 0xcf, 0xbb, 0x95, 0x3c, 0xae,
+	0x43, 0xa9, 0x71, 0xd6, 0x68, 0x77, 0x1a, 0x27, 0x9d, 0x56, 0x65, 0x29, 0xd1, 0xb5, 0xbb, 0x83,
+	0x7e, 0xaf, 0x55, 0x29, 0x90, 0x6f, 0x50, 0x7d, 0x15, 0x51, 0x4b, 0xd0, 0x56, 0x42, 0x80, 0x72,
+	0x33, 0xd5, 0xd9, 0xdc, 0xcb, 0x55, 0x93, 0xef, 0x79, 0x20, 0x2a, 0x81, 0x6a, 0x9d, 0xbb, 0xe2,
+	0xa2, 0xc9, 0x2e, 0x03, 0x8f, 0x59, 0x23, 0x37, 0x70, 0xee, 0x33, 0x0b, 0xfe, 0x0f, 0xc0, 0x59,
+	0x1c, 0xd9, 0x74, 0x10, 0x47, 0x5e, 0x7a, 0xe0, 0x25, 0x55, 0xe9, 0x47, 0x1e, 0xd9, 0x06, 0xec,
+	0xb8, 0x5c, 0xa8, 0x31, 0x9e, 0x26, 0x23, 0xa7, 0xb0, 0x75, 0xa3, 0xca, 0x43, 0x16, 0x70, 0x8a,
+	0xcf, 0x60, 0x55, 0x7d, 0x88, 0x09, 0x72, 0x85, 0x03, 0xad, 0xbe, 0x3b, 0x2f, 0x84, 0x39, 0x11,
+	0x93, 0x7d, 0xa8, 0xbc, 0xa1, 0xe2, 0xe6, 0x45, 0x20, 0x2c, 0x4b, 0x04, 0xf2, 0x32, 0x91, 0xfc,
+	0x4d, 0xbe, 0xc2, 0x56, 0x3f, 0x1c, 0x5d, 0x1f, 0xdb, 0xbd, 0xde, 0xd9, 0x21, 0x6c, 0x35, 0xa9,
+	0x47, 0x6f, 0xef, 0x9e, 0x12, 0xb3, 0xfe, 0x6b, 0x05, 0xd6, 0xd3, 0x79, 0x1a, 0x8d, 0x5d, 0x9b,
+	0xa2, 0x0d, 0x9b, 0x77, 0x88, 0xc3, 0x19, 0x1f, 0xd0, 0x2c, 0x34, 0x6b, 0x73, 0x0f, 0x93, 0xe4,
+	0xf0, 0x12, 0x76, 0xe6, 0x40, 0x85, 0xcf, 0xe7, 0xad, 0x9b, 0xc7, 0xe1, 0xc2, 0xc5, 0x23, 0xd0,
+	0x32, 0x34, 0xe0, 0xc1, 0x74, 0xf9, 0x5d, 0x8c, 0x6a, 0x87, 0x7f, 0xa1, 0x54, 0x68, 0x91, 0x1c,
+	0xf6, 0xa0, 0x74, 0x0d, 0x09, 0xee, 0x4f, 0x9f, 0xbc, 0x4d, 0xd1, 0xc2, 0xe8, 0x1f, 0xa0, 0x9c,
+	0x25, 0x0a, 0x67, 0x24, 0x9a, 0x42, 0xdd, 0x42, 0xeb, 0x1e, 0x94, 0xb3, 0xc0, 0xcc, 0xb2, 0x9e,
+	0x02, 0x55, 0xed, 0x3f, 0x5d, 0xbd, 0x55, 0xfa, 0xe4, 0xad, 0xd2, 0x25, 0x0e, 0x24, 0x87, 0x6f,
+	0x61, 0xa3, 0x47, 0x45, 0x3b, 0x88, 0xf9, 0xc4, 0x76, 0x86, 0x76, 0x61, 0xbc, 0x0e, 0x60, 0x8f,
+	0x8a, 0xc6, 0xd8, 0x72, 0x3d, 0x6b, 0xe8, 0xfd, 0xa3, 0xdb, 0xc9, 0xf1, 0xc7, 0x17, 0x8e, 0x2b,
+	0x2e, 0xe2, 0xa1, 0x6e, 0x33, 0xdf, 0x48, 0xb5, 0xea, 0xa9, 0xd5, 0x1d, 0x66, 0xdc, 0x7a, 0xae,
+	0x8f, 0xc3, 0x6c, 0x61, 0x58, 0x94, 0xba, 0x27, 0xbf, 0x03, 0x00, 0x00, 0xff, 0xff, 0x77, 0xaf,
+	0x07, 0xd4, 0xd6, 0x07, 0x00, 0x00,
 }
