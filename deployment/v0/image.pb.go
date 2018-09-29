@@ -8,6 +8,7 @@ import fmt "fmt"
 import math "math"
 import empty "github.com/golang/protobuf/ptypes/empty"
 import timestamp "github.com/golang/protobuf/ptypes/timestamp"
+import v01 "github.com/n0stack/proto.go/provisioning/v0"
 import v0 "github.com/n0stack/proto.go/v0"
 
 import (
@@ -39,7 +40,7 @@ func (m *Image) Reset()         { *m = Image{} }
 func (m *Image) String() string { return proto.CompactTextString(m) }
 func (*Image) ProtoMessage()    {}
 func (*Image) Descriptor() ([]byte, []int) {
-	return fileDescriptor_image_b24f33cd11945124, []int{0}
+	return fileDescriptor_image_82d00ae4921b3ba2, []int{0}
 }
 func (m *Image) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_Image.Unmarshal(m, b)
@@ -74,18 +75,18 @@ func (m *Image) GetStatus() *ImageStatus {
 }
 
 type ImageStatus struct {
-	RegisteredBlockStorageNames map[string]*timestamp.Timestamp `protobuf:"bytes,1,rep,name=registered_block_storage_names,json=registeredBlockStorageNames" json:"registered_block_storage_names,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
-	Tags                        map[string]string               `protobuf:"bytes,2,rep,name=tags" json:"tags,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
-	XXX_NoUnkeyedLiteral        struct{}                        `json:"-"`
-	XXX_unrecognized            []byte                          `json:"-"`
-	XXX_sizecache               int32                           `json:"-"`
+	RegisteredBlockStorages []*ImageStatus_RegisteredBlockStorage `protobuf:"bytes,1,rep,name=registered_block_storages,json=registeredBlockStorages" json:"registered_block_storages,omitempty"`
+	Tags                    map[string]string                     `protobuf:"bytes,2,rep,name=tags" json:"tags,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	XXX_NoUnkeyedLiteral    struct{}                              `json:"-"`
+	XXX_unrecognized        []byte                                `json:"-"`
+	XXX_sizecache           int32                                 `json:"-"`
 }
 
 func (m *ImageStatus) Reset()         { *m = ImageStatus{} }
 func (m *ImageStatus) String() string { return proto.CompactTextString(m) }
 func (*ImageStatus) ProtoMessage()    {}
 func (*ImageStatus) Descriptor() ([]byte, []int) {
-	return fileDescriptor_image_b24f33cd11945124, []int{1}
+	return fileDescriptor_image_82d00ae4921b3ba2, []int{1}
 }
 func (m *ImageStatus) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ImageStatus.Unmarshal(m, b)
@@ -105,9 +106,9 @@ func (m *ImageStatus) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_ImageStatus proto.InternalMessageInfo
 
-func (m *ImageStatus) GetRegisteredBlockStorageNames() map[string]*timestamp.Timestamp {
+func (m *ImageStatus) GetRegisteredBlockStorages() []*ImageStatus_RegisteredBlockStorage {
 	if m != nil {
-		return m.RegisteredBlockStorageNames
+		return m.RegisteredBlockStorages
 	}
 	return nil
 }
@@ -115,6 +116,52 @@ func (m *ImageStatus) GetRegisteredBlockStorageNames() map[string]*timestamp.Tim
 func (m *ImageStatus) GetTags() map[string]string {
 	if m != nil {
 		return m.Tags
+	}
+	return nil
+}
+
+type ImageStatus_RegisteredBlockStorage struct {
+	BlockStorageName     string               `protobuf:"bytes,1,opt,name=block_storage_name,json=blockStorageName" json:"block_storage_name,omitempty"`
+	RegisteredAt         *timestamp.Timestamp `protobuf:"bytes,2,opt,name=registered_at,json=registeredAt" json:"registered_at,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}             `json:"-"`
+	XXX_unrecognized     []byte               `json:"-"`
+	XXX_sizecache        int32                `json:"-"`
+}
+
+func (m *ImageStatus_RegisteredBlockStorage) Reset()         { *m = ImageStatus_RegisteredBlockStorage{} }
+func (m *ImageStatus_RegisteredBlockStorage) String() string { return proto.CompactTextString(m) }
+func (*ImageStatus_RegisteredBlockStorage) ProtoMessage()    {}
+func (*ImageStatus_RegisteredBlockStorage) Descriptor() ([]byte, []int) {
+	return fileDescriptor_image_82d00ae4921b3ba2, []int{1, 0}
+}
+func (m *ImageStatus_RegisteredBlockStorage) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_ImageStatus_RegisteredBlockStorage.Unmarshal(m, b)
+}
+func (m *ImageStatus_RegisteredBlockStorage) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_ImageStatus_RegisteredBlockStorage.Marshal(b, m, deterministic)
+}
+func (dst *ImageStatus_RegisteredBlockStorage) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ImageStatus_RegisteredBlockStorage.Merge(dst, src)
+}
+func (m *ImageStatus_RegisteredBlockStorage) XXX_Size() int {
+	return xxx_messageInfo_ImageStatus_RegisteredBlockStorage.Size(m)
+}
+func (m *ImageStatus_RegisteredBlockStorage) XXX_DiscardUnknown() {
+	xxx_messageInfo_ImageStatus_RegisteredBlockStorage.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_ImageStatus_RegisteredBlockStorage proto.InternalMessageInfo
+
+func (m *ImageStatus_RegisteredBlockStorage) GetBlockStorageName() string {
+	if m != nil {
+		return m.BlockStorageName
+	}
+	return ""
+}
+
+func (m *ImageStatus_RegisteredBlockStorage) GetRegisteredAt() *timestamp.Timestamp {
+	if m != nil {
+		return m.RegisteredAt
 	}
 	return nil
 }
@@ -129,7 +176,7 @@ func (m *ListImagesRequest) Reset()         { *m = ListImagesRequest{} }
 func (m *ListImagesRequest) String() string { return proto.CompactTextString(m) }
 func (*ListImagesRequest) ProtoMessage()    {}
 func (*ListImagesRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_image_b24f33cd11945124, []int{2}
+	return fileDescriptor_image_82d00ae4921b3ba2, []int{2}
 }
 func (m *ListImagesRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ListImagesRequest.Unmarshal(m, b)
@@ -160,7 +207,7 @@ func (m *ListImagesResponse) Reset()         { *m = ListImagesResponse{} }
 func (m *ListImagesResponse) String() string { return proto.CompactTextString(m) }
 func (*ListImagesResponse) ProtoMessage()    {}
 func (*ListImagesResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_image_b24f33cd11945124, []int{3}
+	return fileDescriptor_image_82d00ae4921b3ba2, []int{3}
 }
 func (m *ListImagesResponse) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ListImagesResponse.Unmarshal(m, b)
@@ -198,7 +245,7 @@ func (m *GetImageRequest) Reset()         { *m = GetImageRequest{} }
 func (m *GetImageRequest) String() string { return proto.CompactTextString(m) }
 func (*GetImageRequest) ProtoMessage()    {}
 func (*GetImageRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_image_b24f33cd11945124, []int{4}
+	return fileDescriptor_image_82d00ae4921b3ba2, []int{4}
 }
 func (m *GetImageRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_GetImageRequest.Unmarshal(m, b)
@@ -236,7 +283,7 @@ func (m *ApplyImageRequest) Reset()         { *m = ApplyImageRequest{} }
 func (m *ApplyImageRequest) String() string { return proto.CompactTextString(m) }
 func (*ApplyImageRequest) ProtoMessage()    {}
 func (*ApplyImageRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_image_b24f33cd11945124, []int{5}
+	return fileDescriptor_image_82d00ae4921b3ba2, []int{5}
 }
 func (m *ApplyImageRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ApplyImageRequest.Unmarshal(m, b)
@@ -274,7 +321,7 @@ func (m *DeleteImageRequest) Reset()         { *m = DeleteImageRequest{} }
 func (m *DeleteImageRequest) String() string { return proto.CompactTextString(m) }
 func (*DeleteImageRequest) ProtoMessage()    {}
 func (*DeleteImageRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_image_b24f33cd11945124, []int{6}
+	return fileDescriptor_image_82d00ae4921b3ba2, []int{6}
 }
 func (m *DeleteImageRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_DeleteImageRequest.Unmarshal(m, b)
@@ -301,7 +348,7 @@ func (m *DeleteImageRequest) GetName() string {
 	return ""
 }
 
-type ImportBlockStorageRequest struct {
+type RegisterBlockStorageRequest struct {
 	Name                 string   `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
 	BlockStorageName     string   `protobuf:"bytes,2,opt,name=block_storage_name,json=blockStorageName" json:"block_storage_name,omitempty"`
 	Tags                 []string `protobuf:"bytes,3,rep,name=tags" json:"tags,omitempty"`
@@ -310,49 +357,103 @@ type ImportBlockStorageRequest struct {
 	XXX_sizecache        int32    `json:"-"`
 }
 
-func (m *ImportBlockStorageRequest) Reset()         { *m = ImportBlockStorageRequest{} }
-func (m *ImportBlockStorageRequest) String() string { return proto.CompactTextString(m) }
-func (*ImportBlockStorageRequest) ProtoMessage()    {}
-func (*ImportBlockStorageRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_image_b24f33cd11945124, []int{7}
+func (m *RegisterBlockStorageRequest) Reset()         { *m = RegisterBlockStorageRequest{} }
+func (m *RegisterBlockStorageRequest) String() string { return proto.CompactTextString(m) }
+func (*RegisterBlockStorageRequest) ProtoMessage()    {}
+func (*RegisterBlockStorageRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_image_82d00ae4921b3ba2, []int{7}
 }
-func (m *ImportBlockStorageRequest) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_ImportBlockStorageRequest.Unmarshal(m, b)
+func (m *RegisterBlockStorageRequest) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_RegisterBlockStorageRequest.Unmarshal(m, b)
 }
-func (m *ImportBlockStorageRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_ImportBlockStorageRequest.Marshal(b, m, deterministic)
+func (m *RegisterBlockStorageRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_RegisterBlockStorageRequest.Marshal(b, m, deterministic)
 }
-func (dst *ImportBlockStorageRequest) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_ImportBlockStorageRequest.Merge(dst, src)
+func (dst *RegisterBlockStorageRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_RegisterBlockStorageRequest.Merge(dst, src)
 }
-func (m *ImportBlockStorageRequest) XXX_Size() int {
-	return xxx_messageInfo_ImportBlockStorageRequest.Size(m)
+func (m *RegisterBlockStorageRequest) XXX_Size() int {
+	return xxx_messageInfo_RegisterBlockStorageRequest.Size(m)
 }
-func (m *ImportBlockStorageRequest) XXX_DiscardUnknown() {
-	xxx_messageInfo_ImportBlockStorageRequest.DiscardUnknown(m)
+func (m *RegisterBlockStorageRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_RegisterBlockStorageRequest.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_ImportBlockStorageRequest proto.InternalMessageInfo
+var xxx_messageInfo_RegisterBlockStorageRequest proto.InternalMessageInfo
 
-func (m *ImportBlockStorageRequest) GetName() string {
+func (m *RegisterBlockStorageRequest) GetName() string {
 	if m != nil {
 		return m.Name
 	}
 	return ""
 }
 
-func (m *ImportBlockStorageRequest) GetBlockStorageName() string {
+func (m *RegisterBlockStorageRequest) GetBlockStorageName() string {
 	if m != nil {
 		return m.BlockStorageName
 	}
 	return ""
 }
 
-func (m *ImportBlockStorageRequest) GetTags() []string {
+func (m *RegisterBlockStorageRequest) GetTags() []string {
 	if m != nil {
 		return m.Tags
 	}
 	return nil
+}
+
+type CreateBlockStorageRequest struct {
+	Metadata             *v0.Metadata          `protobuf:"bytes,1,opt,name=metadata" json:"metadata,omitempty"`
+	Spec                 *v01.BlockStorageSpec `protobuf:"bytes,2,opt,name=spec" json:"spec,omitempty"`
+	Tag                  string                `protobuf:"bytes,3,opt,name=tag" json:"tag,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}              `json:"-"`
+	XXX_unrecognized     []byte                `json:"-"`
+	XXX_sizecache        int32                 `json:"-"`
+}
+
+func (m *CreateBlockStorageRequest) Reset()         { *m = CreateBlockStorageRequest{} }
+func (m *CreateBlockStorageRequest) String() string { return proto.CompactTextString(m) }
+func (*CreateBlockStorageRequest) ProtoMessage()    {}
+func (*CreateBlockStorageRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_image_82d00ae4921b3ba2, []int{8}
+}
+func (m *CreateBlockStorageRequest) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_CreateBlockStorageRequest.Unmarshal(m, b)
+}
+func (m *CreateBlockStorageRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_CreateBlockStorageRequest.Marshal(b, m, deterministic)
+}
+func (dst *CreateBlockStorageRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_CreateBlockStorageRequest.Merge(dst, src)
+}
+func (m *CreateBlockStorageRequest) XXX_Size() int {
+	return xxx_messageInfo_CreateBlockStorageRequest.Size(m)
+}
+func (m *CreateBlockStorageRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_CreateBlockStorageRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_CreateBlockStorageRequest proto.InternalMessageInfo
+
+func (m *CreateBlockStorageRequest) GetMetadata() *v0.Metadata {
+	if m != nil {
+		return m.Metadata
+	}
+	return nil
+}
+
+func (m *CreateBlockStorageRequest) GetSpec() *v01.BlockStorageSpec {
+	if m != nil {
+		return m.Spec
+	}
+	return nil
+}
+
+func (m *CreateBlockStorageRequest) GetTag() string {
+	if m != nil {
+		return m.Tag
+	}
+	return ""
 }
 
 type TagImageRequest struct {
@@ -368,7 +469,7 @@ func (m *TagImageRequest) Reset()         { *m = TagImageRequest{} }
 func (m *TagImageRequest) String() string { return proto.CompactTextString(m) }
 func (*TagImageRequest) ProtoMessage()    {}
 func (*TagImageRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_image_b24f33cd11945124, []int{8}
+	return fileDescriptor_image_82d00ae4921b3ba2, []int{9}
 }
 func (m *TagImageRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_TagImageRequest.Unmarshal(m, b)
@@ -421,7 +522,7 @@ func (m *UntagImageRequest) Reset()         { *m = UntagImageRequest{} }
 func (m *UntagImageRequest) String() string { return proto.CompactTextString(m) }
 func (*UntagImageRequest) ProtoMessage()    {}
 func (*UntagImageRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_image_b24f33cd11945124, []int{9}
+	return fileDescriptor_image_82d00ae4921b3ba2, []int{10}
 }
 func (m *UntagImageRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_UntagImageRequest.Unmarshal(m, b)
@@ -458,14 +559,15 @@ func (m *UntagImageRequest) GetTag() string {
 func init() {
 	proto.RegisterType((*Image)(nil), "n0stack.deployment.Image")
 	proto.RegisterType((*ImageStatus)(nil), "n0stack.deployment.ImageStatus")
-	proto.RegisterMapType((map[string]*timestamp.Timestamp)(nil), "n0stack.deployment.ImageStatus.RegisteredBlockStorageNamesEntry")
 	proto.RegisterMapType((map[string]string)(nil), "n0stack.deployment.ImageStatus.TagsEntry")
+	proto.RegisterType((*ImageStatus_RegisteredBlockStorage)(nil), "n0stack.deployment.ImageStatus.RegisteredBlockStorage")
 	proto.RegisterType((*ListImagesRequest)(nil), "n0stack.deployment.ListImagesRequest")
 	proto.RegisterType((*ListImagesResponse)(nil), "n0stack.deployment.ListImagesResponse")
 	proto.RegisterType((*GetImageRequest)(nil), "n0stack.deployment.GetImageRequest")
 	proto.RegisterType((*ApplyImageRequest)(nil), "n0stack.deployment.ApplyImageRequest")
 	proto.RegisterType((*DeleteImageRequest)(nil), "n0stack.deployment.DeleteImageRequest")
-	proto.RegisterType((*ImportBlockStorageRequest)(nil), "n0stack.deployment.ImportBlockStorageRequest")
+	proto.RegisterType((*RegisterBlockStorageRequest)(nil), "n0stack.deployment.RegisterBlockStorageRequest")
+	proto.RegisterType((*CreateBlockStorageRequest)(nil), "n0stack.deployment.CreateBlockStorageRequest")
 	proto.RegisterType((*TagImageRequest)(nil), "n0stack.deployment.TagImageRequest")
 	proto.RegisterType((*UntagImageRequest)(nil), "n0stack.deployment.UntagImageRequest")
 }
@@ -485,7 +587,8 @@ type ImageServiceClient interface {
 	GetImage(ctx context.Context, in *GetImageRequest, opts ...grpc.CallOption) (*Image, error)
 	ApplyImage(ctx context.Context, in *ApplyImageRequest, opts ...grpc.CallOption) (*Image, error)
 	DeleteImage(ctx context.Context, in *DeleteImageRequest, opts ...grpc.CallOption) (*empty.Empty, error)
-	RegisterBlockStorage(ctx context.Context, in *ImportBlockStorageRequest, opts ...grpc.CallOption) (*Image, error)
+	RegisterBlockStorage(ctx context.Context, in *RegisterBlockStorageRequest, opts ...grpc.CallOption) (*Image, error)
+	CreateBlockStorage(ctx context.Context, in *CreateBlockStorageRequest, opts ...grpc.CallOption) (*v01.BlockStorage, error)
 	TagImage(ctx context.Context, in *TagImageRequest, opts ...grpc.CallOption) (*Image, error)
 	UntagImage(ctx context.Context, in *UntagImageRequest, opts ...grpc.CallOption) (*Image, error)
 }
@@ -534,9 +637,18 @@ func (c *imageServiceClient) DeleteImage(ctx context.Context, in *DeleteImageReq
 	return out, nil
 }
 
-func (c *imageServiceClient) RegisterBlockStorage(ctx context.Context, in *ImportBlockStorageRequest, opts ...grpc.CallOption) (*Image, error) {
+func (c *imageServiceClient) RegisterBlockStorage(ctx context.Context, in *RegisterBlockStorageRequest, opts ...grpc.CallOption) (*Image, error) {
 	out := new(Image)
 	err := grpc.Invoke(ctx, "/n0stack.deployment.ImageService/RegisterBlockStorage", in, out, c.cc, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *imageServiceClient) CreateBlockStorage(ctx context.Context, in *CreateBlockStorageRequest, opts ...grpc.CallOption) (*v01.BlockStorage, error) {
+	out := new(v01.BlockStorage)
+	err := grpc.Invoke(ctx, "/n0stack.deployment.ImageService/CreateBlockStorage", in, out, c.cc, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -568,7 +680,8 @@ type ImageServiceServer interface {
 	GetImage(context.Context, *GetImageRequest) (*Image, error)
 	ApplyImage(context.Context, *ApplyImageRequest) (*Image, error)
 	DeleteImage(context.Context, *DeleteImageRequest) (*empty.Empty, error)
-	RegisterBlockStorage(context.Context, *ImportBlockStorageRequest) (*Image, error)
+	RegisterBlockStorage(context.Context, *RegisterBlockStorageRequest) (*Image, error)
+	CreateBlockStorage(context.Context, *CreateBlockStorageRequest) (*v01.BlockStorage, error)
 	TagImage(context.Context, *TagImageRequest) (*Image, error)
 	UntagImage(context.Context, *UntagImageRequest) (*Image, error)
 }
@@ -650,7 +763,7 @@ func _ImageService_DeleteImage_Handler(srv interface{}, ctx context.Context, dec
 }
 
 func _ImageService_RegisterBlockStorage_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ImportBlockStorageRequest)
+	in := new(RegisterBlockStorageRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -662,7 +775,25 @@ func _ImageService_RegisterBlockStorage_Handler(srv interface{}, ctx context.Con
 		FullMethod: "/n0stack.deployment.ImageService/RegisterBlockStorage",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ImageServiceServer).RegisterBlockStorage(ctx, req.(*ImportBlockStorageRequest))
+		return srv.(ImageServiceServer).RegisterBlockStorage(ctx, req.(*RegisterBlockStorageRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ImageService_CreateBlockStorage_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateBlockStorageRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ImageServiceServer).CreateBlockStorage(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/n0stack.deployment.ImageService/CreateBlockStorage",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ImageServiceServer).CreateBlockStorage(ctx, req.(*CreateBlockStorageRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -728,6 +859,10 @@ var _ImageService_serviceDesc = grpc.ServiceDesc{
 			Handler:    _ImageService_RegisterBlockStorage_Handler,
 		},
 		{
+			MethodName: "CreateBlockStorage",
+			Handler:    _ImageService_CreateBlockStorage_Handler,
+		},
+		{
 			MethodName: "TagImage",
 			Handler:    _ImageService_TagImage_Handler,
 		},
@@ -740,47 +875,52 @@ var _ImageService_serviceDesc = grpc.ServiceDesc{
 	Metadata: "deployment/v0/image.proto",
 }
 
-func init() { proto.RegisterFile("deployment/v0/image.proto", fileDescriptor_image_b24f33cd11945124) }
+func init() { proto.RegisterFile("deployment/v0/image.proto", fileDescriptor_image_82d00ae4921b3ba2) }
 
-var fileDescriptor_image_b24f33cd11945124 = []byte{
-	// 619 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xac, 0x95, 0x7f, 0x6b, 0xda, 0x40,
-	0x18, 0xc7, 0xab, 0x69, 0x8b, 0x3e, 0x0e, 0xaa, 0xb7, 0x32, 0x34, 0x85, 0x55, 0x32, 0x3a, 0x1c,
-	0xac, 0x89, 0x73, 0x0c, 0xf7, 0x83, 0xc1, 0x26, 0x2b, 0xa5, 0xe0, 0x7e, 0x90, 0xba, 0x7f, 0x06,
-	0x43, 0x2e, 0x7a, 0xbb, 0x65, 0x26, 0xb9, 0x34, 0x77, 0x0a, 0xbe, 0x80, 0xbd, 0xd1, 0xbd, 0x8b,
-	0xfd, 0x37, 0x72, 0x49, 0x34, 0x35, 0xd1, 0x6c, 0xb0, 0xff, 0xce, 0xbb, 0xef, 0x7d, 0xbf, 0x4f,
-	0x9e, 0xe7, 0x63, 0x02, 0xad, 0x29, 0xf1, 0x1d, 0xb6, 0x74, 0x89, 0x27, 0x8c, 0x45, 0xd7, 0xb0,
-	0x5d, 0x4c, 0x89, 0xee, 0x07, 0x4c, 0x30, 0x84, 0xbc, 0x2e, 0x17, 0x78, 0x32, 0xd3, 0xd7, 0x12,
-	0xf5, 0x84, 0x32, 0x46, 0x1d, 0x62, 0x48, 0x85, 0x35, 0xff, 0x66, 0x10, 0xd7, 0x17, 0xcb, 0xe8,
-	0x82, 0x7a, 0xba, 0x79, 0x28, 0x6c, 0x97, 0x70, 0x81, 0x5d, 0x3f, 0x16, 0x34, 0x16, 0x5d, 0xc3,
-	0x25, 0x02, 0x4f, 0xb1, 0xc0, 0xd1, 0x96, 0xc6, 0xe0, 0xe0, 0x2a, 0xcc, 0x44, 0xe7, 0x50, 0x49,
-	0x8e, 0x9a, 0xa5, 0x76, 0xa9, 0x53, 0xeb, 0x35, 0xf4, 0xa4, 0x80, 0xf7, 0xf1, 0x81, 0xb9, 0x92,
-	0xa0, 0x3e, 0x1c, 0x72, 0x81, 0xc5, 0x9c, 0x37, 0x15, 0x29, 0x3e, 0xd5, 0xb3, 0xd5, 0xea, 0xd2,
-	0xf9, 0x5a, 0xca, 0xcc, 0x58, 0xae, 0xfd, 0x2e, 0x43, 0x2d, 0xb5, 0x8f, 0x7e, 0x96, 0xe0, 0x7e,
-	0x40, 0xa8, 0xcd, 0x05, 0x09, 0xc8, 0x74, 0x6c, 0x39, 0x6c, 0x32, 0x1b, 0x73, 0xc1, 0x02, 0x4c,
-	0xc9, 0xd8, 0xc3, 0x2e, 0xe1, 0xcd, 0x52, 0x5b, 0xe9, 0xd4, 0x7a, 0x6f, 0x0a, 0x12, 0x74, 0x73,
-	0xe5, 0x32, 0x08, 0x4d, 0xae, 0x23, 0x8f, 0x0f, 0xa1, 0xc5, 0x85, 0x27, 0x82, 0xa5, 0x79, 0x12,
-	0x6c, 0x57, 0xa0, 0xd7, 0xb0, 0x2f, 0x30, 0xe5, 0xcd, 0xb2, 0x0c, 0x7b, 0x54, 0x14, 0x36, 0xc2,
-	0x34, 0x76, 0x95, 0xd7, 0xd4, 0x1f, 0xd0, 0x2e, 0xca, 0x47, 0x75, 0x50, 0x66, 0x64, 0x29, 0xbb,
-	0x5b, 0x35, 0xc3, 0x25, 0xea, 0xc2, 0xc1, 0x02, 0x3b, 0x73, 0xd2, 0x2c, 0xcb, 0x26, 0xaa, 0x7a,
-	0x34, 0x41, 0x3d, 0x99, 0xa0, 0x3e, 0x4a, 0x26, 0x68, 0x46, 0xc2, 0x97, 0xe5, 0xe7, 0x25, 0xb5,
-	0x0f, 0xd5, 0x55, 0x7c, 0x8e, 0xe9, 0x71, 0xda, 0xb4, 0x9a, 0xba, 0xa8, 0xdd, 0x85, 0xc6, 0xd0,
-	0xe6, 0x42, 0x3e, 0x07, 0x37, 0xc9, 0xcd, 0x9c, 0x70, 0xa1, 0x5d, 0x02, 0x4a, 0x6f, 0x72, 0x9f,
-	0x79, 0x9c, 0xa0, 0x27, 0x70, 0x18, 0xed, 0xc4, 0xdd, 0x6f, 0x6d, 0x6d, 0x88, 0x19, 0x0b, 0xb5,
-	0x33, 0x38, 0xba, 0x24, 0x91, 0x4f, 0xec, 0x8d, 0x10, 0xec, 0x87, 0x23, 0x8c, 0xab, 0x93, 0x6b,
-	0x6d, 0x00, 0x8d, 0xb7, 0xbe, 0xef, 0x2c, 0x6f, 0x09, 0xff, 0x8d, 0x3e, 0xad, 0x03, 0xe8, 0x1d,
-	0x71, 0x88, 0x20, 0x85, 0x69, 0x37, 0xd0, 0xba, 0x72, 0x7d, 0x16, 0x88, 0xf4, 0x4c, 0x76, 0x5c,
-	0x40, 0x8f, 0x01, 0x65, 0x19, 0x8c, 0x5b, 0x59, 0xb7, 0x36, 0x06, 0x1b, 0x3a, 0x48, 0x6a, 0x94,
-	0xb6, 0x12, 0x3a, 0x84, 0x6b, 0x8d, 0xc2, 0xd1, 0x08, 0xd3, 0xa2, 0xca, 0xfe, 0x43, 0xd0, 0x0b,
-	0x68, 0x7c, 0xf6, 0xc4, 0x5f, 0x44, 0xd5, 0x41, 0x11, 0x98, 0xc6, 0xde, 0xe1, 0xb2, 0xf7, 0x6b,
-	0x1f, 0xee, 0x44, 0x38, 0x93, 0x60, 0x61, 0x4f, 0x08, 0xfa, 0x0a, 0xb0, 0xa6, 0x00, 0x9d, 0xe5,
-	0x4d, 0x3b, 0x83, 0x8e, 0xfa, 0xb0, 0x48, 0x16, 0xc1, 0xa4, 0xed, 0xa1, 0x21, 0x54, 0x12, 0x36,
-	0xd0, 0x83, 0xbc, 0x5b, 0x1b, 0xe4, 0xa8, 0xdb, 0x79, 0xd3, 0xf6, 0xd0, 0x27, 0x80, 0x35, 0x42,
-	0xf9, 0xc5, 0x66, 0x10, 0xdb, 0xed, 0xf8, 0x11, 0x6a, 0x29, 0xa0, 0x50, 0xee, 0x83, 0x65, 0x89,
-	0x53, 0xef, 0x65, 0xfe, 0xb0, 0x17, 0xe1, 0xfb, 0x58, 0xdb, 0x43, 0x16, 0x1c, 0x27, 0xef, 0x83,
-	0x34, 0x79, 0xe8, 0x3c, 0xbf, 0x8a, 0x2d, 0x84, 0xee, 0x2e, 0x7a, 0x08, 0x95, 0x04, 0xb4, 0xfc,
-	0xa6, 0x6e, 0x60, 0x58, 0xd8, 0xd4, 0x35, 0x4d, 0xf9, 0x4d, 0xcd, 0xd0, 0xb6, 0xd3, 0x71, 0xd0,
-	0xff, 0xf2, 0x8c, 0xda, 0xe2, 0xfb, 0xdc, 0xd2, 0x27, 0xcc, 0x35, 0x62, 0x61, 0xf4, 0x75, 0xd2,
-	0x29, 0x33, 0x6e, 0x7d, 0xf9, 0x5e, 0xf9, 0xeb, 0x9f, 0xd6, 0xa1, 0xd4, 0x3c, 0xfd, 0x13, 0x00,
-	0x00, 0xff, 0xff, 0x3e, 0x54, 0x1b, 0x12, 0x1d, 0x07, 0x00, 0x00,
+var fileDescriptor_image_82d00ae4921b3ba2 = []byte{
+	// 696 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xac, 0x56, 0xdf, 0x4f, 0xd3, 0x50,
+	0x14, 0x66, 0x1b, 0x10, 0x76, 0x86, 0x81, 0x1d, 0x09, 0x6e, 0xe5, 0x01, 0x72, 0x09, 0x04, 0x13,
+	0x69, 0x11, 0xa3, 0x28, 0xc6, 0x18, 0x50, 0x42, 0x4c, 0xf0, 0x47, 0x0a, 0xbe, 0x98, 0x18, 0x72,
+	0xb7, 0x1d, 0x6b, 0xc3, 0xda, 0x5b, 0x7b, 0xef, 0x96, 0xec, 0xd9, 0x07, 0xff, 0x05, 0xff, 0x2b,
+	0xff, 0x25, 0xd3, 0xdb, 0x6e, 0xeb, 0x68, 0xb7, 0x4a, 0xe2, 0xdb, 0xed, 0xed, 0x77, 0xbe, 0xf3,
+	0xe3, 0xfb, 0xce, 0x3a, 0x68, 0x76, 0x28, 0xe8, 0x8a, 0x81, 0x47, 0xbe, 0xb2, 0xfa, 0x07, 0x96,
+	0xeb, 0x71, 0x87, 0xcc, 0x20, 0x14, 0x4a, 0x20, 0xfa, 0x07, 0x52, 0xf1, 0xf6, 0x8d, 0x39, 0x86,
+	0x18, 0x1b, 0x8e, 0x10, 0x4e, 0x97, 0x2c, 0x8d, 0x68, 0xf5, 0xbe, 0x59, 0xe4, 0x05, 0x6a, 0x10,
+	0x07, 0x18, 0x9b, 0xb7, 0x5f, 0x2a, 0xd7, 0x23, 0xa9, 0xb8, 0x17, 0x24, 0x80, 0xed, 0x20, 0x14,
+	0x7d, 0x57, 0xba, 0xc2, 0x77, 0x7d, 0x27, 0x4a, 0xd7, 0xea, 0x8a, 0xf6, 0xcd, 0xb5, 0x54, 0x22,
+	0x1c, 0xa5, 0x35, 0xea, 0xfd, 0x03, 0xcb, 0x23, 0xc5, 0x3b, 0x5c, 0xf1, 0xf8, 0x8a, 0x09, 0x58,
+	0x78, 0x17, 0x15, 0x86, 0xfb, 0xb0, 0x34, 0x7c, 0xd5, 0x28, 0x6d, 0x95, 0xf6, 0x6a, 0x87, 0x75,
+	0x73, 0x58, 0xe5, 0xfb, 0xe4, 0x85, 0x3d, 0x82, 0xe0, 0x11, 0x2c, 0x4a, 0xc5, 0x55, 0x4f, 0x36,
+	0x2a, 0x1a, 0xbc, 0x69, 0x66, 0x5b, 0x32, 0x35, 0xf3, 0xa5, 0x86, 0xd9, 0x09, 0x9c, 0xfd, 0xac,
+	0x40, 0x2d, 0x75, 0x8f, 0x21, 0x34, 0x43, 0x72, 0x5c, 0xa9, 0x28, 0xa4, 0xce, 0xf5, 0x44, 0xd5,
+	0xb2, 0x51, 0xda, 0xaa, 0xec, 0xd5, 0x0e, 0x9f, 0x15, 0x70, 0x9b, 0xf6, 0x88, 0xe0, 0x34, 0x8a,
+	0xbf, 0x8c, 0xc3, 0xed, 0x07, 0x61, 0xee, 0xbd, 0xc4, 0x57, 0x30, 0xaf, 0xb8, 0x23, 0x1b, 0x65,
+	0x4d, 0xff, 0xb0, 0x88, 0xfe, 0x8a, 0x3b, 0xf2, 0xcc, 0x57, 0xe1, 0xc0, 0xd6, 0x61, 0xc6, 0xaf,
+	0x12, 0xac, 0xe7, 0xa7, 0xc4, 0x47, 0x80, 0x13, 0x2d, 0x5c, 0xfb, 0xdc, 0x23, 0x3d, 0xcf, 0xaa,
+	0xbd, 0xda, 0x4a, 0x21, 0x3f, 0x70, 0x8f, 0xf0, 0x35, 0xdc, 0x4b, 0xf5, 0xce, 0x55, 0xa3, 0xac,
+	0x67, 0x69, 0x98, 0xb1, 0xda, 0xe6, 0x50, 0x6d, 0xf3, 0x6a, 0xa8, 0xb6, 0xbd, 0x3c, 0x0e, 0x38,
+	0x51, 0xc6, 0x11, 0x54, 0x47, 0xc5, 0xe1, 0x2a, 0x54, 0x6e, 0x68, 0x90, 0x24, 0x8b, 0x8e, 0xb8,
+	0x06, 0x0b, 0x7d, 0xde, 0xed, 0x91, 0xe6, 0xad, 0xda, 0xf1, 0xc3, 0x71, 0xf9, 0x79, 0x89, 0xdd,
+	0x87, 0xfa, 0x85, 0x2b, 0x95, 0xee, 0x52, 0xda, 0xf4, 0xa3, 0x47, 0x52, 0xb1, 0x73, 0xc0, 0xf4,
+	0xa5, 0x0c, 0x84, 0x2f, 0x09, 0x1f, 0xc3, 0x62, 0x7c, 0x93, 0xa8, 0xd1, 0x9c, 0x3a, 0x2e, 0x3b,
+	0x01, 0xb2, 0x1d, 0x58, 0x39, 0xa7, 0x98, 0x27, 0xe1, 0x46, 0x84, 0xf9, 0xd4, 0x28, 0xf4, 0x99,
+	0x9d, 0x42, 0xfd, 0x24, 0x08, 0xba, 0x83, 0x09, 0xe0, 0xdd, 0x7c, 0xc8, 0xf6, 0x00, 0xdf, 0x52,
+	0x97, 0x14, 0x15, 0x66, 0x93, 0xb0, 0x31, 0x14, 0x6d, 0xc2, 0x25, 0xd3, 0x43, 0xa6, 0xa8, 0x59,
+	0x9e, 0xa2, 0x26, 0x26, 0xae, 0xaa, 0x6c, 0x55, 0x22, 0x86, 0xe8, 0xcc, 0x7e, 0x97, 0xa0, 0xf9,
+	0x26, 0x24, 0xae, 0x28, 0x2f, 0xe7, 0x1d, 0x77, 0xee, 0x18, 0xe6, 0x65, 0x40, 0xed, 0xc4, 0x25,
+	0xbb, 0x23, 0x68, 0x7a, 0xf5, 0xcd, 0x74, 0x9e, 0xcb, 0x80, 0xda, 0xb6, 0x8e, 0x89, 0xcc, 0xa1,
+	0xb8, 0xa3, 0x97, 0xb5, 0x6a, 0x47, 0x47, 0xe6, 0xc0, 0xca, 0x15, 0x77, 0x8a, 0xc6, 0xf6, 0x1f,
+	0x66, 0xf0, 0x02, 0xea, 0x9f, 0x7d, 0xf5, 0x0f, 0xa9, 0x92, 0x1a, 0xcb, 0xa3, 0x1a, 0x0f, 0xff,
+	0x2c, 0xc0, 0x72, 0xbc, 0x89, 0x14, 0xf6, 0xdd, 0x36, 0xe1, 0x57, 0x80, 0xb1, 0x45, 0x71, 0x27,
+	0xcf, 0x8a, 0x19, 0x5f, 0x1b, 0xbb, 0x45, 0xb0, 0xd8, 0xe9, 0x6c, 0x0e, 0x2f, 0x60, 0x69, 0x68,
+	0x5c, 0xdc, 0xce, 0x8b, 0xba, 0x65, 0x6b, 0x63, 0xfa, 0x32, 0xb0, 0x39, 0xfc, 0x04, 0x30, 0xf6,
+	0x77, 0x7e, 0xb1, 0x19, 0xff, 0xcf, 0x66, 0xfc, 0x08, 0xb5, 0x94, 0xdb, 0x31, 0xb7, 0xb1, 0xec,
+	0x3a, 0x18, 0xeb, 0x99, 0x1f, 0x94, 0xb3, 0xe8, 0xdb, 0xc2, 0xe6, 0xb0, 0x03, 0x6b, 0x79, 0x4b,
+	0x81, 0x56, 0x1e, 0xf3, 0x8c, 0xf5, 0x99, 0x5d, 0xb6, 0x0b, 0x98, 0x5d, 0x02, 0xdc, 0xcf, 0x0b,
+	0x99, 0xba, 0x2c, 0x06, 0x2b, 0xf6, 0x7b, 0xac, 0xe0, 0xd0, 0xd5, 0xf9, 0x0a, 0xde, 0xf2, 0x7c,
+	0xa1, 0x82, 0x63, 0xeb, 0xe6, 0x2b, 0x98, 0xb1, 0xf6, 0x4c, 0xc6, 0xd3, 0xa3, 0x2f, 0x4f, 0x1d,
+	0x57, 0x7d, 0xef, 0xb5, 0xcc, 0xb6, 0xf0, 0xac, 0x04, 0x18, 0x7f, 0xd6, 0x4d, 0x47, 0x58, 0x13,
+	0x7f, 0x19, 0x5e, 0x06, 0xe3, 0xc7, 0xd6, 0xa2, 0xc6, 0x3c, 0xf9, 0x1b, 0x00, 0x00, 0xff, 0xff,
+	0x38, 0x10, 0x79, 0x2e, 0x56, 0x08, 0x00, 0x00,
 }
