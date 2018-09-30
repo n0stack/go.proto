@@ -7,8 +7,7 @@ import proto "github.com/golang/protobuf/proto"
 import fmt "fmt"
 import math "math"
 import empty "github.com/golang/protobuf/ptypes/empty"
-import v01 "github.com/n0stack/proto.go/budget/v0"
-import v0 "github.com/n0stack/proto.go/v0"
+import v0 "github.com/n0stack/proto.go/budget/v0"
 
 import (
 	context "golang.org/x/net/context"
@@ -26,43 +25,59 @@ var _ = math.Inf
 // proto package needs to be updated.
 const _ = proto.ProtoPackageIsVersion2 // please upgrade the proto package
 
-type NodeStatus_NodeState int32
+type Node_NodeState int32
 
 const (
-	NodeStatus_NotReady NodeStatus_NodeState = 0
-	NodeStatus_Ready    NodeStatus_NodeState = 1
+	Node_NotReady Node_NodeState = 0
+	Node_Ready    Node_NodeState = 1
 )
 
-var NodeStatus_NodeState_name = map[int32]string{
+var Node_NodeState_name = map[int32]string{
 	0: "NotReady",
 	1: "Ready",
 }
-var NodeStatus_NodeState_value = map[string]int32{
+var Node_NodeState_value = map[string]int32{
 	"NotReady": 0,
 	"Ready":    1,
 }
 
-func (x NodeStatus_NodeState) String() string {
-	return proto.EnumName(NodeStatus_NodeState_name, int32(x))
+func (x Node_NodeState) String() string {
+	return proto.EnumName(Node_NodeState_name, int32(x))
 }
-func (NodeStatus_NodeState) EnumDescriptor() ([]byte, []int) {
-	return fileDescriptor_node_5c2ef18ec97dbb4c, []int{2, 0}
+func (Node_NodeState) EnumDescriptor() ([]byte, []int) {
+	return fileDescriptor_node_012890d7cd275f98, []int{0, 0}
 }
 
 type Node struct {
-	Metadata             *v0.Metadata `protobuf:"bytes,1,opt,name=metadata" json:"metadata,omitempty"`
-	Spec                 *NodeSpec    `protobuf:"bytes,2,opt,name=spec" json:"spec,omitempty"`
-	Status               *NodeStatus  `protobuf:"bytes,3,opt,name=status" json:"status,omitempty"`
-	XXX_NoUnkeyedLiteral struct{}     `json:"-"`
-	XXX_unrecognized     []byte       `json:"-"`
-	XXX_sizecache        int32        `json:"-"`
+	Name        string            `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
+	Annotations map[string]string `protobuf:"bytes,3,rep,name=annotations" json:"annotations,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	Version     uint64            `protobuf:"varint,5,opt,name=version" json:"version,omitempty"`
+	Address     string            `protobuf:"bytes,10,opt,name=address" json:"address,omitempty"`
+	IpmiAddress string            `protobuf:"bytes,11,opt,name=ipmi_address,json=ipmiAddress" json:"ipmi_address,omitempty"`
+	Serial      string            `protobuf:"bytes,12,opt,name=serial" json:"serial,omitempty"`
+	// budget pool
+	CpuMilliCores uint32 `protobuf:"varint,13,opt,name=cpu_milli_cores,json=cpuMilliCores" json:"cpu_milli_cores,omitempty"`
+	MemoryBytes   uint64 `protobuf:"varint,14,opt,name=memory_bytes,json=memoryBytes" json:"memory_bytes,omitempty"`
+	StorageBytes  uint64 `protobuf:"varint,15,opt,name=storage_bytes,json=storageBytes" json:"storage_bytes,omitempty"`
+	// physical placement
+	Datacenter           string                 `protobuf:"bytes,16,opt,name=datacenter" json:"datacenter,omitempty"`
+	AvailavilityZone     string                 `protobuf:"bytes,17,opt,name=availavility_zone,json=availavilityZone" json:"availavility_zone,omitempty"`
+	Cell                 string                 `protobuf:"bytes,18,opt,name=cell" json:"cell,omitempty"`
+	Rack                 string                 `protobuf:"bytes,19,opt,name=rack" json:"rack,omitempty"`
+	Unit                 uint32                 `protobuf:"varint,20,opt,name=unit" json:"unit,omitempty"`
+	State                Node_NodeState         `protobuf:"varint,50,opt,name=state,enum=n0stack.pool.Node_NodeState" json:"state,omitempty"`
+	ReservedComputes     map[string]*v0.Compute `protobuf:"bytes,51,rep,name=reserved_computes,json=reservedComputes" json:"reserved_computes,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	ReservedStorages     map[string]*v0.Storage `protobuf:"bytes,52,rep,name=reserved_storages,json=reservedStorages" json:"reserved_storages,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	XXX_NoUnkeyedLiteral struct{}               `json:"-"`
+	XXX_unrecognized     []byte                 `json:"-"`
+	XXX_sizecache        int32                  `json:"-"`
 }
 
 func (m *Node) Reset()         { *m = Node{} }
 func (m *Node) String() string { return proto.CompactTextString(m) }
 func (*Node) ProtoMessage()    {}
 func (*Node) Descriptor() ([]byte, []int) {
-	return fileDescriptor_node_5c2ef18ec97dbb4c, []int{0}
+	return fileDescriptor_node_012890d7cd275f98, []int{0}
 }
 func (m *Node) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_Node.Unmarshal(m, b)
@@ -82,194 +97,119 @@ func (m *Node) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_Node proto.InternalMessageInfo
 
-func (m *Node) GetMetadata() *v0.Metadata {
+func (m *Node) GetName() string {
 	if m != nil {
-		return m.Metadata
-	}
-	return nil
-}
-
-func (m *Node) GetSpec() *NodeSpec {
-	if m != nil {
-		return m.Spec
-	}
-	return nil
-}
-
-func (m *Node) GetStatus() *NodeStatus {
-	if m != nil {
-		return m.Status
-	}
-	return nil
-}
-
-type NodeSpec struct {
-	Serial        string `protobuf:"bytes,1,opt,name=serial" json:"serial,omitempty"`
-	Address       string `protobuf:"bytes,2,opt,name=address" json:"address,omitempty"`
-	IpmiAddress   string `protobuf:"bytes,3,opt,name=ipmi_address,json=ipmiAddress" json:"ipmi_address,omitempty"`
-	CpuMilliCores uint32 `protobuf:"varint,4,opt,name=cpu_milli_cores,json=cpuMilliCores" json:"cpu_milli_cores,omitempty"`
-	MemoryBytes   uint64 `protobuf:"varint,5,opt,name=memory_bytes,json=memoryBytes" json:"memory_bytes,omitempty"`
-	StorageBytes  uint64 `protobuf:"varint,6,opt,name=storage_bytes,json=storageBytes" json:"storage_bytes,omitempty"`
-	// physical placement
-	Datacenter           string   `protobuf:"bytes,8,opt,name=datacenter" json:"datacenter,omitempty"`
-	AvailavilityZone     string   `protobuf:"bytes,9,opt,name=availavility_zone,json=availavilityZone" json:"availavility_zone,omitempty"`
-	Cell                 string   `protobuf:"bytes,10,opt,name=cell" json:"cell,omitempty"`
-	Rack                 string   `protobuf:"bytes,11,opt,name=rack" json:"rack,omitempty"`
-	Unit                 uint32   `protobuf:"varint,12,opt,name=unit" json:"unit,omitempty"`
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
-}
-
-func (m *NodeSpec) Reset()         { *m = NodeSpec{} }
-func (m *NodeSpec) String() string { return proto.CompactTextString(m) }
-func (*NodeSpec) ProtoMessage()    {}
-func (*NodeSpec) Descriptor() ([]byte, []int) {
-	return fileDescriptor_node_5c2ef18ec97dbb4c, []int{1}
-}
-func (m *NodeSpec) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_NodeSpec.Unmarshal(m, b)
-}
-func (m *NodeSpec) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_NodeSpec.Marshal(b, m, deterministic)
-}
-func (dst *NodeSpec) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_NodeSpec.Merge(dst, src)
-}
-func (m *NodeSpec) XXX_Size() int {
-	return xxx_messageInfo_NodeSpec.Size(m)
-}
-func (m *NodeSpec) XXX_DiscardUnknown() {
-	xxx_messageInfo_NodeSpec.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_NodeSpec proto.InternalMessageInfo
-
-func (m *NodeSpec) GetSerial() string {
-	if m != nil {
-		return m.Serial
+		return m.Name
 	}
 	return ""
 }
 
-func (m *NodeSpec) GetAddress() string {
+func (m *Node) GetAnnotations() map[string]string {
+	if m != nil {
+		return m.Annotations
+	}
+	return nil
+}
+
+func (m *Node) GetVersion() uint64 {
+	if m != nil {
+		return m.Version
+	}
+	return 0
+}
+
+func (m *Node) GetAddress() string {
 	if m != nil {
 		return m.Address
 	}
 	return ""
 }
 
-func (m *NodeSpec) GetIpmiAddress() string {
+func (m *Node) GetIpmiAddress() string {
 	if m != nil {
 		return m.IpmiAddress
 	}
 	return ""
 }
 
-func (m *NodeSpec) GetCpuMilliCores() uint32 {
+func (m *Node) GetSerial() string {
+	if m != nil {
+		return m.Serial
+	}
+	return ""
+}
+
+func (m *Node) GetCpuMilliCores() uint32 {
 	if m != nil {
 		return m.CpuMilliCores
 	}
 	return 0
 }
 
-func (m *NodeSpec) GetMemoryBytes() uint64 {
+func (m *Node) GetMemoryBytes() uint64 {
 	if m != nil {
 		return m.MemoryBytes
 	}
 	return 0
 }
 
-func (m *NodeSpec) GetStorageBytes() uint64 {
+func (m *Node) GetStorageBytes() uint64 {
 	if m != nil {
 		return m.StorageBytes
 	}
 	return 0
 }
 
-func (m *NodeSpec) GetDatacenter() string {
+func (m *Node) GetDatacenter() string {
 	if m != nil {
 		return m.Datacenter
 	}
 	return ""
 }
 
-func (m *NodeSpec) GetAvailavilityZone() string {
+func (m *Node) GetAvailavilityZone() string {
 	if m != nil {
 		return m.AvailavilityZone
 	}
 	return ""
 }
 
-func (m *NodeSpec) GetCell() string {
+func (m *Node) GetCell() string {
 	if m != nil {
 		return m.Cell
 	}
 	return ""
 }
 
-func (m *NodeSpec) GetRack() string {
+func (m *Node) GetRack() string {
 	if m != nil {
 		return m.Rack
 	}
 	return ""
 }
 
-func (m *NodeSpec) GetUnit() uint32 {
+func (m *Node) GetUnit() uint32 {
 	if m != nil {
 		return m.Unit
 	}
 	return 0
 }
 
-type NodeStatus struct {
-	State                NodeStatus_NodeState    `protobuf:"varint,1,opt,name=state,enum=n0stack.pool.NodeStatus_NodeState" json:"state,omitempty"`
-	ReservedComputes     map[string]*v01.Compute `protobuf:"bytes,2,rep,name=reserved_computes,json=reservedComputes" json:"reserved_computes,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
-	ReservedStorages     map[string]*v01.Storage `protobuf:"bytes,3,rep,name=reserved_storages,json=reservedStorages" json:"reserved_storages,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
-	XXX_NoUnkeyedLiteral struct{}                `json:"-"`
-	XXX_unrecognized     []byte                  `json:"-"`
-	XXX_sizecache        int32                   `json:"-"`
-}
-
-func (m *NodeStatus) Reset()         { *m = NodeStatus{} }
-func (m *NodeStatus) String() string { return proto.CompactTextString(m) }
-func (*NodeStatus) ProtoMessage()    {}
-func (*NodeStatus) Descriptor() ([]byte, []int) {
-	return fileDescriptor_node_5c2ef18ec97dbb4c, []int{2}
-}
-func (m *NodeStatus) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_NodeStatus.Unmarshal(m, b)
-}
-func (m *NodeStatus) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_NodeStatus.Marshal(b, m, deterministic)
-}
-func (dst *NodeStatus) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_NodeStatus.Merge(dst, src)
-}
-func (m *NodeStatus) XXX_Size() int {
-	return xxx_messageInfo_NodeStatus.Size(m)
-}
-func (m *NodeStatus) XXX_DiscardUnknown() {
-	xxx_messageInfo_NodeStatus.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_NodeStatus proto.InternalMessageInfo
-
-func (m *NodeStatus) GetState() NodeStatus_NodeState {
+func (m *Node) GetState() Node_NodeState {
 	if m != nil {
 		return m.State
 	}
-	return NodeStatus_NotReady
+	return Node_NotReady
 }
 
-func (m *NodeStatus) GetReservedComputes() map[string]*v01.Compute {
+func (m *Node) GetReservedComputes() map[string]*v0.Compute {
 	if m != nil {
 		return m.ReservedComputes
 	}
 	return nil
 }
 
-func (m *NodeStatus) GetReservedStorages() map[string]*v01.Storage {
+func (m *Node) GetReservedStorages() map[string]*v0.Storage {
 	if m != nil {
 		return m.ReservedStorages
 	}
@@ -286,7 +226,7 @@ func (m *ListNodesRequest) Reset()         { *m = ListNodesRequest{} }
 func (m *ListNodesRequest) String() string { return proto.CompactTextString(m) }
 func (*ListNodesRequest) ProtoMessage()    {}
 func (*ListNodesRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_node_5c2ef18ec97dbb4c, []int{3}
+	return fileDescriptor_node_012890d7cd275f98, []int{1}
 }
 func (m *ListNodesRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ListNodesRequest.Unmarshal(m, b)
@@ -317,7 +257,7 @@ func (m *ListNodesResponse) Reset()         { *m = ListNodesResponse{} }
 func (m *ListNodesResponse) String() string { return proto.CompactTextString(m) }
 func (*ListNodesResponse) ProtoMessage()    {}
 func (*ListNodesResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_node_5c2ef18ec97dbb4c, []int{4}
+	return fileDescriptor_node_012890d7cd275f98, []int{2}
 }
 func (m *ListNodesResponse) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ListNodesResponse.Unmarshal(m, b)
@@ -355,7 +295,7 @@ func (m *GetNodeRequest) Reset()         { *m = GetNodeRequest{} }
 func (m *GetNodeRequest) String() string { return proto.CompactTextString(m) }
 func (*GetNodeRequest) ProtoMessage()    {}
 func (*GetNodeRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_node_5c2ef18ec97dbb4c, []int{5}
+	return fileDescriptor_node_012890d7cd275f98, []int{3}
 }
 func (m *GetNodeRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_GetNodeRequest.Unmarshal(m, b)
@@ -383,18 +323,30 @@ func (m *GetNodeRequest) GetName() string {
 }
 
 type ApplyNodeRequest struct {
-	Metadata             *v0.Metadata `protobuf:"bytes,1,opt,name=metadata" json:"metadata,omitempty"`
-	Spec                 *NodeSpec    `protobuf:"bytes,2,opt,name=spec" json:"spec,omitempty"`
-	XXX_NoUnkeyedLiteral struct{}     `json:"-"`
-	XXX_unrecognized     []byte       `json:"-"`
-	XXX_sizecache        int32        `json:"-"`
+	Name                 string            `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
+	Annotations          map[string]string `protobuf:"bytes,3,rep,name=annotations" json:"annotations,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	Version              uint64            `protobuf:"varint,5,opt,name=version" json:"version,omitempty"`
+	Address              string            `protobuf:"bytes,10,opt,name=address" json:"address,omitempty"`
+	IpmiAddress          string            `protobuf:"bytes,11,opt,name=ipmi_address,json=ipmiAddress" json:"ipmi_address,omitempty"`
+	Serial               string            `protobuf:"bytes,12,opt,name=serial" json:"serial,omitempty"`
+	CpuMilliCores        uint32            `protobuf:"varint,13,opt,name=cpu_milli_cores,json=cpuMilliCores" json:"cpu_milli_cores,omitempty"`
+	MemoryBytes          uint64            `protobuf:"varint,14,opt,name=memory_bytes,json=memoryBytes" json:"memory_bytes,omitempty"`
+	StorageBytes         uint64            `protobuf:"varint,15,opt,name=storage_bytes,json=storageBytes" json:"storage_bytes,omitempty"`
+	Datacenter           string            `protobuf:"bytes,16,opt,name=datacenter" json:"datacenter,omitempty"`
+	AvailavilityZone     string            `protobuf:"bytes,17,opt,name=availavility_zone,json=availavilityZone" json:"availavility_zone,omitempty"`
+	Cell                 string            `protobuf:"bytes,18,opt,name=cell" json:"cell,omitempty"`
+	Rack                 string            `protobuf:"bytes,19,opt,name=rack" json:"rack,omitempty"`
+	Unit                 uint32            `protobuf:"varint,20,opt,name=unit" json:"unit,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}          `json:"-"`
+	XXX_unrecognized     []byte            `json:"-"`
+	XXX_sizecache        int32             `json:"-"`
 }
 
 func (m *ApplyNodeRequest) Reset()         { *m = ApplyNodeRequest{} }
 func (m *ApplyNodeRequest) String() string { return proto.CompactTextString(m) }
 func (*ApplyNodeRequest) ProtoMessage()    {}
 func (*ApplyNodeRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_node_5c2ef18ec97dbb4c, []int{6}
+	return fileDescriptor_node_012890d7cd275f98, []int{4}
 }
 func (m *ApplyNodeRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ApplyNodeRequest.Unmarshal(m, b)
@@ -414,18 +366,102 @@ func (m *ApplyNodeRequest) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_ApplyNodeRequest proto.InternalMessageInfo
 
-func (m *ApplyNodeRequest) GetMetadata() *v0.Metadata {
+func (m *ApplyNodeRequest) GetName() string {
 	if m != nil {
-		return m.Metadata
+		return m.Name
+	}
+	return ""
+}
+
+func (m *ApplyNodeRequest) GetAnnotations() map[string]string {
+	if m != nil {
+		return m.Annotations
 	}
 	return nil
 }
 
-func (m *ApplyNodeRequest) GetSpec() *NodeSpec {
+func (m *ApplyNodeRequest) GetVersion() uint64 {
 	if m != nil {
-		return m.Spec
+		return m.Version
 	}
-	return nil
+	return 0
+}
+
+func (m *ApplyNodeRequest) GetAddress() string {
+	if m != nil {
+		return m.Address
+	}
+	return ""
+}
+
+func (m *ApplyNodeRequest) GetIpmiAddress() string {
+	if m != nil {
+		return m.IpmiAddress
+	}
+	return ""
+}
+
+func (m *ApplyNodeRequest) GetSerial() string {
+	if m != nil {
+		return m.Serial
+	}
+	return ""
+}
+
+func (m *ApplyNodeRequest) GetCpuMilliCores() uint32 {
+	if m != nil {
+		return m.CpuMilliCores
+	}
+	return 0
+}
+
+func (m *ApplyNodeRequest) GetMemoryBytes() uint64 {
+	if m != nil {
+		return m.MemoryBytes
+	}
+	return 0
+}
+
+func (m *ApplyNodeRequest) GetStorageBytes() uint64 {
+	if m != nil {
+		return m.StorageBytes
+	}
+	return 0
+}
+
+func (m *ApplyNodeRequest) GetDatacenter() string {
+	if m != nil {
+		return m.Datacenter
+	}
+	return ""
+}
+
+func (m *ApplyNodeRequest) GetAvailavilityZone() string {
+	if m != nil {
+		return m.AvailavilityZone
+	}
+	return ""
+}
+
+func (m *ApplyNodeRequest) GetCell() string {
+	if m != nil {
+		return m.Cell
+	}
+	return ""
+}
+
+func (m *ApplyNodeRequest) GetRack() string {
+	if m != nil {
+		return m.Rack
+	}
+	return ""
+}
+
+func (m *ApplyNodeRequest) GetUnit() uint32 {
+	if m != nil {
+		return m.Unit
+	}
+	return 0
 }
 
 type DeleteNodeRequest struct {
@@ -439,7 +475,7 @@ func (m *DeleteNodeRequest) Reset()         { *m = DeleteNodeRequest{} }
 func (m *DeleteNodeRequest) String() string { return proto.CompactTextString(m) }
 func (*DeleteNodeRequest) ProtoMessage()    {}
 func (*DeleteNodeRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_node_5c2ef18ec97dbb4c, []int{7}
+	return fileDescriptor_node_012890d7cd275f98, []int{5}
 }
 func (m *DeleteNodeRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_DeleteNodeRequest.Unmarshal(m, b)
@@ -467,18 +503,22 @@ func (m *DeleteNodeRequest) GetName() string {
 }
 
 type ScheduleComputeRequest struct {
-	ComputeName          string       `protobuf:"bytes,2,opt,name=compute_name,json=computeName" json:"compute_name,omitempty"`
-	Compute              *v01.Compute `protobuf:"bytes,3,opt,name=compute" json:"compute,omitempty"`
-	XXX_NoUnkeyedLiteral struct{}     `json:"-"`
-	XXX_unrecognized     []byte       `json:"-"`
-	XXX_sizecache        int32        `json:"-"`
+	ComputeName          string            `protobuf:"bytes,2,opt,name=compute_name,json=computeName" json:"compute_name,omitempty"`
+	Annotations          map[string]string `protobuf:"bytes,3,rep,name=annotations" json:"annotations,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	RequestCpuMilliCore  uint32            `protobuf:"varint,4,opt,name=request_cpu_milli_core,json=requestCpuMilliCore" json:"request_cpu_milli_core,omitempty"`
+	LimitCpuMilliCore    uint32            `protobuf:"varint,5,opt,name=limit_cpu_milli_core,json=limitCpuMilliCore" json:"limit_cpu_milli_core,omitempty"`
+	RequestMemoryBytes   uint64            `protobuf:"varint,6,opt,name=request_memory_bytes,json=requestMemoryBytes" json:"request_memory_bytes,omitempty"`
+	LimitMemoryBytes     uint64            `protobuf:"varint,7,opt,name=limit_memory_bytes,json=limitMemoryBytes" json:"limit_memory_bytes,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}          `json:"-"`
+	XXX_unrecognized     []byte            `json:"-"`
+	XXX_sizecache        int32             `json:"-"`
 }
 
 func (m *ScheduleComputeRequest) Reset()         { *m = ScheduleComputeRequest{} }
 func (m *ScheduleComputeRequest) String() string { return proto.CompactTextString(m) }
 func (*ScheduleComputeRequest) ProtoMessage()    {}
 func (*ScheduleComputeRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_node_5c2ef18ec97dbb4c, []int{8}
+	return fileDescriptor_node_012890d7cd275f98, []int{6}
 }
 func (m *ScheduleComputeRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ScheduleComputeRequest.Unmarshal(m, b)
@@ -505,27 +545,59 @@ func (m *ScheduleComputeRequest) GetComputeName() string {
 	return ""
 }
 
-func (m *ScheduleComputeRequest) GetCompute() *v01.Compute {
+func (m *ScheduleComputeRequest) GetAnnotations() map[string]string {
 	if m != nil {
-		return m.Compute
+		return m.Annotations
 	}
 	return nil
 }
 
+func (m *ScheduleComputeRequest) GetRequestCpuMilliCore() uint32 {
+	if m != nil {
+		return m.RequestCpuMilliCore
+	}
+	return 0
+}
+
+func (m *ScheduleComputeRequest) GetLimitCpuMilliCore() uint32 {
+	if m != nil {
+		return m.LimitCpuMilliCore
+	}
+	return 0
+}
+
+func (m *ScheduleComputeRequest) GetRequestMemoryBytes() uint64 {
+	if m != nil {
+		return m.RequestMemoryBytes
+	}
+	return 0
+}
+
+func (m *ScheduleComputeRequest) GetLimitMemoryBytes() uint64 {
+	if m != nil {
+		return m.LimitMemoryBytes
+	}
+	return 0
+}
+
 type ReserveComputeRequest struct {
-	Name                 string       `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
-	ComputeName          string       `protobuf:"bytes,2,opt,name=compute_name,json=computeName" json:"compute_name,omitempty"`
-	Compute              *v01.Compute `protobuf:"bytes,3,opt,name=compute" json:"compute,omitempty"`
-	XXX_NoUnkeyedLiteral struct{}     `json:"-"`
-	XXX_unrecognized     []byte       `json:"-"`
-	XXX_sizecache        int32        `json:"-"`
+	NodeName             string            `protobuf:"bytes,1,opt,name=node_name,json=nodeName" json:"node_name,omitempty"`
+	ComputeName          string            `protobuf:"bytes,2,opt,name=compute_name,json=computeName" json:"compute_name,omitempty"`
+	Annotations          map[string]string `protobuf:"bytes,3,rep,name=annotations" json:"annotations,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	RequestCpuMilliCore  uint32            `protobuf:"varint,4,opt,name=request_cpu_milli_core,json=requestCpuMilliCore" json:"request_cpu_milli_core,omitempty"`
+	LimitCpuMilliCore    uint32            `protobuf:"varint,5,opt,name=limit_cpu_milli_core,json=limitCpuMilliCore" json:"limit_cpu_milli_core,omitempty"`
+	RequestMemoryBytes   uint64            `protobuf:"varint,6,opt,name=request_memory_bytes,json=requestMemoryBytes" json:"request_memory_bytes,omitempty"`
+	LimitMemoryBytes     uint64            `protobuf:"varint,7,opt,name=limit_memory_bytes,json=limitMemoryBytes" json:"limit_memory_bytes,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}          `json:"-"`
+	XXX_unrecognized     []byte            `json:"-"`
+	XXX_sizecache        int32             `json:"-"`
 }
 
 func (m *ReserveComputeRequest) Reset()         { *m = ReserveComputeRequest{} }
 func (m *ReserveComputeRequest) String() string { return proto.CompactTextString(m) }
 func (*ReserveComputeRequest) ProtoMessage()    {}
 func (*ReserveComputeRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_node_5c2ef18ec97dbb4c, []int{9}
+	return fileDescriptor_node_012890d7cd275f98, []int{7}
 }
 func (m *ReserveComputeRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ReserveComputeRequest.Unmarshal(m, b)
@@ -545,9 +617,9 @@ func (m *ReserveComputeRequest) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_ReserveComputeRequest proto.InternalMessageInfo
 
-func (m *ReserveComputeRequest) GetName() string {
+func (m *ReserveComputeRequest) GetNodeName() string {
 	if m != nil {
-		return m.Name
+		return m.NodeName
 	}
 	return ""
 }
@@ -559,69 +631,43 @@ func (m *ReserveComputeRequest) GetComputeName() string {
 	return ""
 }
 
-func (m *ReserveComputeRequest) GetCompute() *v01.Compute {
+func (m *ReserveComputeRequest) GetAnnotations() map[string]string {
 	if m != nil {
-		return m.Compute
+		return m.Annotations
 	}
 	return nil
 }
 
-type ReserveComputeResponse struct {
-	Name                 string       `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
-	ComputeName          string       `protobuf:"bytes,2,opt,name=compute_name,json=computeName" json:"compute_name,omitempty"`
-	Compute              *v01.Compute `protobuf:"bytes,3,opt,name=compute" json:"compute,omitempty"`
-	XXX_NoUnkeyedLiteral struct{}     `json:"-"`
-	XXX_unrecognized     []byte       `json:"-"`
-	XXX_sizecache        int32        `json:"-"`
-}
-
-func (m *ReserveComputeResponse) Reset()         { *m = ReserveComputeResponse{} }
-func (m *ReserveComputeResponse) String() string { return proto.CompactTextString(m) }
-func (*ReserveComputeResponse) ProtoMessage()    {}
-func (*ReserveComputeResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_node_5c2ef18ec97dbb4c, []int{10}
-}
-func (m *ReserveComputeResponse) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_ReserveComputeResponse.Unmarshal(m, b)
-}
-func (m *ReserveComputeResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_ReserveComputeResponse.Marshal(b, m, deterministic)
-}
-func (dst *ReserveComputeResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_ReserveComputeResponse.Merge(dst, src)
-}
-func (m *ReserveComputeResponse) XXX_Size() int {
-	return xxx_messageInfo_ReserveComputeResponse.Size(m)
-}
-func (m *ReserveComputeResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_ReserveComputeResponse.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_ReserveComputeResponse proto.InternalMessageInfo
-
-func (m *ReserveComputeResponse) GetName() string {
+func (m *ReserveComputeRequest) GetRequestCpuMilliCore() uint32 {
 	if m != nil {
-		return m.Name
+		return m.RequestCpuMilliCore
 	}
-	return ""
+	return 0
 }
 
-func (m *ReserveComputeResponse) GetComputeName() string {
+func (m *ReserveComputeRequest) GetLimitCpuMilliCore() uint32 {
 	if m != nil {
-		return m.ComputeName
+		return m.LimitCpuMilliCore
 	}
-	return ""
+	return 0
 }
 
-func (m *ReserveComputeResponse) GetCompute() *v01.Compute {
+func (m *ReserveComputeRequest) GetRequestMemoryBytes() uint64 {
 	if m != nil {
-		return m.Compute
+		return m.RequestMemoryBytes
 	}
-	return nil
+	return 0
+}
+
+func (m *ReserveComputeRequest) GetLimitMemoryBytes() uint64 {
+	if m != nil {
+		return m.LimitMemoryBytes
+	}
+	return 0
 }
 
 type ReleaseComputeRequest struct {
-	Name                 string   `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
+	NodeName             string   `protobuf:"bytes,1,opt,name=node_name,json=nodeName" json:"node_name,omitempty"`
 	ComputeName          string   `protobuf:"bytes,2,opt,name=compute_name,json=computeName" json:"compute_name,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
@@ -632,7 +678,7 @@ func (m *ReleaseComputeRequest) Reset()         { *m = ReleaseComputeRequest{} }
 func (m *ReleaseComputeRequest) String() string { return proto.CompactTextString(m) }
 func (*ReleaseComputeRequest) ProtoMessage()    {}
 func (*ReleaseComputeRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_node_5c2ef18ec97dbb4c, []int{11}
+	return fileDescriptor_node_012890d7cd275f98, []int{8}
 }
 func (m *ReleaseComputeRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ReleaseComputeRequest.Unmarshal(m, b)
@@ -652,9 +698,9 @@ func (m *ReleaseComputeRequest) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_ReleaseComputeRequest proto.InternalMessageInfo
 
-func (m *ReleaseComputeRequest) GetName() string {
+func (m *ReleaseComputeRequest) GetNodeName() string {
 	if m != nil {
-		return m.Name
+		return m.NodeName
 	}
 	return ""
 }
@@ -667,19 +713,20 @@ func (m *ReleaseComputeRequest) GetComputeName() string {
 }
 
 type ScheduleStorageRequest struct {
-	Name                 string       `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
-	StorageName          string       `protobuf:"bytes,2,opt,name=storage_name,json=storageName" json:"storage_name,omitempty"`
-	Storage              *v01.Storage `protobuf:"bytes,3,opt,name=storage" json:"storage,omitempty"`
-	XXX_NoUnkeyedLiteral struct{}     `json:"-"`
-	XXX_unrecognized     []byte       `json:"-"`
-	XXX_sizecache        int32        `json:"-"`
+	StorageName          string            `protobuf:"bytes,2,opt,name=storage_name,json=storageName" json:"storage_name,omitempty"`
+	Annotations          map[string]string `protobuf:"bytes,3,rep,name=annotations" json:"annotations,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	RequestBytes         uint64            `protobuf:"varint,4,opt,name=request_bytes,json=requestBytes" json:"request_bytes,omitempty"`
+	LimitBytes           uint64            `protobuf:"varint,5,opt,name=limit_bytes,json=limitBytes" json:"limit_bytes,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}          `json:"-"`
+	XXX_unrecognized     []byte            `json:"-"`
+	XXX_sizecache        int32             `json:"-"`
 }
 
 func (m *ScheduleStorageRequest) Reset()         { *m = ScheduleStorageRequest{} }
 func (m *ScheduleStorageRequest) String() string { return proto.CompactTextString(m) }
 func (*ScheduleStorageRequest) ProtoMessage()    {}
 func (*ScheduleStorageRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_node_5c2ef18ec97dbb4c, []int{12}
+	return fileDescriptor_node_012890d7cd275f98, []int{9}
 }
 func (m *ScheduleStorageRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ScheduleStorageRequest.Unmarshal(m, b)
@@ -699,13 +746,6 @@ func (m *ScheduleStorageRequest) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_ScheduleStorageRequest proto.InternalMessageInfo
 
-func (m *ScheduleStorageRequest) GetName() string {
-	if m != nil {
-		return m.Name
-	}
-	return ""
-}
-
 func (m *ScheduleStorageRequest) GetStorageName() string {
 	if m != nil {
 		return m.StorageName
@@ -713,27 +753,43 @@ func (m *ScheduleStorageRequest) GetStorageName() string {
 	return ""
 }
 
-func (m *ScheduleStorageRequest) GetStorage() *v01.Storage {
+func (m *ScheduleStorageRequest) GetAnnotations() map[string]string {
 	if m != nil {
-		return m.Storage
+		return m.Annotations
 	}
 	return nil
 }
 
+func (m *ScheduleStorageRequest) GetRequestBytes() uint64 {
+	if m != nil {
+		return m.RequestBytes
+	}
+	return 0
+}
+
+func (m *ScheduleStorageRequest) GetLimitBytes() uint64 {
+	if m != nil {
+		return m.LimitBytes
+	}
+	return 0
+}
+
 type ReserveStorageRequest struct {
-	Name                 string       `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
-	StorageName          string       `protobuf:"bytes,2,opt,name=storage_name,json=storageName" json:"storage_name,omitempty"`
-	Storage              *v01.Storage `protobuf:"bytes,3,opt,name=storage" json:"storage,omitempty"`
-	XXX_NoUnkeyedLiteral struct{}     `json:"-"`
-	XXX_unrecognized     []byte       `json:"-"`
-	XXX_sizecache        int32        `json:"-"`
+	NodeName             string            `protobuf:"bytes,1,opt,name=node_name,json=nodeName" json:"node_name,omitempty"`
+	StorageName          string            `protobuf:"bytes,2,opt,name=storage_name,json=storageName" json:"storage_name,omitempty"`
+	Annotations          map[string]string `protobuf:"bytes,3,rep,name=annotations" json:"annotations,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	RequestBytes         uint64            `protobuf:"varint,4,opt,name=request_bytes,json=requestBytes" json:"request_bytes,omitempty"`
+	LimitBytes           uint64            `protobuf:"varint,5,opt,name=limit_bytes,json=limitBytes" json:"limit_bytes,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}          `json:"-"`
+	XXX_unrecognized     []byte            `json:"-"`
+	XXX_sizecache        int32             `json:"-"`
 }
 
 func (m *ReserveStorageRequest) Reset()         { *m = ReserveStorageRequest{} }
 func (m *ReserveStorageRequest) String() string { return proto.CompactTextString(m) }
 func (*ReserveStorageRequest) ProtoMessage()    {}
 func (*ReserveStorageRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_node_5c2ef18ec97dbb4c, []int{13}
+	return fileDescriptor_node_012890d7cd275f98, []int{10}
 }
 func (m *ReserveStorageRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ReserveStorageRequest.Unmarshal(m, b)
@@ -753,9 +809,9 @@ func (m *ReserveStorageRequest) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_ReserveStorageRequest proto.InternalMessageInfo
 
-func (m *ReserveStorageRequest) GetName() string {
+func (m *ReserveStorageRequest) GetNodeName() string {
 	if m != nil {
-		return m.Name
+		return m.NodeName
 	}
 	return ""
 }
@@ -767,69 +823,29 @@ func (m *ReserveStorageRequest) GetStorageName() string {
 	return ""
 }
 
-func (m *ReserveStorageRequest) GetStorage() *v01.Storage {
+func (m *ReserveStorageRequest) GetAnnotations() map[string]string {
 	if m != nil {
-		return m.Storage
+		return m.Annotations
 	}
 	return nil
 }
 
-type ReserveStorageResponse struct {
-	Name                 string       `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
-	StorageName          string       `protobuf:"bytes,2,opt,name=storage_name,json=storageName" json:"storage_name,omitempty"`
-	Storage              *v01.Storage `protobuf:"bytes,3,opt,name=storage" json:"storage,omitempty"`
-	XXX_NoUnkeyedLiteral struct{}     `json:"-"`
-	XXX_unrecognized     []byte       `json:"-"`
-	XXX_sizecache        int32        `json:"-"`
-}
-
-func (m *ReserveStorageResponse) Reset()         { *m = ReserveStorageResponse{} }
-func (m *ReserveStorageResponse) String() string { return proto.CompactTextString(m) }
-func (*ReserveStorageResponse) ProtoMessage()    {}
-func (*ReserveStorageResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_node_5c2ef18ec97dbb4c, []int{14}
-}
-func (m *ReserveStorageResponse) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_ReserveStorageResponse.Unmarshal(m, b)
-}
-func (m *ReserveStorageResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_ReserveStorageResponse.Marshal(b, m, deterministic)
-}
-func (dst *ReserveStorageResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_ReserveStorageResponse.Merge(dst, src)
-}
-func (m *ReserveStorageResponse) XXX_Size() int {
-	return xxx_messageInfo_ReserveStorageResponse.Size(m)
-}
-func (m *ReserveStorageResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_ReserveStorageResponse.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_ReserveStorageResponse proto.InternalMessageInfo
-
-func (m *ReserveStorageResponse) GetName() string {
+func (m *ReserveStorageRequest) GetRequestBytes() uint64 {
 	if m != nil {
-		return m.Name
+		return m.RequestBytes
 	}
-	return ""
+	return 0
 }
 
-func (m *ReserveStorageResponse) GetStorageName() string {
+func (m *ReserveStorageRequest) GetLimitBytes() uint64 {
 	if m != nil {
-		return m.StorageName
+		return m.LimitBytes
 	}
-	return ""
-}
-
-func (m *ReserveStorageResponse) GetStorage() *v01.Storage {
-	if m != nil {
-		return m.Storage
-	}
-	return nil
+	return 0
 }
 
 type ReleaseStorageRequest struct {
-	Name                 string   `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
+	NodeName             string   `protobuf:"bytes,1,opt,name=node_name,json=nodeName" json:"node_name,omitempty"`
 	StorageName          string   `protobuf:"bytes,2,opt,name=storage_name,json=storageName" json:"storage_name,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
@@ -840,7 +856,7 @@ func (m *ReleaseStorageRequest) Reset()         { *m = ReleaseStorageRequest{} }
 func (m *ReleaseStorageRequest) String() string { return proto.CompactTextString(m) }
 func (*ReleaseStorageRequest) ProtoMessage()    {}
 func (*ReleaseStorageRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_node_5c2ef18ec97dbb4c, []int{15}
+	return fileDescriptor_node_012890d7cd275f98, []int{11}
 }
 func (m *ReleaseStorageRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ReleaseStorageRequest.Unmarshal(m, b)
@@ -860,9 +876,9 @@ func (m *ReleaseStorageRequest) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_ReleaseStorageRequest proto.InternalMessageInfo
 
-func (m *ReleaseStorageRequest) GetName() string {
+func (m *ReleaseStorageRequest) GetNodeName() string {
 	if m != nil {
-		return m.Name
+		return m.NodeName
 	}
 	return ""
 }
@@ -876,24 +892,26 @@ func (m *ReleaseStorageRequest) GetStorageName() string {
 
 func init() {
 	proto.RegisterType((*Node)(nil), "n0stack.pool.Node")
-	proto.RegisterType((*NodeSpec)(nil), "n0stack.pool.NodeSpec")
-	proto.RegisterType((*NodeStatus)(nil), "n0stack.pool.NodeStatus")
-	proto.RegisterMapType((map[string]*v01.Compute)(nil), "n0stack.pool.NodeStatus.ReservedComputesEntry")
-	proto.RegisterMapType((map[string]*v01.Storage)(nil), "n0stack.pool.NodeStatus.ReservedStoragesEntry")
+	proto.RegisterMapType((map[string]string)(nil), "n0stack.pool.Node.AnnotationsEntry")
+	proto.RegisterMapType((map[string]*v0.Compute)(nil), "n0stack.pool.Node.ReservedComputesEntry")
+	proto.RegisterMapType((map[string]*v0.Storage)(nil), "n0stack.pool.Node.ReservedStoragesEntry")
 	proto.RegisterType((*ListNodesRequest)(nil), "n0stack.pool.ListNodesRequest")
 	proto.RegisterType((*ListNodesResponse)(nil), "n0stack.pool.ListNodesResponse")
 	proto.RegisterType((*GetNodeRequest)(nil), "n0stack.pool.GetNodeRequest")
 	proto.RegisterType((*ApplyNodeRequest)(nil), "n0stack.pool.ApplyNodeRequest")
+	proto.RegisterMapType((map[string]string)(nil), "n0stack.pool.ApplyNodeRequest.AnnotationsEntry")
 	proto.RegisterType((*DeleteNodeRequest)(nil), "n0stack.pool.DeleteNodeRequest")
 	proto.RegisterType((*ScheduleComputeRequest)(nil), "n0stack.pool.ScheduleComputeRequest")
+	proto.RegisterMapType((map[string]string)(nil), "n0stack.pool.ScheduleComputeRequest.AnnotationsEntry")
 	proto.RegisterType((*ReserveComputeRequest)(nil), "n0stack.pool.ReserveComputeRequest")
-	proto.RegisterType((*ReserveComputeResponse)(nil), "n0stack.pool.ReserveComputeResponse")
+	proto.RegisterMapType((map[string]string)(nil), "n0stack.pool.ReserveComputeRequest.AnnotationsEntry")
 	proto.RegisterType((*ReleaseComputeRequest)(nil), "n0stack.pool.ReleaseComputeRequest")
 	proto.RegisterType((*ScheduleStorageRequest)(nil), "n0stack.pool.ScheduleStorageRequest")
+	proto.RegisterMapType((map[string]string)(nil), "n0stack.pool.ScheduleStorageRequest.AnnotationsEntry")
 	proto.RegisterType((*ReserveStorageRequest)(nil), "n0stack.pool.ReserveStorageRequest")
-	proto.RegisterType((*ReserveStorageResponse)(nil), "n0stack.pool.ReserveStorageResponse")
+	proto.RegisterMapType((map[string]string)(nil), "n0stack.pool.ReserveStorageRequest.AnnotationsEntry")
 	proto.RegisterType((*ReleaseStorageRequest)(nil), "n0stack.pool.ReleaseStorageRequest")
-	proto.RegisterEnum("n0stack.pool.NodeStatus_NodeState", NodeStatus_NodeState_name, NodeStatus_NodeState_value)
+	proto.RegisterEnum("n0stack.pool.Node_NodeState", Node_NodeState_name, Node_NodeState_value)
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -911,12 +929,12 @@ type NodeServiceClient interface {
 	GetNode(ctx context.Context, in *GetNodeRequest, opts ...grpc.CallOption) (*Node, error)
 	ApplyNode(ctx context.Context, in *ApplyNodeRequest, opts ...grpc.CallOption) (*Node, error)
 	DeleteNode(ctx context.Context, in *DeleteNodeRequest, opts ...grpc.CallOption) (*empty.Empty, error)
-	ScheduleCompute(ctx context.Context, in *ScheduleComputeRequest, opts ...grpc.CallOption) (*ReserveComputeResponse, error)
-	ReserveCompute(ctx context.Context, in *ReserveComputeRequest, opts ...grpc.CallOption) (*ReserveComputeResponse, error)
+	ScheduleCompute(ctx context.Context, in *ScheduleComputeRequest, opts ...grpc.CallOption) (*Node, error)
+	ReserveCompute(ctx context.Context, in *ReserveComputeRequest, opts ...grpc.CallOption) (*Node, error)
 	// rpc ResizeCompute(ResizeComputeRequest) returns (ReserveComputeResponse) {}
 	ReleaseCompute(ctx context.Context, in *ReleaseComputeRequest, opts ...grpc.CallOption) (*empty.Empty, error)
-	ScheduleStorage(ctx context.Context, in *ScheduleStorageRequest, opts ...grpc.CallOption) (*ReserveStorageResponse, error)
-	ReserveStorage(ctx context.Context, in *ReserveStorageRequest, opts ...grpc.CallOption) (*ReserveStorageResponse, error)
+	ScheduleStorage(ctx context.Context, in *ScheduleStorageRequest, opts ...grpc.CallOption) (*Node, error)
+	ReserveStorage(ctx context.Context, in *ReserveStorageRequest, opts ...grpc.CallOption) (*Node, error)
 	// rpc ResizeStorae() returns () {}
 	ReleaseStorage(ctx context.Context, in *ReleaseStorageRequest, opts ...grpc.CallOption) (*empty.Empty, error)
 }
@@ -965,8 +983,8 @@ func (c *nodeServiceClient) DeleteNode(ctx context.Context, in *DeleteNodeReques
 	return out, nil
 }
 
-func (c *nodeServiceClient) ScheduleCompute(ctx context.Context, in *ScheduleComputeRequest, opts ...grpc.CallOption) (*ReserveComputeResponse, error) {
-	out := new(ReserveComputeResponse)
+func (c *nodeServiceClient) ScheduleCompute(ctx context.Context, in *ScheduleComputeRequest, opts ...grpc.CallOption) (*Node, error) {
+	out := new(Node)
 	err := grpc.Invoke(ctx, "/n0stack.pool.NodeService/ScheduleCompute", in, out, c.cc, opts...)
 	if err != nil {
 		return nil, err
@@ -974,8 +992,8 @@ func (c *nodeServiceClient) ScheduleCompute(ctx context.Context, in *ScheduleCom
 	return out, nil
 }
 
-func (c *nodeServiceClient) ReserveCompute(ctx context.Context, in *ReserveComputeRequest, opts ...grpc.CallOption) (*ReserveComputeResponse, error) {
-	out := new(ReserveComputeResponse)
+func (c *nodeServiceClient) ReserveCompute(ctx context.Context, in *ReserveComputeRequest, opts ...grpc.CallOption) (*Node, error) {
+	out := new(Node)
 	err := grpc.Invoke(ctx, "/n0stack.pool.NodeService/ReserveCompute", in, out, c.cc, opts...)
 	if err != nil {
 		return nil, err
@@ -992,8 +1010,8 @@ func (c *nodeServiceClient) ReleaseCompute(ctx context.Context, in *ReleaseCompu
 	return out, nil
 }
 
-func (c *nodeServiceClient) ScheduleStorage(ctx context.Context, in *ScheduleStorageRequest, opts ...grpc.CallOption) (*ReserveStorageResponse, error) {
-	out := new(ReserveStorageResponse)
+func (c *nodeServiceClient) ScheduleStorage(ctx context.Context, in *ScheduleStorageRequest, opts ...grpc.CallOption) (*Node, error) {
+	out := new(Node)
 	err := grpc.Invoke(ctx, "/n0stack.pool.NodeService/ScheduleStorage", in, out, c.cc, opts...)
 	if err != nil {
 		return nil, err
@@ -1001,8 +1019,8 @@ func (c *nodeServiceClient) ScheduleStorage(ctx context.Context, in *ScheduleSto
 	return out, nil
 }
 
-func (c *nodeServiceClient) ReserveStorage(ctx context.Context, in *ReserveStorageRequest, opts ...grpc.CallOption) (*ReserveStorageResponse, error) {
-	out := new(ReserveStorageResponse)
+func (c *nodeServiceClient) ReserveStorage(ctx context.Context, in *ReserveStorageRequest, opts ...grpc.CallOption) (*Node, error) {
+	out := new(Node)
 	err := grpc.Invoke(ctx, "/n0stack.pool.NodeService/ReserveStorage", in, out, c.cc, opts...)
 	if err != nil {
 		return nil, err
@@ -1026,12 +1044,12 @@ type NodeServiceServer interface {
 	GetNode(context.Context, *GetNodeRequest) (*Node, error)
 	ApplyNode(context.Context, *ApplyNodeRequest) (*Node, error)
 	DeleteNode(context.Context, *DeleteNodeRequest) (*empty.Empty, error)
-	ScheduleCompute(context.Context, *ScheduleComputeRequest) (*ReserveComputeResponse, error)
-	ReserveCompute(context.Context, *ReserveComputeRequest) (*ReserveComputeResponse, error)
+	ScheduleCompute(context.Context, *ScheduleComputeRequest) (*Node, error)
+	ReserveCompute(context.Context, *ReserveComputeRequest) (*Node, error)
 	// rpc ResizeCompute(ResizeComputeRequest) returns (ReserveComputeResponse) {}
 	ReleaseCompute(context.Context, *ReleaseComputeRequest) (*empty.Empty, error)
-	ScheduleStorage(context.Context, *ScheduleStorageRequest) (*ReserveStorageResponse, error)
-	ReserveStorage(context.Context, *ReserveStorageRequest) (*ReserveStorageResponse, error)
+	ScheduleStorage(context.Context, *ScheduleStorageRequest) (*Node, error)
+	ReserveStorage(context.Context, *ReserveStorageRequest) (*Node, error)
 	// rpc ResizeStorae() returns () {}
 	ReleaseStorage(context.Context, *ReleaseStorageRequest) (*empty.Empty, error)
 }
@@ -1269,67 +1287,74 @@ var _NodeService_serviceDesc = grpc.ServiceDesc{
 	Metadata: "pool/v0/node.proto",
 }
 
-func init() { proto.RegisterFile("pool/v0/node.proto", fileDescriptor_node_5c2ef18ec97dbb4c) }
+func init() { proto.RegisterFile("pool/v0/node.proto", fileDescriptor_node_012890d7cd275f98) }
 
-var fileDescriptor_node_5c2ef18ec97dbb4c = []byte{
-	// 932 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xc4, 0x57, 0xdd, 0x8e, 0xdb, 0x44,
-	0x14, 0x8e, 0x37, 0x3f, 0xbb, 0x39, 0xc9, 0x6e, 0x93, 0x91, 0x48, 0xad, 0x80, 0xca, 0xd6, 0xbb,
-	0x82, 0x40, 0x55, 0x67, 0x59, 0x6e, 0x2a, 0x50, 0x2f, 0xb6, 0xa5, 0xea, 0x0d, 0x5d, 0x24, 0xef,
-	0x5d, 0x01, 0x45, 0x13, 0xfb, 0x90, 0x5a, 0x6b, 0x7b, 0x8c, 0x67, 0x1c, 0x29, 0xdc, 0xc1, 0x2b,
-	0xf0, 0x56, 0x3c, 0x01, 0xd7, 0x3c, 0x09, 0x9a, 0xf1, 0x38, 0x6b, 0x7b, 0xed, 0xd0, 0xa2, 0x2e,
-	0xdc, 0x8d, 0xcf, 0xf9, 0xce, 0xe7, 0x6f, 0xce, 0x99, 0xf9, 0x64, 0x03, 0x89, 0x19, 0x0b, 0xe6,
-	0xeb, 0xb3, 0x79, 0xc4, 0x3c, 0xb4, 0xe3, 0x84, 0x09, 0x46, 0x86, 0xd1, 0x19, 0x17, 0xd4, 0xbd,
-	0xb6, 0x65, 0x6e, 0xfa, 0xe1, 0x8a, 0xb1, 0x55, 0x80, 0x73, 0x95, 0x5b, 0xa6, 0x3f, 0xcd, 0x31,
-	0x8c, 0xc5, 0x26, 0x83, 0x4e, 0xc7, 0xeb, 0xb3, 0x79, 0x88, 0x82, 0x7a, 0x54, 0x50, 0x1d, 0xba,
-	0xbf, 0x4c, 0xbd, 0x15, 0x0a, 0xc9, 0xe9, 0xb2, 0x30, 0x4e, 0x05, 0xde, 0x4e, 0x70, 0xc1, 0x12,
-	0xba, 0xd2, 0x09, 0xeb, 0x77, 0x03, 0x3a, 0x97, 0xcc, 0x43, 0xf2, 0x18, 0x0e, 0x72, 0x32, 0xd3,
-	0x38, 0x36, 0x66, 0x83, 0xf3, 0xb1, 0x9d, 0x6b, 0x79, 0xa5, 0x13, 0xce, 0x16, 0x42, 0x3e, 0x87,
-	0x0e, 0x8f, 0xd1, 0x35, 0xf7, 0x14, 0x74, 0x62, 0x17, 0x65, 0xdb, 0x92, 0xf0, 0x2a, 0x46, 0xd7,
-	0x51, 0x18, 0x72, 0x06, 0x3d, 0x2e, 0xa8, 0x48, 0xb9, 0xd9, 0x56, 0x68, 0xb3, 0x06, 0xad, 0xf2,
-	0x8e, 0xc6, 0x59, 0x7f, 0xee, 0xc1, 0x41, 0x4e, 0x42, 0x26, 0xd0, 0xe3, 0x98, 0xf8, 0x34, 0x50,
-	0xba, 0xfa, 0x8e, 0x7e, 0x22, 0x26, 0xec, 0x53, 0xcf, 0x4b, 0x90, 0x73, 0xa5, 0xa2, 0xef, 0xe4,
-	0x8f, 0xe4, 0x21, 0x0c, 0xfd, 0x38, 0xf4, 0x17, 0x79, 0xba, 0xad, 0xd2, 0x03, 0x19, 0xbb, 0xd0,
-	0x90, 0x4f, 0xe0, 0x9e, 0x1b, 0xa7, 0x8b, 0xd0, 0x0f, 0x02, 0x7f, 0xe1, 0xb2, 0x04, 0xb9, 0xd9,
-	0x39, 0x36, 0x66, 0x87, 0xce, 0xa1, 0x1b, 0xa7, 0xaf, 0x64, 0xf4, 0xb9, 0x0c, 0x4a, 0xaa, 0x10,
-	0x43, 0x96, 0x6c, 0x16, 0xcb, 0x8d, 0x40, 0x6e, 0x76, 0x8f, 0x8d, 0x59, 0xc7, 0x19, 0x64, 0xb1,
-	0x67, 0x32, 0x44, 0x4e, 0xe0, 0x50, 0xf7, 0x54, 0x63, 0x7a, 0x0a, 0x33, 0xd4, 0xc1, 0x0c, 0xf4,
-	0x00, 0x40, 0xf6, 0xcd, 0xc5, 0x48, 0x60, 0x62, 0x1e, 0x28, 0x41, 0x85, 0x08, 0x79, 0x04, 0x63,
-	0xba, 0xa6, 0x7e, 0x40, 0xd7, 0x7e, 0xe0, 0x8b, 0xcd, 0xe2, 0x17, 0x16, 0xa1, 0xd9, 0x57, 0xb0,
-	0x51, 0x31, 0xf1, 0x9a, 0x45, 0x48, 0x08, 0x74, 0x5c, 0x0c, 0x02, 0x13, 0x54, 0x5e, 0xad, 0x65,
-	0x2c, 0xa1, 0xee, 0xb5, 0x39, 0xc8, 0x62, 0x72, 0x2d, 0x63, 0x69, 0xe4, 0x0b, 0x73, 0xa8, 0x76,
-	0xa6, 0xd6, 0xd6, 0x5f, 0x6d, 0x80, 0x9b, 0x8e, 0x93, 0x27, 0xd0, 0x95, 0x3d, 0x47, 0xd5, 0xdb,
-	0xa3, 0x73, 0xab, 0x69, 0x34, 0xdb, 0x25, 0x3a, 0x59, 0x01, 0xf9, 0x1e, 0xc6, 0x09, 0x72, 0x4c,
-	0xd6, 0xe8, 0x2d, 0xf4, 0x61, 0x93, 0x83, 0x68, 0xcf, 0x06, 0xe7, 0x76, 0x23, 0x8b, 0xa3, 0x2b,
-	0x9e, 0xeb, 0x82, 0x17, 0x91, 0x48, 0x36, 0xce, 0x28, 0xa9, 0x84, 0x4b, 0xe4, 0xba, 0x8f, 0x72,
-	0x8c, 0x6f, 0x47, 0x7e, 0xa5, 0x0b, 0x2a, 0xe4, 0x79, 0x78, 0xfa, 0x03, 0x7c, 0x50, 0xab, 0x83,
-	0x8c, 0xa0, 0x7d, 0x8d, 0x1b, 0x7d, 0xcc, 0xe4, 0x92, 0x3c, 0x86, 0xee, 0x9a, 0x06, 0x29, 0xea,
-	0x73, 0x7e, 0x7f, 0xfb, 0xee, 0xec, 0x3e, 0xd9, 0xba, 0xde, 0xc9, 0x50, 0x5f, 0xed, 0x3d, 0x31,
-	0x8a, 0xec, 0x25, 0x21, 0xff, 0x82, 0x5d, 0xd7, 0x17, 0xd8, 0xad, 0x53, 0xe8, 0x6f, 0x27, 0x41,
-	0x86, 0xf2, 0x96, 0x08, 0x07, 0xa9, 0xb7, 0x19, 0xb5, 0x48, 0x1f, 0xba, 0xd9, 0xd2, 0xb0, 0x08,
-	0x8c, 0xbe, 0xf5, 0xb9, 0x90, 0x48, 0xee, 0xe0, 0xcf, 0x29, 0x72, 0x61, 0x3d, 0x85, 0x71, 0x21,
-	0xc6, 0x63, 0x16, 0x71, 0x24, 0x33, 0xe8, 0x4a, 0xf3, 0xe1, 0xa6, 0xa1, 0x7a, 0x4b, 0x6e, 0xf7,
-	0xd6, 0xc9, 0x00, 0xd6, 0x29, 0x1c, 0xbd, 0x44, 0x55, 0xad, 0x09, 0xe5, 0xe9, 0x8a, 0x68, 0x88,
-	0x7a, 0x43, 0x6a, 0x6d, 0x85, 0x30, 0xba, 0x88, 0xe3, 0x60, 0x53, 0xc4, 0xdd, 0x9d, 0xb3, 0x58,
-	0x9f, 0xc2, 0xf8, 0x1b, 0x0c, 0x50, 0xe0, 0x3f, 0xe9, 0x8a, 0x60, 0x72, 0xe5, 0xbe, 0x41, 0x2f,
-	0x0d, 0x30, 0x1f, 0x99, 0x46, 0x3f, 0x84, 0xa1, 0x3e, 0xbd, 0x0b, 0x55, 0x95, 0x59, 0xc9, 0x40,
-	0xc7, 0x2e, 0x69, 0x88, 0xe4, 0x0b, 0xd8, 0xd7, 0x8f, 0xda, 0xc0, 0x1a, 0x8f, 0x41, 0x8e, 0xb3,
-	0x7e, 0x35, 0xb6, 0xa7, 0xa0, 0xf2, 0xbe, 0x1a, 0x75, 0x77, 0xa4, 0xe1, 0x37, 0x03, 0x26, 0x55,
-	0x0d, 0x7a, 0xec, 0xff, 0x9d, 0x88, 0x4b, 0xd9, 0x87, 0x00, 0x29, 0x7f, 0x3f, 0x7d, 0x50, 0x9b,
-	0xca, 0x27, 0x99, 0x5f, 0x8f, 0xdd, 0x8c, 0xb9, 0x37, 0x17, 0x19, 0x75, 0x2c, 0xdf, 0x94, 0x7e,
-	0x6c, 0xda, 0x54, 0xfe, 0x9e, 0x1c, 0x57, 0x9c, 0xee, 0xff, 0xa6, 0xa1, 0x30, 0xdd, 0xad, 0x86,
-	0xdd, 0xd3, 0xbd, 0x03, 0x11, 0x37, 0xd3, 0x7d, 0x2f, 0x7d, 0x38, 0xff, 0xa3, 0x07, 0x03, 0x75,
-	0xc5, 0x31, 0x59, 0xfb, 0x2e, 0x92, 0x4b, 0xe8, 0x6f, 0x3d, 0x8b, 0x3c, 0x28, 0x5b, 0x41, 0xd5,
-	0xe0, 0xa6, 0x1f, 0x37, 0xe6, 0xb3, 0xbe, 0x58, 0x2d, 0xf2, 0x14, 0xf6, 0xb5, 0x89, 0x91, 0x8f,
-	0xca, 0xe8, 0xb2, 0xb7, 0x4d, 0x6b, 0x8c, 0xd0, 0x6a, 0x91, 0x0b, 0xe8, 0x6f, 0xdd, 0xad, 0x2a,
-	0xa7, 0x6a, 0x7b, 0x0d, 0x14, 0x2f, 0x01, 0x6e, 0x1c, 0x8b, 0x54, 0x24, 0xdf, 0xf2, 0xb2, 0xe9,
-	0xc4, 0xce, 0xbe, 0x00, 0xed, 0xfc, 0x0b, 0xd0, 0x7e, 0x21, 0xbf, 0x00, 0xad, 0x16, 0x59, 0xc0,
-	0xbd, 0x8a, 0xa3, 0x91, 0xd3, 0x32, 0x5b, 0xbd, 0xe1, 0x4d, 0x2b, 0xa8, 0x7a, 0x87, 0xb0, 0x5a,
-	0xe4, 0x47, 0x38, 0x2a, 0xe7, 0xc8, 0xc9, 0xee, 0xca, 0x77, 0xa3, 0xff, 0x4e, 0xd2, 0x17, 0x8d,
-	0xe1, 0x36, 0x7d, 0x8d, 0x6d, 0xbc, 0x5d, 0x43, 0xf4, 0x61, 0x6c, 0x6a, 0x48, 0xf9, 0xac, 0x36,
-	0x28, 0xae, 0x5c, 0xaa, 0x52, 0x43, 0x72, 0xfe, 0x93, 0xdd, 0x95, 0xef, 0x46, 0x7f, 0xd3, 0x90,
-	0x46, 0xfa, 0x9a, 0x9b, 0xd6, 0xdc, 0x90, 0x67, 0x8f, 0x5e, 0x7f, 0xb6, 0xf2, 0xc5, 0x9b, 0x74,
-	0x69, 0xbb, 0x2c, 0x9c, 0x6b, 0xaa, 0xec, 0x57, 0xc2, 0x5e, 0xb1, 0xb9, 0xfe, 0xf9, 0xf8, 0x3a,
-	0x96, 0x8b, 0x65, 0x4f, 0xc5, 0xbf, 0xfc, 0x3b, 0x00, 0x00, 0xff, 0xff, 0x57, 0x20, 0x7f, 0x2f,
-	0x94, 0x0c, 0x00, 0x00,
+var fileDescriptor_node_012890d7cd275f98 = []byte{
+	// 1046 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xec, 0x58, 0xdd, 0x6e, 0xdb, 0x46,
+	0x13, 0xb5, 0x2c, 0xc9, 0x8e, 0x46, 0x92, 0x2d, 0x6d, 0xfc, 0x39, 0x0b, 0xe5, 0x43, 0xa2, 0x50,
+	0x46, 0xab, 0x22, 0x2d, 0x65, 0xc8, 0x29, 0x50, 0xb4, 0x48, 0x01, 0xc7, 0x35, 0x72, 0xd1, 0xda,
+	0x45, 0x65, 0xb4, 0x01, 0x82, 0x02, 0x02, 0x45, 0x6d, 0x15, 0xc2, 0x24, 0x97, 0xe5, 0x2e, 0x05,
+	0xa8, 0x97, 0x7d, 0x8c, 0xdc, 0xf5, 0x21, 0xfa, 0x18, 0x7d, 0xa7, 0x62, 0x7f, 0x28, 0x91, 0x14,
+	0x05, 0x2a, 0x8d, 0x2f, 0x5a, 0x20, 0x37, 0xc6, 0x72, 0xe6, 0xcc, 0xd9, 0x9f, 0x33, 0x33, 0xbb,
+	0x32, 0xa0, 0x80, 0x52, 0x77, 0x30, 0x3f, 0x1d, 0xf8, 0x74, 0x4a, 0xcc, 0x20, 0xa4, 0x9c, 0xa2,
+	0x86, 0x7f, 0xca, 0xb8, 0x65, 0xdf, 0x9a, 0xc2, 0xd7, 0x79, 0x38, 0xa3, 0x74, 0xe6, 0x92, 0x81,
+	0xf4, 0x4d, 0xa2, 0x5f, 0x06, 0xc4, 0x0b, 0xf8, 0x42, 0x41, 0x3b, 0x0f, 0x26, 0xd1, 0x74, 0x46,
+	0xb8, 0x20, 0xb0, 0xa9, 0x17, 0x44, 0x9c, 0xac, 0x3b, 0x18, 0xa7, 0xa1, 0x35, 0xd3, 0x0e, 0xe3,
+	0xaf, 0x7d, 0xa8, 0x5c, 0xd3, 0x29, 0x41, 0x08, 0x2a, 0xbe, 0xe5, 0x11, 0x5c, 0xea, 0x96, 0xfa,
+	0xb5, 0x91, 0x1c, 0xa3, 0x4b, 0xa8, 0x5b, 0xbe, 0x4f, 0xb9, 0xc5, 0x1d, 0xea, 0x33, 0x5c, 0xee,
+	0x96, 0xfb, 0xf5, 0x61, 0xcf, 0x4c, 0xae, 0xc7, 0x14, 0xc1, 0xe6, 0xf9, 0x0a, 0x75, 0xe9, 0xf3,
+	0x70, 0x31, 0x4a, 0xc6, 0x21, 0x0c, 0xfb, 0x73, 0x12, 0x32, 0x87, 0xfa, 0xb8, 0xda, 0x2d, 0xf5,
+	0x2b, 0xa3, 0xf8, 0x53, 0x78, 0xac, 0xe9, 0x34, 0x24, 0x8c, 0x61, 0x90, 0xf3, 0xc6, 0x9f, 0xe8,
+	0x09, 0x34, 0x9c, 0xc0, 0x73, 0xc6, 0xb1, 0xbb, 0x2e, 0xdd, 0x75, 0x61, 0x3b, 0xd7, 0x90, 0x63,
+	0xd8, 0x63, 0x24, 0x74, 0x2c, 0x17, 0x37, 0xa4, 0x53, 0x7f, 0xa1, 0x8f, 0xe0, 0xd0, 0x0e, 0xa2,
+	0xb1, 0xe7, 0xb8, 0xae, 0x33, 0xb6, 0x69, 0x48, 0x18, 0x6e, 0x76, 0x4b, 0xfd, 0xe6, 0xa8, 0x69,
+	0x07, 0xd1, 0x95, 0xb0, 0x5e, 0x08, 0xa3, 0x98, 0xc2, 0x23, 0x1e, 0x0d, 0x17, 0xe3, 0xc9, 0x82,
+	0x13, 0x86, 0x0f, 0xe4, 0xda, 0xea, 0xca, 0xf6, 0x42, 0x98, 0x50, 0x0f, 0x9a, 0xfa, 0xb8, 0x34,
+	0xe6, 0x50, 0x62, 0x1a, 0xda, 0xa8, 0x40, 0x8f, 0x00, 0xa6, 0x16, 0xb7, 0x6c, 0xe2, 0x73, 0x12,
+	0xe2, 0x96, 0x5c, 0x4b, 0xc2, 0x82, 0x9e, 0x42, 0xdb, 0x9a, 0x5b, 0x8e, 0x6b, 0xcd, 0x1d, 0xd7,
+	0xe1, 0x8b, 0xf1, 0x6f, 0xd4, 0x27, 0xb8, 0x2d, 0x61, 0xad, 0xa4, 0xe3, 0x35, 0xf5, 0xa5, 0x0c,
+	0x36, 0x71, 0x5d, 0x8c, 0x94, 0x0c, 0x62, 0x2c, 0x6c, 0xa1, 0x65, 0xdf, 0xe2, 0xfb, 0xca, 0x26,
+	0xc6, 0xc2, 0x16, 0xf9, 0x0e, 0xc7, 0x47, 0x72, 0x67, 0x72, 0x8c, 0x86, 0x50, 0x65, 0xdc, 0xe2,
+	0x04, 0x0f, 0xbb, 0xa5, 0xfe, 0xc1, 0xf0, 0xff, 0x39, 0x42, 0x89, 0x3f, 0x37, 0x02, 0x33, 0x52,
+	0x50, 0xf4, 0x23, 0xb4, 0x43, 0xc2, 0x48, 0x38, 0x27, 0xd3, 0xb1, 0x4e, 0x19, 0x86, 0xcf, 0xa4,
+	0xd0, 0xfd, 0x9c, 0xf8, 0x91, 0xc6, 0x5e, 0x68, 0xa8, 0x52, 0xbb, 0x15, 0x66, 0xcc, 0x29, 0x5a,
+	0x7d, 0x58, 0x0c, 0x3f, 0x2b, 0xa4, 0xbd, 0xd1, 0xd0, 0x0c, 0x6d, 0x6c, 0xee, 0x7c, 0x0d, 0xad,
+	0x6c, 0xaa, 0xa1, 0x16, 0x94, 0x6f, 0xc9, 0x42, 0xe7, 0xad, 0x18, 0xa2, 0x23, 0xa8, 0xce, 0x2d,
+	0x37, 0x22, 0x78, 0x57, 0xda, 0xd4, 0xc7, 0x97, 0xbb, 0x5f, 0x94, 0x3a, 0x3f, 0xc3, 0xff, 0x72,
+	0x77, 0x90, 0x43, 0xf2, 0x59, 0x92, 0xa4, 0x3e, 0x7c, 0xb0, 0x5c, 0xb5, 0xaa, 0x24, 0x53, 0xc7,
+	0x6f, 0x60, 0x4f, 0x6d, 0xe4, 0x1f, 0xb0, 0xeb, 0xf8, 0x04, 0xbb, 0x71, 0x02, 0xb5, 0xa5, 0x7a,
+	0xa8, 0x01, 0xf7, 0xae, 0x29, 0x1f, 0x11, 0x6b, 0xba, 0x68, 0xed, 0xa0, 0x1a, 0x54, 0xd5, 0xb0,
+	0x64, 0x20, 0x68, 0x7d, 0xe7, 0x30, 0x2e, 0x90, 0x6c, 0x44, 0x7e, 0x8d, 0x08, 0xe3, 0xc6, 0x73,
+	0x68, 0x27, 0x6c, 0x2c, 0xa0, 0x3e, 0x23, 0xa8, 0x0f, 0x55, 0xd1, 0x63, 0x18, 0x2e, 0x49, 0x55,
+	0xd0, 0xba, 0x2a, 0x23, 0x05, 0x30, 0x4e, 0xe0, 0xe0, 0x25, 0x91, 0xd1, 0x9a, 0x30, 0xaf, 0x57,
+	0x18, 0x7f, 0x54, 0xa0, 0x75, 0x1e, 0x04, 0xee, 0xa2, 0x00, 0x88, 0x7e, 0xc8, 0x6b, 0x2a, 0x83,
+	0xf4, 0xf4, 0x59, 0xa2, 0x0f, 0x0d, 0xe6, 0xdf, 0xd0, 0x60, 0xde, 0xb7, 0xfc, 0x8c, 0x8f, 0xa1,
+	0xfd, 0x0d, 0x71, 0x09, 0x27, 0x45, 0xc9, 0xf4, 0xb6, 0x0c, 0xc7, 0x37, 0xf6, 0x1b, 0x32, 0x8d,
+	0x5c, 0x12, 0x17, 0x9a, 0x86, 0x3f, 0x81, 0x86, 0xee, 0x53, 0x63, 0x19, 0xa6, 0x26, 0xa9, 0x6b,
+	0xdb, 0xb5, 0xc8, 0xb0, 0x57, 0x79, 0x19, 0xf6, 0x79, 0x3a, 0xc3, 0xf2, 0xd9, 0x0b, 0xf2, 0xec,
+	0x0c, 0x8e, 0x43, 0x05, 0x1c, 0xa7, 0x13, 0x00, 0x57, 0xe4, 0x29, 0xdd, 0xd7, 0xde, 0x8b, 0x44,
+	0x1a, 0xa0, 0x01, 0x1c, 0xb9, 0x8e, 0xe7, 0xac, 0x85, 0x54, 0x65, 0x48, 0x5b, 0xfa, 0x52, 0x01,
+	0xa7, 0x70, 0x14, 0xcf, 0x92, 0x4a, 0x9f, 0x3d, 0x99, 0x1a, 0x48, 0xfb, 0xae, 0x12, 0x59, 0xf4,
+	0x29, 0x20, 0x35, 0x45, 0x0a, 0xbf, 0x2f, 0xf1, 0x2d, 0xe9, 0x49, 0xa0, 0xdf, 0x5b, 0xc5, 0x3f,
+	0xcb, 0xcb, 0x3e, 0x97, 0xd1, 0xe6, 0x21, 0xd4, 0x44, 0xcb, 0x18, 0x27, 0xf4, 0xbc, 0x27, 0x0c,
+	0x52, 0x95, 0x2d, 0x84, 0xfb, 0x29, 0x4f, 0xb8, 0x67, 0x69, 0xe1, 0x72, 0x67, 0xfe, 0xa0, 0xdb,
+	0x16, 0xba, 0xbd, 0x12, 0xb2, 0xb9, 0xc4, 0x62, 0x77, 0x2c, 0x9b, 0xf1, 0x76, 0x77, 0x55, 0xad,
+	0xf1, 0xc5, 0xb5, 0xaa, 0xd6, 0xb8, 0xbf, 0x25, 0xa3, 0xb5, 0xed, 0x9d, 0xab, 0x35, 0xcd, 0x5e,
+	0xa0, 0x7a, 0x0f, 0x9a, 0xb1, 0x1e, 0xea, 0x60, 0x2b, 0xaa, 0xb7, 0x6a, 0xa3, 0x92, 0xe0, 0x31,
+	0xd4, 0x95, 0x04, 0x0a, 0xa2, 0xae, 0x0f, 0x90, 0xa6, 0x3b, 0xaa, 0x96, 0xdd, 0x65, 0xb5, 0x64,
+	0xce, 0xa6, 0xe8, 0xd8, 0x8b, 0x0e, 0xee, 0x1d, 0xaa, 0xe5, 0x3f, 0x78, 0x6e, 0xab, 0x6c, 0xbd,
+	0xdb, 0x63, 0x1b, 0xfe, 0xbe, 0x07, 0x75, 0xf9, 0x90, 0x22, 0xe1, 0xdc, 0xb1, 0x09, 0xba, 0x86,
+	0xda, 0xf2, 0x75, 0x84, 0x1e, 0xa5, 0x8f, 0x2f, 0xfb, 0x94, 0xea, 0x3c, 0xde, 0xe8, 0x57, 0xcf,
+	0x2a, 0x63, 0x07, 0x3d, 0x87, 0x7d, 0xfd, 0x5c, 0x42, 0x99, 0x17, 0x78, 0xfa, 0x15, 0xd5, 0xc9,
+	0x79, 0x72, 0x19, 0x3b, 0xe8, 0x1c, 0x6a, 0xcb, 0xd7, 0x4f, 0x76, 0x39, 0xd9, 0x67, 0xd1, 0x06,
+	0x8a, 0x97, 0x00, 0xab, 0x6b, 0x16, 0x65, 0x96, 0xbc, 0x76, 0x01, 0x77, 0x8e, 0x4d, 0xf5, 0x93,
+	0xd2, 0x8c, 0x7f, 0x52, 0x9a, 0x97, 0xe2, 0x27, 0xa5, 0xb1, 0x83, 0xae, 0xe0, 0x30, 0x73, 0x4f,
+	0xa2, 0x93, 0x6d, 0xae, 0xd1, 0x0d, 0xeb, 0xfa, 0x16, 0x0e, 0xd2, 0xdd, 0x1b, 0xf5, 0xb6, 0xe8,
+	0xed, 0x1b, 0xc8, 0xbe, 0x17, 0x64, 0xc9, 0x6e, 0xb6, 0x4e, 0x96, 0xd3, 0xeb, 0xb6, 0xdb, 0xac,
+	0xce, 0xb8, 0x4d, 0x9b, 0x4d, 0x27, 0x64, 0xe1, 0x66, 0x63, 0xb6, 0xde, 0x16, 0xa5, 0x59, 0xb8,
+	0xd9, 0x8d, 0x64, 0x39, 0xa5, 0xb2, 0x79, 0xb3, 0x2f, 0x9e, 0xbe, 0xfe, 0x64, 0xe6, 0xf0, 0x37,
+	0xd1, 0xc4, 0xb4, 0xa9, 0x37, 0xd0, 0x54, 0xea, 0x7f, 0x0a, 0xe6, 0x8c, 0x0e, 0xf4, 0x7f, 0x21,
+	0xbe, 0x0a, 0xc4, 0x60, 0xb2, 0x27, 0xed, 0x67, 0x7f, 0x07, 0x00, 0x00, 0xff, 0xff, 0x66, 0xa1,
+	0x2c, 0x27, 0x9d, 0x10, 0x00, 0x00,
 }

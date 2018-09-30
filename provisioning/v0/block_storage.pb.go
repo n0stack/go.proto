@@ -7,7 +7,6 @@ import proto "github.com/golang/protobuf/proto"
 import fmt "fmt"
 import math "math"
 import empty "github.com/golang/protobuf/ptypes/empty"
-import v0 "github.com/n0stack/proto.go/v0"
 
 import (
 	context "golang.org/x/net/context"
@@ -25,51 +24,59 @@ var _ = math.Inf
 // proto package needs to be updated.
 const _ = proto.ProtoPackageIsVersion2 // please upgrade the proto package
 
-type BlockStorageStatus_BlockStorageState int32
+type BlockStorage_BlockStorageState int32
 
 const (
 	// falied state because failed some process on API.
-	BlockStorageStatus_FAILED BlockStorageStatus_BlockStorageState = 0
+	BlockStorage_FAILED BlockStorage_BlockStorageState = 0
 	// unknown state because failed to connect for scheduled node after RUNNING.
-	BlockStorageStatus_UNKNOWN   BlockStorageStatus_BlockStorageState = 1
-	BlockStorageStatus_AVAILABLE BlockStorageStatus_BlockStorageState = 2
-	BlockStorageStatus_IN_USE    BlockStorageStatus_BlockStorageState = 3
+	BlockStorage_UNKNOWN   BlockStorage_BlockStorageState = 1
+	BlockStorage_AVAILABLE BlockStorage_BlockStorageState = 2
+	BlockStorage_IN_USE    BlockStorage_BlockStorageState = 3
+	BlockStorage_PROTECTED BlockStorage_BlockStorageState = 4
 )
 
-var BlockStorageStatus_BlockStorageState_name = map[int32]string{
+var BlockStorage_BlockStorageState_name = map[int32]string{
 	0: "FAILED",
 	1: "UNKNOWN",
 	2: "AVAILABLE",
 	3: "IN_USE",
+	4: "PROTECTED",
 }
-var BlockStorageStatus_BlockStorageState_value = map[string]int32{
+var BlockStorage_BlockStorageState_value = map[string]int32{
 	"FAILED":    0,
 	"UNKNOWN":   1,
 	"AVAILABLE": 2,
 	"IN_USE":    3,
+	"PROTECTED": 4,
 }
 
-func (x BlockStorageStatus_BlockStorageState) String() string {
-	return proto.EnumName(BlockStorageStatus_BlockStorageState_name, int32(x))
+func (x BlockStorage_BlockStorageState) String() string {
+	return proto.EnumName(BlockStorage_BlockStorageState_name, int32(x))
 }
-func (BlockStorageStatus_BlockStorageState) EnumDescriptor() ([]byte, []int) {
-	return fileDescriptor_block_storage_0fb298693b70a65d, []int{2, 0}
+func (BlockStorage_BlockStorageState) EnumDescriptor() ([]byte, []int) {
+	return fileDescriptor_block_storage_92f089fbaae223dc, []int{0, 0}
 }
 
 type BlockStorage struct {
-	Metadata             *v0.Metadata        `protobuf:"bytes,1,opt,name=metadata" json:"metadata,omitempty"`
-	Spec                 *BlockStorageSpec   `protobuf:"bytes,2,opt,name=spec" json:"spec,omitempty"`
-	Status               *BlockStorageStatus `protobuf:"bytes,3,opt,name=status" json:"status,omitempty"`
-	XXX_NoUnkeyedLiteral struct{}            `json:"-"`
-	XXX_unrecognized     []byte              `json:"-"`
-	XXX_sizecache        int32               `json:"-"`
+	Name                 string                         `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
+	Annotations          map[string]string              `protobuf:"bytes,3,rep,name=annotations" json:"annotations,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	RequestBytes         uint64                         `protobuf:"varint,10,opt,name=request_bytes,json=requestBytes" json:"request_bytes,omitempty"`
+	LimitBytes           uint64                         `protobuf:"varint,11,opt,name=limit_bytes,json=limitBytes" json:"limit_bytes,omitempty"`
+	State                BlockStorage_BlockStorageState `protobuf:"varint,50,opt,name=state,enum=n0stack.provisioning.BlockStorage_BlockStorageState" json:"state,omitempty"`
+	StateReason          string                         `protobuf:"bytes,51,opt,name=state_reason,json=stateReason" json:"state_reason,omitempty"`
+	NodeName             string                         `protobuf:"bytes,52,opt,name=node_name,json=nodeName" json:"node_name,omitempty"`
+	StorageName          string                         `protobuf:"bytes,53,opt,name=storage_name,json=storageName" json:"storage_name,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}                       `json:"-"`
+	XXX_unrecognized     []byte                         `json:"-"`
+	XXX_sizecache        int32                          `json:"-"`
 }
 
 func (m *BlockStorage) Reset()         { *m = BlockStorage{} }
 func (m *BlockStorage) String() string { return proto.CompactTextString(m) }
 func (*BlockStorage) ProtoMessage()    {}
 func (*BlockStorage) Descriptor() ([]byte, []int) {
-	return fileDescriptor_block_storage_0fb298693b70a65d, []int{0}
+	return fileDescriptor_block_storage_92f089fbaae223dc, []int{0}
 }
 func (m *BlockStorage) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_BlockStorage.Unmarshal(m, b)
@@ -89,134 +96,60 @@ func (m *BlockStorage) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_BlockStorage proto.InternalMessageInfo
 
-func (m *BlockStorage) GetMetadata() *v0.Metadata {
+func (m *BlockStorage) GetName() string {
 	if m != nil {
-		return m.Metadata
+		return m.Name
+	}
+	return ""
+}
+
+func (m *BlockStorage) GetAnnotations() map[string]string {
+	if m != nil {
+		return m.Annotations
 	}
 	return nil
 }
 
-func (m *BlockStorage) GetSpec() *BlockStorageSpec {
-	if m != nil {
-		return m.Spec
-	}
-	return nil
-}
-
-func (m *BlockStorage) GetStatus() *BlockStorageStatus {
-	if m != nil {
-		return m.Status
-	}
-	return nil
-}
-
-type BlockStorageSpec struct {
-	RequestBytes         uint64   `protobuf:"varint,1,opt,name=request_bytes,json=requestBytes" json:"request_bytes,omitempty"`
-	LimitBytes           uint64   `protobuf:"varint,2,opt,name=limit_bytes,json=limitBytes" json:"limit_bytes,omitempty"`
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
-}
-
-func (m *BlockStorageSpec) Reset()         { *m = BlockStorageSpec{} }
-func (m *BlockStorageSpec) String() string { return proto.CompactTextString(m) }
-func (*BlockStorageSpec) ProtoMessage()    {}
-func (*BlockStorageSpec) Descriptor() ([]byte, []int) {
-	return fileDescriptor_block_storage_0fb298693b70a65d, []int{1}
-}
-func (m *BlockStorageSpec) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_BlockStorageSpec.Unmarshal(m, b)
-}
-func (m *BlockStorageSpec) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_BlockStorageSpec.Marshal(b, m, deterministic)
-}
-func (dst *BlockStorageSpec) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_BlockStorageSpec.Merge(dst, src)
-}
-func (m *BlockStorageSpec) XXX_Size() int {
-	return xxx_messageInfo_BlockStorageSpec.Size(m)
-}
-func (m *BlockStorageSpec) XXX_DiscardUnknown() {
-	xxx_messageInfo_BlockStorageSpec.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_BlockStorageSpec proto.InternalMessageInfo
-
-func (m *BlockStorageSpec) GetRequestBytes() uint64 {
+func (m *BlockStorage) GetRequestBytes() uint64 {
 	if m != nil {
 		return m.RequestBytes
 	}
 	return 0
 }
 
-func (m *BlockStorageSpec) GetLimitBytes() uint64 {
+func (m *BlockStorage) GetLimitBytes() uint64 {
 	if m != nil {
 		return m.LimitBytes
 	}
 	return 0
 }
 
-type BlockStorageStatus struct {
-	State       BlockStorageStatus_BlockStorageState `protobuf:"varint,1,opt,name=state,enum=n0stack.provisioning.BlockStorageStatus_BlockStorageState" json:"state,omitempty"`
-	NodeName    string                               `protobuf:"bytes,2,opt,name=node_name,json=nodeName" json:"node_name,omitempty"`
-	StorageName string                               `protobuf:"bytes,3,opt,name=storage_name,json=storageName" json:"storage_name,omitempty"`
-	// IN_USE にならない
-	Protected            bool     `protobuf:"varint,4,opt,name=protected" json:"protected,omitempty"`
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
-}
-
-func (m *BlockStorageStatus) Reset()         { *m = BlockStorageStatus{} }
-func (m *BlockStorageStatus) String() string { return proto.CompactTextString(m) }
-func (*BlockStorageStatus) ProtoMessage()    {}
-func (*BlockStorageStatus) Descriptor() ([]byte, []int) {
-	return fileDescriptor_block_storage_0fb298693b70a65d, []int{2}
-}
-func (m *BlockStorageStatus) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_BlockStorageStatus.Unmarshal(m, b)
-}
-func (m *BlockStorageStatus) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_BlockStorageStatus.Marshal(b, m, deterministic)
-}
-func (dst *BlockStorageStatus) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_BlockStorageStatus.Merge(dst, src)
-}
-func (m *BlockStorageStatus) XXX_Size() int {
-	return xxx_messageInfo_BlockStorageStatus.Size(m)
-}
-func (m *BlockStorageStatus) XXX_DiscardUnknown() {
-	xxx_messageInfo_BlockStorageStatus.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_BlockStorageStatus proto.InternalMessageInfo
-
-func (m *BlockStorageStatus) GetState() BlockStorageStatus_BlockStorageState {
+func (m *BlockStorage) GetState() BlockStorage_BlockStorageState {
 	if m != nil {
 		return m.State
 	}
-	return BlockStorageStatus_FAILED
+	return BlockStorage_FAILED
 }
 
-func (m *BlockStorageStatus) GetNodeName() string {
+func (m *BlockStorage) GetStateReason() string {
+	if m != nil {
+		return m.StateReason
+	}
+	return ""
+}
+
+func (m *BlockStorage) GetNodeName() string {
 	if m != nil {
 		return m.NodeName
 	}
 	return ""
 }
 
-func (m *BlockStorageStatus) GetStorageName() string {
+func (m *BlockStorage) GetStorageName() string {
 	if m != nil {
 		return m.StorageName
 	}
 	return ""
-}
-
-func (m *BlockStorageStatus) GetProtected() bool {
-	if m != nil {
-		return m.Protected
-	}
-	return false
 }
 
 type BlockStorageChunk struct {
@@ -230,7 +163,7 @@ func (m *BlockStorageChunk) Reset()         { *m = BlockStorageChunk{} }
 func (m *BlockStorageChunk) String() string { return proto.CompactTextString(m) }
 func (*BlockStorageChunk) ProtoMessage()    {}
 func (*BlockStorageChunk) Descriptor() ([]byte, []int) {
-	return fileDescriptor_block_storage_0fb298693b70a65d, []int{3}
+	return fileDescriptor_block_storage_92f089fbaae223dc, []int{1}
 }
 func (m *BlockStorageChunk) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_BlockStorageChunk.Unmarshal(m, b)
@@ -258,8 +191,10 @@ func (m *BlockStorageChunk) GetData() []byte {
 }
 
 type CreateBlockStorageRequest struct {
-	Metadata             *v0.Metadata      `protobuf:"bytes,1,opt,name=metadata" json:"metadata,omitempty"`
-	Spec                 *BlockStorageSpec `protobuf:"bytes,2,opt,name=spec" json:"spec,omitempty"`
+	Name                 string            `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
+	Annotations          map[string]string `protobuf:"bytes,3,rep,name=annotations" json:"annotations,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	RequestBytes         uint64            `protobuf:"varint,10,opt,name=request_bytes,json=requestBytes" json:"request_bytes,omitempty"`
+	LimitBytes           uint64            `protobuf:"varint,11,opt,name=limit_bytes,json=limitBytes" json:"limit_bytes,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}          `json:"-"`
 	XXX_unrecognized     []byte            `json:"-"`
 	XXX_sizecache        int32             `json:"-"`
@@ -269,7 +204,7 @@ func (m *CreateBlockStorageRequest) Reset()         { *m = CreateBlockStorageReq
 func (m *CreateBlockStorageRequest) String() string { return proto.CompactTextString(m) }
 func (*CreateBlockStorageRequest) ProtoMessage()    {}
 func (*CreateBlockStorageRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_block_storage_0fb298693b70a65d, []int{4}
+	return fileDescriptor_block_storage_92f089fbaae223dc, []int{2}
 }
 func (m *CreateBlockStorageRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_CreateBlockStorageRequest.Unmarshal(m, b)
@@ -289,23 +224,37 @@ func (m *CreateBlockStorageRequest) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_CreateBlockStorageRequest proto.InternalMessageInfo
 
-func (m *CreateBlockStorageRequest) GetMetadata() *v0.Metadata {
+func (m *CreateBlockStorageRequest) GetName() string {
 	if m != nil {
-		return m.Metadata
+		return m.Name
+	}
+	return ""
+}
+
+func (m *CreateBlockStorageRequest) GetAnnotations() map[string]string {
+	if m != nil {
+		return m.Annotations
 	}
 	return nil
 }
 
-func (m *CreateBlockStorageRequest) GetSpec() *BlockStorageSpec {
+func (m *CreateBlockStorageRequest) GetRequestBytes() uint64 {
 	if m != nil {
-		return m.Spec
+		return m.RequestBytes
 	}
-	return nil
+	return 0
+}
+
+func (m *CreateBlockStorageRequest) GetLimitBytes() uint64 {
+	if m != nil {
+		return m.LimitBytes
+	}
+	return 0
 }
 
 type UploadBlockStorageRequest struct {
 	// Types that are valid to be assigned to Value:
-	//	*UploadBlockStorageRequest_Header
+	//	*UploadBlockStorageRequest_Metadata
 	//	*UploadBlockStorageRequest_Chunk
 	Value                isUploadBlockStorageRequest_Value `protobuf_oneof:"value"`
 	XXX_NoUnkeyedLiteral struct{}                          `json:"-"`
@@ -317,7 +266,7 @@ func (m *UploadBlockStorageRequest) Reset()         { *m = UploadBlockStorageReq
 func (m *UploadBlockStorageRequest) String() string { return proto.CompactTextString(m) }
 func (*UploadBlockStorageRequest) ProtoMessage()    {}
 func (*UploadBlockStorageRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_block_storage_0fb298693b70a65d, []int{5}
+	return fileDescriptor_block_storage_92f089fbaae223dc, []int{3}
 }
 func (m *UploadBlockStorageRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_UploadBlockStorageRequest.Unmarshal(m, b)
@@ -341,15 +290,15 @@ type isUploadBlockStorageRequest_Value interface {
 	isUploadBlockStorageRequest_Value()
 }
 
-type UploadBlockStorageRequest_Header struct {
-	Header *UploadBlockStorageRequest_UploadBlockStorageHeader `protobuf:"bytes,1,opt,name=header,oneof"`
+type UploadBlockStorageRequest_Metadata struct {
+	Metadata *UploadBlockStorageRequest_UploadBlockStorageMetadata `protobuf:"bytes,1,opt,name=metadata,oneof"`
 }
 type UploadBlockStorageRequest_Chunk struct {
 	Chunk *BlockStorageChunk `protobuf:"bytes,2,opt,name=chunk,oneof"`
 }
 
-func (*UploadBlockStorageRequest_Header) isUploadBlockStorageRequest_Value() {}
-func (*UploadBlockStorageRequest_Chunk) isUploadBlockStorageRequest_Value()  {}
+func (*UploadBlockStorageRequest_Metadata) isUploadBlockStorageRequest_Value() {}
+func (*UploadBlockStorageRequest_Chunk) isUploadBlockStorageRequest_Value()    {}
 
 func (m *UploadBlockStorageRequest) GetValue() isUploadBlockStorageRequest_Value {
 	if m != nil {
@@ -358,9 +307,9 @@ func (m *UploadBlockStorageRequest) GetValue() isUploadBlockStorageRequest_Value
 	return nil
 }
 
-func (m *UploadBlockStorageRequest) GetHeader() *UploadBlockStorageRequest_UploadBlockStorageHeader {
-	if x, ok := m.GetValue().(*UploadBlockStorageRequest_Header); ok {
-		return x.Header
+func (m *UploadBlockStorageRequest) GetMetadata() *UploadBlockStorageRequest_UploadBlockStorageMetadata {
+	if x, ok := m.GetValue().(*UploadBlockStorageRequest_Metadata); ok {
+		return x.Metadata
 	}
 	return nil
 }
@@ -375,7 +324,7 @@ func (m *UploadBlockStorageRequest) GetChunk() *BlockStorageChunk {
 // XXX_OneofFuncs is for the internal use of the proto package.
 func (*UploadBlockStorageRequest) XXX_OneofFuncs() (func(msg proto.Message, b *proto.Buffer) error, func(msg proto.Message, tag, wire int, b *proto.Buffer) (bool, error), func(msg proto.Message) (n int), []interface{}) {
 	return _UploadBlockStorageRequest_OneofMarshaler, _UploadBlockStorageRequest_OneofUnmarshaler, _UploadBlockStorageRequest_OneofSizer, []interface{}{
-		(*UploadBlockStorageRequest_Header)(nil),
+		(*UploadBlockStorageRequest_Metadata)(nil),
 		(*UploadBlockStorageRequest_Chunk)(nil),
 	}
 }
@@ -384,9 +333,9 @@ func _UploadBlockStorageRequest_OneofMarshaler(msg proto.Message, b *proto.Buffe
 	m := msg.(*UploadBlockStorageRequest)
 	// value
 	switch x := m.Value.(type) {
-	case *UploadBlockStorageRequest_Header:
+	case *UploadBlockStorageRequest_Metadata:
 		b.EncodeVarint(1<<3 | proto.WireBytes)
-		if err := b.EncodeMessage(x.Header); err != nil {
+		if err := b.EncodeMessage(x.Metadata); err != nil {
 			return err
 		}
 	case *UploadBlockStorageRequest_Chunk:
@@ -404,13 +353,13 @@ func _UploadBlockStorageRequest_OneofMarshaler(msg proto.Message, b *proto.Buffe
 func _UploadBlockStorageRequest_OneofUnmarshaler(msg proto.Message, tag, wire int, b *proto.Buffer) (bool, error) {
 	m := msg.(*UploadBlockStorageRequest)
 	switch tag {
-	case 1: // value.header
+	case 1: // value.metadata
 		if wire != proto.WireBytes {
 			return true, proto.ErrInternalBadWireType
 		}
-		msg := new(UploadBlockStorageRequest_UploadBlockStorageHeader)
+		msg := new(UploadBlockStorageRequest_UploadBlockStorageMetadata)
 		err := b.DecodeMessage(msg)
-		m.Value = &UploadBlockStorageRequest_Header{msg}
+		m.Value = &UploadBlockStorageRequest_Metadata{msg}
 		return true, err
 	case 2: // value.chunk
 		if wire != proto.WireBytes {
@@ -429,8 +378,8 @@ func _UploadBlockStorageRequest_OneofSizer(msg proto.Message) (n int) {
 	m := msg.(*UploadBlockStorageRequest)
 	// value
 	switch x := m.Value.(type) {
-	case *UploadBlockStorageRequest_Header:
-		s := proto.Size(x.Header)
+	case *UploadBlockStorageRequest_Metadata:
+		s := proto.Size(x.Metadata)
 		n += 1 // tag and wire
 		n += proto.SizeVarint(uint64(s))
 		n += s
@@ -446,60 +395,78 @@ func _UploadBlockStorageRequest_OneofSizer(msg proto.Message) (n int) {
 	return n
 }
 
-type UploadBlockStorageRequest_UploadBlockStorageHeader struct {
-	Metadata             *v0.Metadata      `protobuf:"bytes,1,opt,name=metadata" json:"metadata,omitempty"`
-	Spec                 *BlockStorageSpec `protobuf:"bytes,2,opt,name=spec" json:"spec,omitempty"`
+type UploadBlockStorageRequest_UploadBlockStorageMetadata struct {
+	Name                 string            `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
+	Annotations          map[string]string `protobuf:"bytes,3,rep,name=annotations" json:"annotations,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	RequestBytes         uint64            `protobuf:"varint,10,opt,name=request_bytes,json=requestBytes" json:"request_bytes,omitempty"`
+	LimitBytes           uint64            `protobuf:"varint,11,opt,name=limit_bytes,json=limitBytes" json:"limit_bytes,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}          `json:"-"`
 	XXX_unrecognized     []byte            `json:"-"`
 	XXX_sizecache        int32             `json:"-"`
 }
 
-func (m *UploadBlockStorageRequest_UploadBlockStorageHeader) Reset() {
-	*m = UploadBlockStorageRequest_UploadBlockStorageHeader{}
+func (m *UploadBlockStorageRequest_UploadBlockStorageMetadata) Reset() {
+	*m = UploadBlockStorageRequest_UploadBlockStorageMetadata{}
 }
-func (m *UploadBlockStorageRequest_UploadBlockStorageHeader) String() string {
+func (m *UploadBlockStorageRequest_UploadBlockStorageMetadata) String() string {
 	return proto.CompactTextString(m)
 }
-func (*UploadBlockStorageRequest_UploadBlockStorageHeader) ProtoMessage() {}
-func (*UploadBlockStorageRequest_UploadBlockStorageHeader) Descriptor() ([]byte, []int) {
-	return fileDescriptor_block_storage_0fb298693b70a65d, []int{5, 0}
+func (*UploadBlockStorageRequest_UploadBlockStorageMetadata) ProtoMessage() {}
+func (*UploadBlockStorageRequest_UploadBlockStorageMetadata) Descriptor() ([]byte, []int) {
+	return fileDescriptor_block_storage_92f089fbaae223dc, []int{3, 0}
 }
-func (m *UploadBlockStorageRequest_UploadBlockStorageHeader) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_UploadBlockStorageRequest_UploadBlockStorageHeader.Unmarshal(m, b)
+func (m *UploadBlockStorageRequest_UploadBlockStorageMetadata) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_UploadBlockStorageRequest_UploadBlockStorageMetadata.Unmarshal(m, b)
 }
-func (m *UploadBlockStorageRequest_UploadBlockStorageHeader) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_UploadBlockStorageRequest_UploadBlockStorageHeader.Marshal(b, m, deterministic)
+func (m *UploadBlockStorageRequest_UploadBlockStorageMetadata) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_UploadBlockStorageRequest_UploadBlockStorageMetadata.Marshal(b, m, deterministic)
 }
-func (dst *UploadBlockStorageRequest_UploadBlockStorageHeader) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_UploadBlockStorageRequest_UploadBlockStorageHeader.Merge(dst, src)
+func (dst *UploadBlockStorageRequest_UploadBlockStorageMetadata) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_UploadBlockStorageRequest_UploadBlockStorageMetadata.Merge(dst, src)
 }
-func (m *UploadBlockStorageRequest_UploadBlockStorageHeader) XXX_Size() int {
-	return xxx_messageInfo_UploadBlockStorageRequest_UploadBlockStorageHeader.Size(m)
+func (m *UploadBlockStorageRequest_UploadBlockStorageMetadata) XXX_Size() int {
+	return xxx_messageInfo_UploadBlockStorageRequest_UploadBlockStorageMetadata.Size(m)
 }
-func (m *UploadBlockStorageRequest_UploadBlockStorageHeader) XXX_DiscardUnknown() {
-	xxx_messageInfo_UploadBlockStorageRequest_UploadBlockStorageHeader.DiscardUnknown(m)
+func (m *UploadBlockStorageRequest_UploadBlockStorageMetadata) XXX_DiscardUnknown() {
+	xxx_messageInfo_UploadBlockStorageRequest_UploadBlockStorageMetadata.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_UploadBlockStorageRequest_UploadBlockStorageHeader proto.InternalMessageInfo
+var xxx_messageInfo_UploadBlockStorageRequest_UploadBlockStorageMetadata proto.InternalMessageInfo
 
-func (m *UploadBlockStorageRequest_UploadBlockStorageHeader) GetMetadata() *v0.Metadata {
+func (m *UploadBlockStorageRequest_UploadBlockStorageMetadata) GetName() string {
 	if m != nil {
-		return m.Metadata
+		return m.Name
+	}
+	return ""
+}
+
+func (m *UploadBlockStorageRequest_UploadBlockStorageMetadata) GetAnnotations() map[string]string {
+	if m != nil {
+		return m.Annotations
 	}
 	return nil
 }
 
-func (m *UploadBlockStorageRequest_UploadBlockStorageHeader) GetSpec() *BlockStorageSpec {
+func (m *UploadBlockStorageRequest_UploadBlockStorageMetadata) GetRequestBytes() uint64 {
 	if m != nil {
-		return m.Spec
+		return m.RequestBytes
 	}
-	return nil
+	return 0
+}
+
+func (m *UploadBlockStorageRequest_UploadBlockStorageMetadata) GetLimitBytes() uint64 {
+	if m != nil {
+		return m.LimitBytes
+	}
+	return 0
 }
 
 type CopyBlockStorageRequest struct {
-	Metadata             *v0.Metadata      `protobuf:"bytes,1,opt,name=metadata" json:"metadata,omitempty"`
-	Spec                 *BlockStorageSpec `protobuf:"bytes,2,opt,name=spec" json:"spec,omitempty"`
-	SourceBlockStorage   string            `protobuf:"bytes,3,opt,name=source_block_storage,json=sourceBlockStorage" json:"source_block_storage,omitempty"`
+	Name                 string            `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
+	Annotations          map[string]string `protobuf:"bytes,3,rep,name=annotations" json:"annotations,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	RequestBytes         uint64            `protobuf:"varint,10,opt,name=request_bytes,json=requestBytes" json:"request_bytes,omitempty"`
+	LimitBytes           uint64            `protobuf:"varint,11,opt,name=limit_bytes,json=limitBytes" json:"limit_bytes,omitempty"`
+	SourceBlockStorage   string            `protobuf:"bytes,100,opt,name=source_block_storage,json=sourceBlockStorage" json:"source_block_storage,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}          `json:"-"`
 	XXX_unrecognized     []byte            `json:"-"`
 	XXX_sizecache        int32             `json:"-"`
@@ -509,7 +476,7 @@ func (m *CopyBlockStorageRequest) Reset()         { *m = CopyBlockStorageRequest
 func (m *CopyBlockStorageRequest) String() string { return proto.CompactTextString(m) }
 func (*CopyBlockStorageRequest) ProtoMessage()    {}
 func (*CopyBlockStorageRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_block_storage_0fb298693b70a65d, []int{6}
+	return fileDescriptor_block_storage_92f089fbaae223dc, []int{4}
 }
 func (m *CopyBlockStorageRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_CopyBlockStorageRequest.Unmarshal(m, b)
@@ -529,18 +496,32 @@ func (m *CopyBlockStorageRequest) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_CopyBlockStorageRequest proto.InternalMessageInfo
 
-func (m *CopyBlockStorageRequest) GetMetadata() *v0.Metadata {
+func (m *CopyBlockStorageRequest) GetName() string {
 	if m != nil {
-		return m.Metadata
+		return m.Name
+	}
+	return ""
+}
+
+func (m *CopyBlockStorageRequest) GetAnnotations() map[string]string {
+	if m != nil {
+		return m.Annotations
 	}
 	return nil
 }
 
-func (m *CopyBlockStorageRequest) GetSpec() *BlockStorageSpec {
+func (m *CopyBlockStorageRequest) GetRequestBytes() uint64 {
 	if m != nil {
-		return m.Spec
+		return m.RequestBytes
 	}
-	return nil
+	return 0
+}
+
+func (m *CopyBlockStorageRequest) GetLimitBytes() uint64 {
+	if m != nil {
+		return m.LimitBytes
+	}
+	return 0
 }
 
 func (m *CopyBlockStorageRequest) GetSourceBlockStorage() string {
@@ -560,7 +541,7 @@ func (m *ListBlockStoragesRequest) Reset()         { *m = ListBlockStoragesReque
 func (m *ListBlockStoragesRequest) String() string { return proto.CompactTextString(m) }
 func (*ListBlockStoragesRequest) ProtoMessage()    {}
 func (*ListBlockStoragesRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_block_storage_0fb298693b70a65d, []int{7}
+	return fileDescriptor_block_storage_92f089fbaae223dc, []int{5}
 }
 func (m *ListBlockStoragesRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ListBlockStoragesRequest.Unmarshal(m, b)
@@ -591,7 +572,7 @@ func (m *ListBlockStoragesResponse) Reset()         { *m = ListBlockStoragesResp
 func (m *ListBlockStoragesResponse) String() string { return proto.CompactTextString(m) }
 func (*ListBlockStoragesResponse) ProtoMessage()    {}
 func (*ListBlockStoragesResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_block_storage_0fb298693b70a65d, []int{8}
+	return fileDescriptor_block_storage_92f089fbaae223dc, []int{6}
 }
 func (m *ListBlockStoragesResponse) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ListBlockStoragesResponse.Unmarshal(m, b)
@@ -629,7 +610,7 @@ func (m *GetBlockStorageRequest) Reset()         { *m = GetBlockStorageRequest{}
 func (m *GetBlockStorageRequest) String() string { return proto.CompactTextString(m) }
 func (*GetBlockStorageRequest) ProtoMessage()    {}
 func (*GetBlockStorageRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_block_storage_0fb298693b70a65d, []int{9}
+	return fileDescriptor_block_storage_92f089fbaae223dc, []int{7}
 }
 func (m *GetBlockStorageRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_GetBlockStorageRequest.Unmarshal(m, b)
@@ -657,8 +638,10 @@ func (m *GetBlockStorageRequest) GetName() string {
 }
 
 type UpdateBlockStorageRequest struct {
-	Metadata             *v0.Metadata      `protobuf:"bytes,1,opt,name=metadata" json:"metadata,omitempty"`
-	Spec                 *BlockStorageSpec `protobuf:"bytes,2,opt,name=spec" json:"spec,omitempty"`
+	Name                 string            `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
+	Annotations          map[string]string `protobuf:"bytes,3,rep,name=annotations" json:"annotations,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	RequestBytes         uint64            `protobuf:"varint,10,opt,name=request_bytes,json=requestBytes" json:"request_bytes,omitempty"`
+	LimitBytes           uint64            `protobuf:"varint,11,opt,name=limit_bytes,json=limitBytes" json:"limit_bytes,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}          `json:"-"`
 	XXX_unrecognized     []byte            `json:"-"`
 	XXX_sizecache        int32             `json:"-"`
@@ -668,7 +651,7 @@ func (m *UpdateBlockStorageRequest) Reset()         { *m = UpdateBlockStorageReq
 func (m *UpdateBlockStorageRequest) String() string { return proto.CompactTextString(m) }
 func (*UpdateBlockStorageRequest) ProtoMessage()    {}
 func (*UpdateBlockStorageRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_block_storage_0fb298693b70a65d, []int{10}
+	return fileDescriptor_block_storage_92f089fbaae223dc, []int{8}
 }
 func (m *UpdateBlockStorageRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_UpdateBlockStorageRequest.Unmarshal(m, b)
@@ -688,18 +671,32 @@ func (m *UpdateBlockStorageRequest) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_UpdateBlockStorageRequest proto.InternalMessageInfo
 
-func (m *UpdateBlockStorageRequest) GetMetadata() *v0.Metadata {
+func (m *UpdateBlockStorageRequest) GetName() string {
 	if m != nil {
-		return m.Metadata
+		return m.Name
+	}
+	return ""
+}
+
+func (m *UpdateBlockStorageRequest) GetAnnotations() map[string]string {
+	if m != nil {
+		return m.Annotations
 	}
 	return nil
 }
 
-func (m *UpdateBlockStorageRequest) GetSpec() *BlockStorageSpec {
+func (m *UpdateBlockStorageRequest) GetRequestBytes() uint64 {
 	if m != nil {
-		return m.Spec
+		return m.RequestBytes
 	}
-	return nil
+	return 0
+}
+
+func (m *UpdateBlockStorageRequest) GetLimitBytes() uint64 {
+	if m != nil {
+		return m.LimitBytes
+	}
+	return 0
 }
 
 type DeleteBlockStorageRequest struct {
@@ -713,7 +710,7 @@ func (m *DeleteBlockStorageRequest) Reset()         { *m = DeleteBlockStorageReq
 func (m *DeleteBlockStorageRequest) String() string { return proto.CompactTextString(m) }
 func (*DeleteBlockStorageRequest) ProtoMessage()    {}
 func (*DeleteBlockStorageRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_block_storage_0fb298693b70a65d, []int{11}
+	return fileDescriptor_block_storage_92f089fbaae223dc, []int{9}
 }
 func (m *DeleteBlockStorageRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_DeleteBlockStorageRequest.Unmarshal(m, b)
@@ -751,7 +748,7 @@ func (m *SetInuseBlockStorageRequest) Reset()         { *m = SetInuseBlockStorag
 func (m *SetInuseBlockStorageRequest) String() string { return proto.CompactTextString(m) }
 func (*SetInuseBlockStorageRequest) ProtoMessage()    {}
 func (*SetInuseBlockStorageRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_block_storage_0fb298693b70a65d, []int{12}
+	return fileDescriptor_block_storage_92f089fbaae223dc, []int{10}
 }
 func (m *SetInuseBlockStorageRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_SetInuseBlockStorageRequest.Unmarshal(m, b)
@@ -789,7 +786,7 @@ func (m *SetAvailableBlockStorageRequest) Reset()         { *m = SetAvailableBlo
 func (m *SetAvailableBlockStorageRequest) String() string { return proto.CompactTextString(m) }
 func (*SetAvailableBlockStorageRequest) ProtoMessage()    {}
 func (*SetAvailableBlockStorageRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_block_storage_0fb298693b70a65d, []int{13}
+	return fileDescriptor_block_storage_92f089fbaae223dc, []int{11}
 }
 func (m *SetAvailableBlockStorageRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_SetAvailableBlockStorageRequest.Unmarshal(m, b)
@@ -816,76 +813,38 @@ func (m *SetAvailableBlockStorageRequest) GetName() string {
 	return ""
 }
 
-type ProtectBlockStorageRequest struct {
+type SetProtectedBlockStorageRequest struct {
 	Name                 string   `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
 }
 
-func (m *ProtectBlockStorageRequest) Reset()         { *m = ProtectBlockStorageRequest{} }
-func (m *ProtectBlockStorageRequest) String() string { return proto.CompactTextString(m) }
-func (*ProtectBlockStorageRequest) ProtoMessage()    {}
-func (*ProtectBlockStorageRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_block_storage_0fb298693b70a65d, []int{14}
+func (m *SetProtectedBlockStorageRequest) Reset()         { *m = SetProtectedBlockStorageRequest{} }
+func (m *SetProtectedBlockStorageRequest) String() string { return proto.CompactTextString(m) }
+func (*SetProtectedBlockStorageRequest) ProtoMessage()    {}
+func (*SetProtectedBlockStorageRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_block_storage_92f089fbaae223dc, []int{12}
 }
-func (m *ProtectBlockStorageRequest) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_ProtectBlockStorageRequest.Unmarshal(m, b)
+func (m *SetProtectedBlockStorageRequest) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_SetProtectedBlockStorageRequest.Unmarshal(m, b)
 }
-func (m *ProtectBlockStorageRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_ProtectBlockStorageRequest.Marshal(b, m, deterministic)
+func (m *SetProtectedBlockStorageRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_SetProtectedBlockStorageRequest.Marshal(b, m, deterministic)
 }
-func (dst *ProtectBlockStorageRequest) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_ProtectBlockStorageRequest.Merge(dst, src)
+func (dst *SetProtectedBlockStorageRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_SetProtectedBlockStorageRequest.Merge(dst, src)
 }
-func (m *ProtectBlockStorageRequest) XXX_Size() int {
-	return xxx_messageInfo_ProtectBlockStorageRequest.Size(m)
+func (m *SetProtectedBlockStorageRequest) XXX_Size() int {
+	return xxx_messageInfo_SetProtectedBlockStorageRequest.Size(m)
 }
-func (m *ProtectBlockStorageRequest) XXX_DiscardUnknown() {
-	xxx_messageInfo_ProtectBlockStorageRequest.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_ProtectBlockStorageRequest proto.InternalMessageInfo
-
-func (m *ProtectBlockStorageRequest) GetName() string {
-	if m != nil {
-		return m.Name
-	}
-	return ""
+func (m *SetProtectedBlockStorageRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_SetProtectedBlockStorageRequest.DiscardUnknown(m)
 }
 
-type UnprotectBlockStorageRequest struct {
-	Name                 string   `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
-}
+var xxx_messageInfo_SetProtectedBlockStorageRequest proto.InternalMessageInfo
 
-func (m *UnprotectBlockStorageRequest) Reset()         { *m = UnprotectBlockStorageRequest{} }
-func (m *UnprotectBlockStorageRequest) String() string { return proto.CompactTextString(m) }
-func (*UnprotectBlockStorageRequest) ProtoMessage()    {}
-func (*UnprotectBlockStorageRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_block_storage_0fb298693b70a65d, []int{15}
-}
-func (m *UnprotectBlockStorageRequest) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_UnprotectBlockStorageRequest.Unmarshal(m, b)
-}
-func (m *UnprotectBlockStorageRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_UnprotectBlockStorageRequest.Marshal(b, m, deterministic)
-}
-func (dst *UnprotectBlockStorageRequest) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_UnprotectBlockStorageRequest.Merge(dst, src)
-}
-func (m *UnprotectBlockStorageRequest) XXX_Size() int {
-	return xxx_messageInfo_UnprotectBlockStorageRequest.Size(m)
-}
-func (m *UnprotectBlockStorageRequest) XXX_DiscardUnknown() {
-	xxx_messageInfo_UnprotectBlockStorageRequest.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_UnprotectBlockStorageRequest proto.InternalMessageInfo
-
-func (m *UnprotectBlockStorageRequest) GetName() string {
+func (m *SetProtectedBlockStorageRequest) GetName() string {
 	if m != nil {
 		return m.Name
 	}
@@ -903,7 +862,7 @@ func (m *DownloadBlockStorageRequest) Reset()         { *m = DownloadBlockStorag
 func (m *DownloadBlockStorageRequest) String() string { return proto.CompactTextString(m) }
 func (*DownloadBlockStorageRequest) ProtoMessage()    {}
 func (*DownloadBlockStorageRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_block_storage_0fb298693b70a65d, []int{16}
+	return fileDescriptor_block_storage_92f089fbaae223dc, []int{13}
 }
 func (m *DownloadBlockStorageRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_DownloadBlockStorageRequest.Unmarshal(m, b)
@@ -932,24 +891,26 @@ func (m *DownloadBlockStorageRequest) GetName() string {
 
 func init() {
 	proto.RegisterType((*BlockStorage)(nil), "n0stack.provisioning.BlockStorage")
-	proto.RegisterType((*BlockStorageSpec)(nil), "n0stack.provisioning.BlockStorageSpec")
-	proto.RegisterType((*BlockStorageStatus)(nil), "n0stack.provisioning.BlockStorageStatus")
+	proto.RegisterMapType((map[string]string)(nil), "n0stack.provisioning.BlockStorage.AnnotationsEntry")
 	proto.RegisterType((*BlockStorageChunk)(nil), "n0stack.provisioning.BlockStorageChunk")
 	proto.RegisterType((*CreateBlockStorageRequest)(nil), "n0stack.provisioning.CreateBlockStorageRequest")
+	proto.RegisterMapType((map[string]string)(nil), "n0stack.provisioning.CreateBlockStorageRequest.AnnotationsEntry")
 	proto.RegisterType((*UploadBlockStorageRequest)(nil), "n0stack.provisioning.UploadBlockStorageRequest")
-	proto.RegisterType((*UploadBlockStorageRequest_UploadBlockStorageHeader)(nil), "n0stack.provisioning.UploadBlockStorageRequest.UploadBlockStorageHeader")
+	proto.RegisterType((*UploadBlockStorageRequest_UploadBlockStorageMetadata)(nil), "n0stack.provisioning.UploadBlockStorageRequest.UploadBlockStorageMetadata")
+	proto.RegisterMapType((map[string]string)(nil), "n0stack.provisioning.UploadBlockStorageRequest.UploadBlockStorageMetadata.AnnotationsEntry")
 	proto.RegisterType((*CopyBlockStorageRequest)(nil), "n0stack.provisioning.CopyBlockStorageRequest")
+	proto.RegisterMapType((map[string]string)(nil), "n0stack.provisioning.CopyBlockStorageRequest.AnnotationsEntry")
 	proto.RegisterType((*ListBlockStoragesRequest)(nil), "n0stack.provisioning.ListBlockStoragesRequest")
 	proto.RegisterType((*ListBlockStoragesResponse)(nil), "n0stack.provisioning.ListBlockStoragesResponse")
 	proto.RegisterType((*GetBlockStorageRequest)(nil), "n0stack.provisioning.GetBlockStorageRequest")
 	proto.RegisterType((*UpdateBlockStorageRequest)(nil), "n0stack.provisioning.UpdateBlockStorageRequest")
+	proto.RegisterMapType((map[string]string)(nil), "n0stack.provisioning.UpdateBlockStorageRequest.AnnotationsEntry")
 	proto.RegisterType((*DeleteBlockStorageRequest)(nil), "n0stack.provisioning.DeleteBlockStorageRequest")
 	proto.RegisterType((*SetInuseBlockStorageRequest)(nil), "n0stack.provisioning.SetInuseBlockStorageRequest")
 	proto.RegisterType((*SetAvailableBlockStorageRequest)(nil), "n0stack.provisioning.SetAvailableBlockStorageRequest")
-	proto.RegisterType((*ProtectBlockStorageRequest)(nil), "n0stack.provisioning.ProtectBlockStorageRequest")
-	proto.RegisterType((*UnprotectBlockStorageRequest)(nil), "n0stack.provisioning.UnprotectBlockStorageRequest")
+	proto.RegisterType((*SetProtectedBlockStorageRequest)(nil), "n0stack.provisioning.SetProtectedBlockStorageRequest")
 	proto.RegisterType((*DownloadBlockStorageRequest)(nil), "n0stack.provisioning.DownloadBlockStorageRequest")
-	proto.RegisterEnum("n0stack.provisioning.BlockStorageStatus_BlockStorageState", BlockStorageStatus_BlockStorageState_name, BlockStorageStatus_BlockStorageState_value)
+	proto.RegisterEnum("n0stack.provisioning.BlockStorage_BlockStorageState", BlockStorage_BlockStorageState_name, BlockStorage_BlockStorageState_value)
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -970,10 +931,12 @@ type BlockStorageServiceClient interface {
 	GetBlockStorage(ctx context.Context, in *GetBlockStorageRequest, opts ...grpc.CallOption) (*BlockStorage, error)
 	UpdateBlockStorage(ctx context.Context, in *UpdateBlockStorageRequest, opts ...grpc.CallOption) (*BlockStorage, error)
 	DeleteBlockStorage(ctx context.Context, in *DeleteBlockStorageRequest, opts ...grpc.CallOption) (*empty.Empty, error)
+	// AVAILABLE -> IN_USE
 	SetInuseBlockStorage(ctx context.Context, in *SetInuseBlockStorageRequest, opts ...grpc.CallOption) (*BlockStorage, error)
+	// -> AVAILABLE
 	SetAvailableBlockStorage(ctx context.Context, in *SetAvailableBlockStorageRequest, opts ...grpc.CallOption) (*BlockStorage, error)
-	ProtectBlockStorage(ctx context.Context, in *ProtectBlockStorageRequest, opts ...grpc.CallOption) (*BlockStorage, error)
-	UnprotectBlockStorage(ctx context.Context, in *UnprotectBlockStorageRequest, opts ...grpc.CallOption) (*BlockStorage, error)
+	// AVAILABLE -> PROTECTED
+	SetProtectedBlockStorage(ctx context.Context, in *SetProtectedBlockStorageRequest, opts ...grpc.CallOption) (*BlockStorage, error)
 	DownloadBlockStorage(ctx context.Context, in *DownloadBlockStorageRequest, opts ...grpc.CallOption) (BlockStorageService_DownloadBlockStorageClient, error)
 }
 
@@ -1091,18 +1054,9 @@ func (c *blockStorageServiceClient) SetAvailableBlockStorage(ctx context.Context
 	return out, nil
 }
 
-func (c *blockStorageServiceClient) ProtectBlockStorage(ctx context.Context, in *ProtectBlockStorageRequest, opts ...grpc.CallOption) (*BlockStorage, error) {
+func (c *blockStorageServiceClient) SetProtectedBlockStorage(ctx context.Context, in *SetProtectedBlockStorageRequest, opts ...grpc.CallOption) (*BlockStorage, error) {
 	out := new(BlockStorage)
-	err := grpc.Invoke(ctx, "/n0stack.provisioning.BlockStorageService/ProtectBlockStorage", in, out, c.cc, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *blockStorageServiceClient) UnprotectBlockStorage(ctx context.Context, in *UnprotectBlockStorageRequest, opts ...grpc.CallOption) (*BlockStorage, error) {
-	out := new(BlockStorage)
-	err := grpc.Invoke(ctx, "/n0stack.provisioning.BlockStorageService/UnprotectBlockStorage", in, out, c.cc, opts...)
+	err := grpc.Invoke(ctx, "/n0stack.provisioning.BlockStorageService/SetProtectedBlockStorage", in, out, c.cc, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1151,10 +1105,12 @@ type BlockStorageServiceServer interface {
 	GetBlockStorage(context.Context, *GetBlockStorageRequest) (*BlockStorage, error)
 	UpdateBlockStorage(context.Context, *UpdateBlockStorageRequest) (*BlockStorage, error)
 	DeleteBlockStorage(context.Context, *DeleteBlockStorageRequest) (*empty.Empty, error)
+	// AVAILABLE -> IN_USE
 	SetInuseBlockStorage(context.Context, *SetInuseBlockStorageRequest) (*BlockStorage, error)
+	// -> AVAILABLE
 	SetAvailableBlockStorage(context.Context, *SetAvailableBlockStorageRequest) (*BlockStorage, error)
-	ProtectBlockStorage(context.Context, *ProtectBlockStorageRequest) (*BlockStorage, error)
-	UnprotectBlockStorage(context.Context, *UnprotectBlockStorageRequest) (*BlockStorage, error)
+	// AVAILABLE -> PROTECTED
+	SetProtectedBlockStorage(context.Context, *SetProtectedBlockStorageRequest) (*BlockStorage, error)
 	DownloadBlockStorage(*DownloadBlockStorageRequest, BlockStorageService_DownloadBlockStorageServer) error
 }
 
@@ -1332,38 +1288,20 @@ func _BlockStorageService_SetAvailableBlockStorage_Handler(srv interface{}, ctx 
 	return interceptor(ctx, in, info, handler)
 }
 
-func _BlockStorageService_ProtectBlockStorage_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ProtectBlockStorageRequest)
+func _BlockStorageService_SetProtectedBlockStorage_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SetProtectedBlockStorageRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(BlockStorageServiceServer).ProtectBlockStorage(ctx, in)
+		return srv.(BlockStorageServiceServer).SetProtectedBlockStorage(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/n0stack.provisioning.BlockStorageService/ProtectBlockStorage",
+		FullMethod: "/n0stack.provisioning.BlockStorageService/SetProtectedBlockStorage",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(BlockStorageServiceServer).ProtectBlockStorage(ctx, req.(*ProtectBlockStorageRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _BlockStorageService_UnprotectBlockStorage_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(UnprotectBlockStorageRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(BlockStorageServiceServer).UnprotectBlockStorage(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/n0stack.provisioning.BlockStorageService/UnprotectBlockStorage",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(BlockStorageServiceServer).UnprotectBlockStorage(ctx, req.(*UnprotectBlockStorageRequest))
+		return srv.(BlockStorageServiceServer).SetProtectedBlockStorage(ctx, req.(*SetProtectedBlockStorageRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1426,12 +1364,8 @@ var _BlockStorageService_serviceDesc = grpc.ServiceDesc{
 			Handler:    _BlockStorageService_SetAvailableBlockStorage_Handler,
 		},
 		{
-			MethodName: "ProtectBlockStorage",
-			Handler:    _BlockStorageService_ProtectBlockStorage_Handler,
-		},
-		{
-			MethodName: "UnprotectBlockStorage",
-			Handler:    _BlockStorageService_UnprotectBlockStorage_Handler,
+			MethodName: "SetProtectedBlockStorage",
+			Handler:    _BlockStorageService_SetProtectedBlockStorage_Handler,
 		},
 	},
 	Streams: []grpc.StreamDesc{
@@ -1450,64 +1384,65 @@ var _BlockStorageService_serviceDesc = grpc.ServiceDesc{
 }
 
 func init() {
-	proto.RegisterFile("provisioning/v0/block_storage.proto", fileDescriptor_block_storage_0fb298693b70a65d)
+	proto.RegisterFile("provisioning/v0/block_storage.proto", fileDescriptor_block_storage_92f089fbaae223dc)
 }
 
-var fileDescriptor_block_storage_0fb298693b70a65d = []byte{
-	// 871 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xc4, 0x57, 0xcd, 0x6e, 0xdb, 0x46,
-	0x10, 0x16, 0x65, 0xd9, 0xb1, 0x47, 0x76, 0x2b, 0x4f, 0xdc, 0x54, 0xa6, 0x03, 0xc4, 0x65, 0x80,
-	0x46, 0x87, 0x84, 0x94, 0x55, 0xe4, 0xd0, 0xe4, 0xd0, 0x4a, 0xb6, 0x1b, 0x19, 0x75, 0xd5, 0x80,
-	0x82, 0xda, 0xa2, 0x17, 0x81, 0xa2, 0xa6, 0x32, 0x21, 0x89, 0xcb, 0x88, 0x4b, 0x05, 0x7e, 0x80,
-	0xf6, 0xd6, 0xd7, 0xe9, 0xa5, 0x8f, 0xd0, 0x53, 0xdf, 0xa8, 0xe0, 0x92, 0x4e, 0x25, 0x6b, 0x57,
-	0xd9, 0x5c, 0xe2, 0x1b, 0x31, 0xf3, 0x7d, 0xf3, 0xcd, 0xfe, 0xcc, 0x87, 0x25, 0x3c, 0x8e, 0x66,
-	0x6c, 0x1e, 0xc4, 0x01, 0x0b, 0x83, 0x70, 0xe4, 0xcc, 0xeb, 0xce, 0x60, 0xc2, 0xfc, 0x71, 0x3f,
-	0xe6, 0x6c, 0xe6, 0x8d, 0xc8, 0x8e, 0x66, 0x8c, 0x33, 0x3c, 0x08, 0xeb, 0x31, 0xf7, 0xfc, 0xb1,
-	0xbd, 0x08, 0x36, 0x8f, 0x46, 0x8c, 0x8d, 0x26, 0xe4, 0x08, 0xcc, 0x20, 0xf9, 0xcd, 0xa1, 0x69,
-	0xc4, 0xaf, 0x33, 0x8a, 0xb9, 0x3f, 0xaf, 0x3b, 0x53, 0xe2, 0xde, 0xd0, 0xe3, 0x5e, 0x16, 0xb2,
-	0xfe, 0x36, 0x60, 0xb7, 0x95, 0x56, 0xef, 0x66, 0xc5, 0xf1, 0x19, 0x6c, 0xdf, 0x40, 0xaa, 0xc6,
-	0xb1, 0x51, 0x2b, 0x37, 0xf6, 0xed, 0x1b, 0xa5, 0x1f, 0xf2, 0x84, 0xfb, 0x0e, 0x82, 0x2f, 0xa0,
-	0x14, 0x47, 0xe4, 0x57, 0x8b, 0x02, 0xfa, 0xa5, 0x2d, 0x6b, 0xca, 0x5e, 0x14, 0xe8, 0x46, 0xe4,
-	0xbb, 0x82, 0x83, 0xdf, 0xc2, 0x56, 0xcc, 0x3d, 0x9e, 0xc4, 0xd5, 0x0d, 0xc1, 0xae, 0x69, 0xb0,
-	0x05, 0xde, 0xcd, 0x79, 0xd6, 0x2f, 0x50, 0xb9, 0x5d, 0x1b, 0x1f, 0xc3, 0xde, 0x8c, 0xde, 0x24,
-	0x14, 0xf3, 0xfe, 0xe0, 0x9a, 0x53, 0x2c, 0x56, 0x51, 0x72, 0x77, 0xf3, 0x60, 0x2b, 0x8d, 0xe1,
-	0x23, 0x28, 0x4f, 0x82, 0x69, 0x70, 0x03, 0x29, 0x0a, 0x08, 0x88, 0x90, 0x00, 0x58, 0x7f, 0x16,
-	0x01, 0x57, 0x85, 0xf1, 0x35, 0x6c, 0xa6, 0xd2, 0x24, 0x8a, 0x7e, 0xd2, 0x78, 0xa1, 0xdb, 0xf1,
-	0x4a, 0x88, 0xdc, 0xac, 0x10, 0x1e, 0xc1, 0x4e, 0xc8, 0x86, 0xd4, 0x0f, 0xbd, 0x29, 0x89, 0x3e,
-	0x76, 0xdc, 0xed, 0x34, 0xd0, 0xf1, 0xa6, 0x84, 0x5f, 0xc0, 0x6e, 0x7e, 0xe8, 0x59, 0x7e, 0x43,
-	0xe4, 0xcb, 0x79, 0x4c, 0x40, 0x1e, 0xc2, 0x4e, 0x7a, 0x92, 0xe4, 0x73, 0x1a, 0x56, 0x4b, 0xc7,
-	0x46, 0x6d, 0xdb, 0xfd, 0x3f, 0x60, 0xbd, 0x82, 0xfd, 0x15, 0x65, 0x04, 0xd8, 0xfa, 0xae, 0x79,
-	0x71, 0x79, 0x7e, 0x56, 0x29, 0x60, 0x19, 0xee, 0xf5, 0x3a, 0xdf, 0x77, 0x7e, 0xfc, 0xb9, 0x53,
-	0x31, 0x70, 0x0f, 0x76, 0x9a, 0x3f, 0x35, 0x2f, 0x2e, 0x9b, 0xad, 0xcb, 0xf3, 0x4a, 0x31, 0xc5,
-	0x5d, 0x74, 0xfa, 0xbd, 0xee, 0x79, 0x65, 0xc3, 0x7a, 0xb2, 0x5c, 0xe8, 0xf4, 0x2a, 0x09, 0xc7,
-	0x88, 0x50, 0x7a, 0x77, 0x4f, 0x76, 0x5d, 0xf1, 0x6d, 0xfd, 0x61, 0xc0, 0xe1, 0xe9, 0x8c, 0x3c,
-	0x4e, 0x8b, 0x78, 0x37, 0xdb, 0xfc, 0x8f, 0x78, 0xbb, 0xac, 0x7f, 0x8b, 0x70, 0xd8, 0x8b, 0x26,
-	0xcc, 0x1b, 0xca, 0x1a, 0x19, 0xc0, 0xd6, 0x15, 0x79, 0x43, 0x9a, 0xe5, 0x6d, 0xb4, 0xe5, 0xb5,
-	0x95, 0x05, 0x24, 0x99, 0xb6, 0xa8, 0xd7, 0x2e, 0xb8, 0x79, 0x65, 0xfc, 0x06, 0x36, 0xfd, 0x74,
-	0x9f, 0xf2, 0xf6, 0x9f, 0xbc, 0xbf, 0x7d, 0xb1, 0xad, 0xed, 0x82, 0x9b, 0xf1, 0xcc, 0xdf, 0x0d,
-	0xa8, 0xaa, 0x74, 0x3e, 0xe2, 0x56, 0xb6, 0xee, 0xc1, 0xe6, 0xdc, 0x9b, 0x24, 0x64, 0xfd, 0x65,
-	0xc0, 0xe7, 0xa7, 0x2c, 0xba, 0xbe, 0xdb, 0xa3, 0xc5, 0x3a, 0x1c, 0xc4, 0x2c, 0x99, 0xf9, 0xd4,
-	0x5f, 0x32, 0xc6, 0x7c, 0x3c, 0x30, 0xcb, 0x2d, 0x72, 0x2d, 0x13, 0xaa, 0x97, 0x41, 0xcc, 0x17,
-	0x63, 0x71, 0xde, 0xb8, 0x45, 0x70, 0x28, 0xc9, 0xc5, 0x11, 0x0b, 0x63, 0xc2, 0x36, 0xec, 0x2d,
-	0x25, 0xaa, 0xc6, 0xf1, 0x46, 0xad, 0xdc, 0xb0, 0xde, 0xdf, 0xaf, 0xbb, 0x4c, 0xb4, 0x9e, 0xc2,
-	0x83, 0x57, 0xc4, 0x65, 0x3b, 0x87, 0x50, 0x12, 0xd3, 0x6d, 0x88, 0xf6, 0xc5, 0xb7, 0x18, 0xa3,
-	0x5e, 0x34, 0xbc, 0xfb, 0x31, 0x72, 0xe0, 0xf0, 0x8c, 0x26, 0x24, 0xef, 0x43, 0xd6, 0xf9, 0x09,
-	0x1c, 0x75, 0x89, 0x5f, 0x84, 0x49, 0xac, 0x4d, 0x79, 0x0e, 0x8f, 0xba, 0xc4, 0x9b, 0x73, 0x2f,
-	0x98, 0x78, 0x83, 0x89, 0x36, 0xad, 0x0e, 0xe6, 0xeb, 0xcc, 0xe9, 0x74, 0x19, 0x0d, 0x78, 0xd8,
-	0x0b, 0xa3, 0x0f, 0xe3, 0x9c, 0xc0, 0xd1, 0x19, 0x7b, 0x1b, 0xaa, 0x8c, 0x44, 0x42, 0x69, 0xfc,
-	0x03, 0x70, 0x7f, 0x69, 0x3b, 0x69, 0x36, 0x0f, 0x7c, 0xc2, 0x31, 0xe0, 0xaa, 0x35, 0xa2, 0x23,
-	0x3f, 0x0f, 0xa5, 0x89, 0x9a, 0x1a, 0x97, 0xcf, 0x2a, 0xe0, 0x14, 0x70, 0xd5, 0x3b, 0x54, 0x62,
-	0x4a, 0x9f, 0xd3, 0x13, 0xab, 0x19, 0x38, 0x82, 0xca, 0x6d, 0x67, 0xc0, 0x67, 0x8a, 0x95, 0xc9,
-	0x1d, 0x44, 0x73, 0x5d, 0x73, 0xd8, 0x5f, 0x19, 0x57, 0xb4, 0xe5, 0x54, 0xd5, 0xcc, 0x9b, 0x8e,
-	0x36, 0x3e, 0xf3, 0x01, 0xab, 0x80, 0x04, 0x9f, 0xde, 0x9a, 0x5f, 0x7c, 0x2a, 0xaf, 0x22, 0x1f,
-	0x73, 0xcd, 0xe5, 0x8d, 0xd3, 0x63, 0x1b, 0x6a, 0xde, 0x11, 0xa5, 0x43, 0x68, 0x8a, 0xf5, 0x01,
-	0x57, 0x87, 0x5b, 0x25, 0xa6, 0xb4, 0x01, 0xf3, 0x81, 0x9d, 0xbd, 0x3a, 0xed, 0x9b, 0x57, 0xa7,
-	0x7d, 0x9e, 0xbe, 0x3a, 0xad, 0x02, 0x32, 0x38, 0x90, 0x99, 0x01, 0x9e, 0xc8, 0x25, 0xd6, 0x18,
-	0x87, 0xe6, 0x8a, 0xde, 0x42, 0x55, 0x65, 0x25, 0xf8, 0x5c, 0x29, 0xba, 0xce, 0x7a, 0xb4, 0xc7,
-	0xed, 0xbe, 0xc4, 0x8c, 0xb0, 0x2e, 0x27, 0xab, 0x7d, 0x4b, 0x53, 0xee, 0x0d, 0x7c, 0x26, 0x75,
-	0x32, 0x6c, 0x28, 0x6e, 0xca, 0x1a, 0xdb, 0xd3, 0x1e, 0xbc, 0x03, 0x99, 0x11, 0xaa, 0xce, 0x72,
-	0x8d, 0x69, 0x9a, 0xba, 0x4f, 0x21, 0xab, 0x50, 0x37, 0x5a, 0x2f, 0x7f, 0xfd, 0x7a, 0x14, 0xf0,
-	0xab, 0x64, 0x60, 0xfb, 0x6c, 0xea, 0xe4, 0xc4, 0xec, 0x07, 0xc7, 0x1e, 0x31, 0xe7, 0xd6, 0xbf,
-	0xd2, 0xcb, 0x68, 0x31, 0x30, 0xd8, 0x12, 0xb8, 0xaf, 0xfe, 0x0b, 0x00, 0x00, 0xff, 0xff, 0xa4,
-	0x22, 0xd0, 0x46, 0x53, 0x0d, 0x00, 0x00,
+var fileDescriptor_block_storage_92f089fbaae223dc = []byte{
+	// 894 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xd4, 0x57, 0xdd, 0x92, 0xe2, 0x44,
+	0x14, 0x26, 0xc0, 0xec, 0x2e, 0x27, 0x8c, 0x66, 0x5b, 0x6a, 0x0d, 0x99, 0x8b, 0xc5, 0xec, 0xc5,
+	0x72, 0xb1, 0x26, 0x2c, 0xb3, 0x53, 0xa5, 0x6e, 0xd5, 0x2a, 0x7f, 0x3a, 0xac, 0xc8, 0x6e, 0x85,
+	0x61, 0xac, 0xd2, 0x0b, 0x0c, 0xd0, 0x32, 0x29, 0x42, 0x3a, 0x26, 0x0d, 0x53, 0x5c, 0x78, 0xab,
+	0xcf, 0xe0, 0x83, 0xf8, 0x0c, 0xbe, 0x87, 0x4f, 0x62, 0xa5, 0xc3, 0x8c, 0x01, 0x3a, 0x4c, 0xa8,
+	0xd1, 0xa9, 0x9a, 0xbb, 0xce, 0xf9, 0xf9, 0x4e, 0xf7, 0xf9, 0xf9, 0x3a, 0x0d, 0xcf, 0x5c, 0x8f,
+	0x2c, 0x2c, 0xdf, 0x22, 0x8e, 0xe5, 0x4c, 0xf4, 0x45, 0x45, 0x1f, 0xda, 0x64, 0x34, 0x1d, 0xf8,
+	0x94, 0x78, 0xe6, 0x04, 0x6b, 0xae, 0x47, 0x28, 0x41, 0x05, 0xa7, 0xe2, 0x53, 0x73, 0x34, 0xd5,
+	0xa2, 0xc6, 0xca, 0xd1, 0x84, 0x90, 0x89, 0x8d, 0x75, 0x66, 0x33, 0x9c, 0xff, 0xac, 0xe3, 0x99,
+	0x4b, 0x97, 0xa1, 0x8b, 0xfa, 0x5b, 0x16, 0xf2, 0xf5, 0x00, 0xaa, 0x17, 0x22, 0x21, 0x04, 0x59,
+	0xc7, 0x9c, 0x61, 0x59, 0x28, 0x09, 0xe5, 0x9c, 0xc1, 0xd6, 0xa8, 0x0f, 0xa2, 0xe9, 0x38, 0x84,
+	0x9a, 0xd4, 0x22, 0x8e, 0x2f, 0x67, 0x4a, 0x99, 0xb2, 0x58, 0x3d, 0xd6, 0x78, 0xd1, 0xb4, 0x28,
+	0x98, 0x56, 0xfb, 0xd7, 0xab, 0xe5, 0x50, 0x6f, 0x69, 0x44, 0x71, 0xd0, 0x33, 0x38, 0xf4, 0xf0,
+	0x2f, 0x73, 0xec, 0xd3, 0xc1, 0x70, 0x49, 0xb1, 0x2f, 0x43, 0x49, 0x28, 0x67, 0x8d, 0xfc, 0x4a,
+	0x58, 0x0f, 0x64, 0xe8, 0x29, 0x88, 0xb6, 0x35, 0xb3, 0xae, 0x4c, 0x44, 0x66, 0x02, 0x4c, 0x14,
+	0x1a, 0xbc, 0x85, 0x03, 0x9f, 0x9a, 0x14, 0xcb, 0xd5, 0x92, 0x50, 0xfe, 0xa0, 0xfa, 0x2a, 0xc1,
+	0xb6, 0xa2, 0x1f, 0xbd, 0xc0, 0xd7, 0x08, 0x21, 0xd0, 0x27, 0x90, 0x67, 0x8b, 0x81, 0x87, 0x4d,
+	0x9f, 0x38, 0xf2, 0x31, 0x4b, 0x82, 0xc8, 0x64, 0x06, 0x13, 0xa1, 0x23, 0xc8, 0x39, 0x64, 0x8c,
+	0x07, 0x2c, 0x49, 0xaf, 0x98, 0xfe, 0x51, 0x20, 0xe8, 0x06, 0x89, 0x62, 0xfe, 0x0c, 0x36, 0xd4,
+	0x9f, 0x5c, 0xf9, 0x33, 0x59, 0x60, 0xa2, 0xbc, 0x01, 0x69, 0x33, 0x2b, 0x48, 0x82, 0xcc, 0x14,
+	0x2f, 0x57, 0x29, 0x0f, 0x96, 0xa8, 0x00, 0x07, 0x0b, 0xd3, 0x9e, 0x63, 0x39, 0xcd, 0x64, 0xe1,
+	0xc7, 0x17, 0xe9, 0xcf, 0x04, 0xf5, 0x1c, 0x1e, 0x6f, 0x6d, 0x1f, 0x01, 0x3c, 0xf8, 0xba, 0xd6,
+	0xee, 0xb4, 0x9a, 0x52, 0x0a, 0x89, 0xf0, 0xb0, 0xdf, 0xfd, 0xb6, 0xfb, 0xee, 0xfb, 0xae, 0x24,
+	0xa0, 0x43, 0xc8, 0xd5, 0xce, 0x6b, 0xed, 0x4e, 0xad, 0xde, 0x69, 0x49, 0xe9, 0xc0, 0xae, 0xdd,
+	0x1d, 0xf4, 0x7b, 0x2d, 0x29, 0x13, 0xa8, 0xde, 0x1b, 0xef, 0xce, 0x5a, 0x8d, 0xb3, 0x56, 0x53,
+	0xca, 0xaa, 0xcf, 0xd7, 0x71, 0x1b, 0x17, 0x73, 0x67, 0x1a, 0x34, 0xc3, 0xd8, 0xa4, 0x26, 0xdb,
+	0x59, 0xde, 0x60, 0x6b, 0xf5, 0x8f, 0x34, 0x14, 0x1b, 0x1e, 0x36, 0x29, 0x8e, 0xda, 0x1b, 0x61,
+	0xcd, 0xb8, 0xed, 0x33, 0xe4, 0xb5, 0xcf, 0x57, 0xfc, 0x3a, 0xc5, 0x22, 0xdf, 0x45, 0x2f, 0xdd,
+	0xba, 0x38, 0xbf, 0x67, 0xa1, 0xd8, 0x77, 0x6d, 0x62, 0x8e, 0x79, 0xb9, 0xb9, 0x80, 0x47, 0x33,
+	0x4c, 0xcd, 0xeb, 0x8c, 0x8a, 0xd5, 0xb7, 0xfc, 0x24, 0xc4, 0x42, 0x70, 0x34, 0xdf, 0xad, 0x10,
+	0x4f, 0x53, 0xc6, 0x35, 0x3a, 0xfa, 0x12, 0x0e, 0x46, 0x41, 0x01, 0xd9, 0x0e, 0xc5, 0xea, 0xf3,
+	0x9b, 0x67, 0x82, 0xd5, 0xfb, 0x34, 0x65, 0x84, 0x7e, 0xca, 0x9f, 0x69, 0x50, 0xe2, 0x63, 0x71,
+	0xab, 0xfc, 0x2b, 0xaf, 0xca, 0x3f, 0xfe, 0x77, 0x07, 0xbc, 0x0f, 0x0d, 0x50, 0x7f, 0xb8, 0xd2,
+	0xa8, 0x7f, 0xa5, 0xe1, 0xe3, 0x06, 0x71, 0x97, 0x49, 0x67, 0xe4, 0x27, 0x5e, 0xf6, 0xde, 0xc4,
+	0xcc, 0x08, 0x1f, 0xf7, 0x4e, 0xd8, 0xb6, 0x02, 0x05, 0x9f, 0xcc, 0xbd, 0x11, 0x1e, 0xac, 0x5d,
+	0x40, 0xf2, 0x98, 0x9d, 0x05, 0x85, 0xba, 0xe8, 0xe6, 0x6e, 0x3d, 0x53, 0x0a, 0xc8, 0x1d, 0xcb,
+	0xa7, 0x51, 0x4c, 0x7f, 0x75, 0x62, 0x15, 0x43, 0x91, 0xa3, 0xf3, 0x5d, 0xe2, 0xf8, 0x18, 0x9d,
+	0xc2, 0xe1, 0x9a, 0x42, 0x16, 0x58, 0x52, 0xd5, 0x9b, 0x87, 0xc1, 0x58, 0x77, 0x54, 0x5f, 0xc0,
+	0x93, 0x6f, 0x30, 0x4d, 0x58, 0x4a, 0x46, 0x90, 0x7d, 0x77, 0xfc, 0x3f, 0x11, 0x64, 0x2c, 0xf2,
+	0xbd, 0x20, 0x48, 0x1d, 0x8a, 0x4d, 0x6c, 0xe3, 0xc4, 0xa9, 0x51, 0x5f, 0xc2, 0x51, 0x0f, 0xd3,
+	0xb6, 0x33, 0xf7, 0x13, 0xbb, 0x9c, 0xc0, 0xd3, 0x1e, 0xa6, 0xb5, 0x85, 0x69, 0xd9, 0xe6, 0xd0,
+	0xde, 0xd3, 0xed, 0xbd, 0x47, 0x28, 0x1e, 0x51, 0x3c, 0xde, 0x63, 0x83, 0x4d, 0x72, 0xe9, 0xc4,
+	0x71, 0x3e, 0xc7, 0xa5, 0xfa, 0x77, 0x0e, 0x3e, 0x5a, 0xbb, 0xc3, 0xb1, 0xb7, 0xb0, 0x46, 0x18,
+	0x4d, 0x01, 0x6d, 0x5f, 0x7f, 0x48, 0xdf, 0xf3, 0xa2, 0x54, 0x12, 0x34, 0xb8, 0x9a, 0x42, 0x33,
+	0x40, 0xdb, 0x5c, 0x1b, 0x17, 0x2c, 0x96, 0xaf, 0x93, 0x05, 0x2b, 0x0b, 0x68, 0x02, 0xd2, 0x26,
+	0x6d, 0xa1, 0x4f, 0xf7, 0xa2, 0xb7, 0x84, 0xe7, 0x5a, 0xc0, 0xe3, 0x2d, 0x4a, 0x40, 0x1a, 0xdf,
+	0x35, 0x8e, 0x57, 0x14, 0x3d, 0xb1, 0x7d, 0xc8, 0x35, 0x6a, 0x0a, 0x61, 0xf8, 0x70, 0x83, 0x23,
+	0xd0, 0x0b, 0x3e, 0x0a, 0x9f, 0x4a, 0x12, 0x1e, 0x6f, 0x1a, 0x94, 0x6d, 0x9c, 0xb0, 0x47, 0x62,
+	0xb9, 0x22, 0x61, 0xb0, 0x01, 0xa0, 0xed, 0x69, 0x8d, 0x0b, 0x16, 0x3b, 0xd7, 0xca, 0x13, 0x2d,
+	0x7c, 0x81, 0x68, 0x57, 0x2f, 0x10, 0xad, 0x15, 0xbc, 0x40, 0xd4, 0x14, 0x22, 0x50, 0xe0, 0x4d,
+	0x37, 0x7a, 0xc9, 0x0f, 0xb1, 0x83, 0x09, 0x12, 0x9e, 0xe8, 0x12, 0xe4, 0x38, 0x6e, 0x40, 0x27,
+	0xb1, 0x41, 0x77, 0x71, 0xc9, 0x5e, 0x81, 0xb9, 0xec, 0xb2, 0x23, 0xf0, 0x2e, 0x36, 0x4a, 0x3c,
+	0x0f, 0x05, 0x1e, 0x3f, 0xc5, 0xa5, 0x78, 0x07, 0x97, 0x29, 0x49, 0x7f, 0x23, 0xd5, 0x54, 0x45,
+	0xa8, 0xbf, 0xfe, 0xe1, 0xf3, 0x89, 0x45, 0x2f, 0xe6, 0x43, 0x6d, 0x44, 0x66, 0xfa, 0xca, 0x31,
+	0x7c, 0x83, 0x6a, 0x13, 0xa2, 0x6f, 0x3c, 0x67, 0x5f, 0xbb, 0x51, 0xc1, 0xf0, 0x01, 0xb3, 0x3b,
+	0xfe, 0x27, 0x00, 0x00, 0xff, 0xff, 0xca, 0xde, 0x2e, 0xd2, 0xf6, 0x0e, 0x00, 0x00,
 }

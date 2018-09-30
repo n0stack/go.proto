@@ -7,7 +7,6 @@ import proto "github.com/golang/protobuf/proto"
 import fmt "fmt"
 import math "math"
 import empty "github.com/golang/protobuf/ptypes/empty"
-import v0 "github.com/n0stack/proto.go/v0"
 
 import (
 	context "golang.org/x/net/context"
@@ -25,27 +24,27 @@ var _ = math.Inf
 // proto package needs to be updated.
 const _ = proto.ProtoPackageIsVersion2 // please upgrade the proto package
 
-type VirtualMachineStatus_VirtualMachineState int32
+type VirtualMachine_VirtualMachineState int32
 
 const (
 	// falied state because failed some process on API.
-	VirtualMachineStatus_FAILED VirtualMachineStatus_VirtualMachineState = 0
+	VirtualMachine_FAILED VirtualMachine_VirtualMachineState = 0
 	// unknown state because failed to connect for scheduled node after RUNNING.
-	VirtualMachineStatus_UNKNOWN VirtualMachineStatus_VirtualMachineState = 1
+	VirtualMachine_UNKNOWN VirtualMachine_VirtualMachineState = 1
 	// running vm
-	VirtualMachineStatus_RUNNING  VirtualMachineStatus_VirtualMachineState = 2
-	VirtualMachineStatus_SHUTDOWN VirtualMachineStatus_VirtualMachineState = 3
-	VirtualMachineStatus_PAUSED   VirtualMachineStatus_VirtualMachineState = 4
+	VirtualMachine_RUNNING  VirtualMachine_VirtualMachineState = 2
+	VirtualMachine_SHUTDOWN VirtualMachine_VirtualMachineState = 3
+	VirtualMachine_PAUSED   VirtualMachine_VirtualMachineState = 4
 )
 
-var VirtualMachineStatus_VirtualMachineState_name = map[int32]string{
+var VirtualMachine_VirtualMachineState_name = map[int32]string{
 	0: "FAILED",
 	1: "UNKNOWN",
 	2: "RUNNING",
 	3: "SHUTDOWN",
 	4: "PAUSED",
 }
-var VirtualMachineStatus_VirtualMachineState_value = map[string]int32{
+var VirtualMachine_VirtualMachineState_value = map[string]int32{
 	"FAILED":   0,
 	"UNKNOWN":  1,
 	"RUNNING":  2,
@@ -53,27 +52,99 @@ var VirtualMachineStatus_VirtualMachineState_value = map[string]int32{
 	"PAUSED":   4,
 }
 
-func (x VirtualMachineStatus_VirtualMachineState) String() string {
-	return proto.EnumName(VirtualMachineStatus_VirtualMachineState_name, int32(x))
+func (x VirtualMachine_VirtualMachineState) String() string {
+	return proto.EnumName(VirtualMachine_VirtualMachineState_name, int32(x))
 }
-func (VirtualMachineStatus_VirtualMachineState) EnumDescriptor() ([]byte, []int) {
-	return fileDescriptor_virtual_machine_09de4e89ceda058f, []int{2, 0}
+func (VirtualMachine_VirtualMachineState) EnumDescriptor() ([]byte, []int) {
+	return fileDescriptor_virtual_machine_6670dd8c861373c3, []int{1, 0}
+}
+
+type VirtualMachineNIC struct {
+	NetworkName          string   `protobuf:"bytes,1,opt,name=network_name,json=networkName" json:"network_name,omitempty"`
+	HardwareAddress      string   `protobuf:"bytes,2,opt,name=hardware_address,json=hardwareAddress" json:"hardware_address,omitempty"`
+	Ipv4Address          string   `protobuf:"bytes,3,opt,name=ipv4_address,json=ipv4Address" json:"ipv4_address,omitempty"`
+	Ipv6Address          string   `protobuf:"bytes,4,opt,name=ipv6_address,json=ipv6Address" json:"ipv6_address,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *VirtualMachineNIC) Reset()         { *m = VirtualMachineNIC{} }
+func (m *VirtualMachineNIC) String() string { return proto.CompactTextString(m) }
+func (*VirtualMachineNIC) ProtoMessage()    {}
+func (*VirtualMachineNIC) Descriptor() ([]byte, []int) {
+	return fileDescriptor_virtual_machine_6670dd8c861373c3, []int{0}
+}
+func (m *VirtualMachineNIC) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_VirtualMachineNIC.Unmarshal(m, b)
+}
+func (m *VirtualMachineNIC) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_VirtualMachineNIC.Marshal(b, m, deterministic)
+}
+func (dst *VirtualMachineNIC) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_VirtualMachineNIC.Merge(dst, src)
+}
+func (m *VirtualMachineNIC) XXX_Size() int {
+	return xxx_messageInfo_VirtualMachineNIC.Size(m)
+}
+func (m *VirtualMachineNIC) XXX_DiscardUnknown() {
+	xxx_messageInfo_VirtualMachineNIC.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_VirtualMachineNIC proto.InternalMessageInfo
+
+func (m *VirtualMachineNIC) GetNetworkName() string {
+	if m != nil {
+		return m.NetworkName
+	}
+	return ""
+}
+
+func (m *VirtualMachineNIC) GetHardwareAddress() string {
+	if m != nil {
+		return m.HardwareAddress
+	}
+	return ""
+}
+
+func (m *VirtualMachineNIC) GetIpv4Address() string {
+	if m != nil {
+		return m.Ipv4Address
+	}
+	return ""
+}
+
+func (m *VirtualMachineNIC) GetIpv6Address() string {
+	if m != nil {
+		return m.Ipv6Address
+	}
+	return ""
 }
 
 type VirtualMachine struct {
-	Metadata             *v0.Metadata          `protobuf:"bytes,1,opt,name=metadata" json:"metadata,omitempty"`
-	Spec                 *VirtualMachineSpec   `protobuf:"bytes,2,opt,name=spec" json:"spec,omitempty"`
-	Status               *VirtualMachineStatus `protobuf:"bytes,3,opt,name=status" json:"status,omitempty"`
-	XXX_NoUnkeyedLiteral struct{}              `json:"-"`
-	XXX_unrecognized     []byte                `json:"-"`
-	XXX_sizecache        int32                 `json:"-"`
+	Name                  string                             `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
+	Annotations           map[string]string                  `protobuf:"bytes,3,rep,name=annotations" json:"annotations,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	RequestCpuMilliCore   uint32                             `protobuf:"varint,10,opt,name=request_cpu_milli_core,json=requestCpuMilliCore" json:"request_cpu_milli_core,omitempty"`
+	LimitCpuMilliCore     uint32                             `protobuf:"varint,11,opt,name=limit_cpu_milli_core,json=limitCpuMilliCore" json:"limit_cpu_milli_core,omitempty"`
+	RequestMemoryBytes    uint64                             `protobuf:"varint,12,opt,name=request_memory_bytes,json=requestMemoryBytes" json:"request_memory_bytes,omitempty"`
+	LimitMemoryBytes      uint64                             `protobuf:"varint,13,opt,name=limit_memory_bytes,json=limitMemoryBytes" json:"limit_memory_bytes,omitempty"`
+	BlockStorageNames     []string                           `protobuf:"bytes,14,rep,name=block_storage_names,json=blockStorageNames" json:"block_storage_names,omitempty"`
+	Nics                  []*VirtualMachineNIC               `protobuf:"bytes,15,rep,name=nics" json:"nics,omitempty"`
+	State                 VirtualMachine_VirtualMachineState `protobuf:"varint,50,opt,name=state,enum=n0stack.provisioning.VirtualMachine_VirtualMachineState" json:"state,omitempty"`
+	Uuid                  string                             `protobuf:"bytes,51,opt,name=uuid" json:"uuid,omitempty"`
+	ComputeNodeName       string                             `protobuf:"bytes,52,opt,name=compute_node_name,json=computeNodeName" json:"compute_node_name,omitempty"`
+	ComputeName           string                             `protobuf:"bytes,53,opt,name=compute_name,json=computeName" json:"compute_name,omitempty"`
+	NetworkInterfaceNames []string                           `protobuf:"bytes,54,rep,name=network_interface_names,json=networkInterfaceNames" json:"network_interface_names,omitempty"`
+	XXX_NoUnkeyedLiteral  struct{}                           `json:"-"`
+	XXX_unrecognized      []byte                             `json:"-"`
+	XXX_sizecache         int32                              `json:"-"`
 }
 
 func (m *VirtualMachine) Reset()         { *m = VirtualMachine{} }
 func (m *VirtualMachine) String() string { return proto.CompactTextString(m) }
 func (*VirtualMachine) ProtoMessage()    {}
 func (*VirtualMachine) Descriptor() ([]byte, []int) {
-	return fileDescriptor_virtual_machine_09de4e89ceda058f, []int{0}
+	return fileDescriptor_virtual_machine_6670dd8c861373c3, []int{1}
 }
 func (m *VirtualMachine) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_VirtualMachine.Unmarshal(m, b)
@@ -93,279 +164,187 @@ func (m *VirtualMachine) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_VirtualMachine proto.InternalMessageInfo
 
-func (m *VirtualMachine) GetMetadata() *v0.Metadata {
+func (m *VirtualMachine) GetName() string {
 	if m != nil {
-		return m.Metadata
+		return m.Name
+	}
+	return ""
+}
+
+func (m *VirtualMachine) GetAnnotations() map[string]string {
+	if m != nil {
+		return m.Annotations
 	}
 	return nil
 }
 
-func (m *VirtualMachine) GetSpec() *VirtualMachineSpec {
-	if m != nil {
-		return m.Spec
-	}
-	return nil
-}
-
-func (m *VirtualMachine) GetStatus() *VirtualMachineStatus {
-	if m != nil {
-		return m.Status
-	}
-	return nil
-}
-
-type VirtualMachineSpec struct {
-	RequestCpuMilliCore  uint32                    `protobuf:"varint,1,opt,name=request_cpu_milli_core,json=requestCpuMilliCore" json:"request_cpu_milli_core,omitempty"`
-	LimitCpuMilliCore    uint32                    `protobuf:"varint,2,opt,name=limit_cpu_milli_core,json=limitCpuMilliCore" json:"limit_cpu_milli_core,omitempty"`
-	RequestMemoryBytes   uint64                    `protobuf:"varint,3,opt,name=request_memory_bytes,json=requestMemoryBytes" json:"request_memory_bytes,omitempty"`
-	LimitMemoryBytes     uint64                    `protobuf:"varint,4,opt,name=limit_memory_bytes,json=limitMemoryBytes" json:"limit_memory_bytes,omitempty"`
-	BlockStorageNames    []string                  `protobuf:"bytes,5,rep,name=block_storage_names,json=blockStorageNames" json:"block_storage_names,omitempty"`
-	Nics                 []*VirtualMachineSpec_NIC `protobuf:"bytes,6,rep,name=nics" json:"nics,omitempty"`
-	XXX_NoUnkeyedLiteral struct{}                  `json:"-"`
-	XXX_unrecognized     []byte                    `json:"-"`
-	XXX_sizecache        int32                     `json:"-"`
-}
-
-func (m *VirtualMachineSpec) Reset()         { *m = VirtualMachineSpec{} }
-func (m *VirtualMachineSpec) String() string { return proto.CompactTextString(m) }
-func (*VirtualMachineSpec) ProtoMessage()    {}
-func (*VirtualMachineSpec) Descriptor() ([]byte, []int) {
-	return fileDescriptor_virtual_machine_09de4e89ceda058f, []int{1}
-}
-func (m *VirtualMachineSpec) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_VirtualMachineSpec.Unmarshal(m, b)
-}
-func (m *VirtualMachineSpec) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_VirtualMachineSpec.Marshal(b, m, deterministic)
-}
-func (dst *VirtualMachineSpec) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_VirtualMachineSpec.Merge(dst, src)
-}
-func (m *VirtualMachineSpec) XXX_Size() int {
-	return xxx_messageInfo_VirtualMachineSpec.Size(m)
-}
-func (m *VirtualMachineSpec) XXX_DiscardUnknown() {
-	xxx_messageInfo_VirtualMachineSpec.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_VirtualMachineSpec proto.InternalMessageInfo
-
-func (m *VirtualMachineSpec) GetRequestCpuMilliCore() uint32 {
+func (m *VirtualMachine) GetRequestCpuMilliCore() uint32 {
 	if m != nil {
 		return m.RequestCpuMilliCore
 	}
 	return 0
 }
 
-func (m *VirtualMachineSpec) GetLimitCpuMilliCore() uint32 {
+func (m *VirtualMachine) GetLimitCpuMilliCore() uint32 {
 	if m != nil {
 		return m.LimitCpuMilliCore
 	}
 	return 0
 }
 
-func (m *VirtualMachineSpec) GetRequestMemoryBytes() uint64 {
+func (m *VirtualMachine) GetRequestMemoryBytes() uint64 {
 	if m != nil {
 		return m.RequestMemoryBytes
 	}
 	return 0
 }
 
-func (m *VirtualMachineSpec) GetLimitMemoryBytes() uint64 {
+func (m *VirtualMachine) GetLimitMemoryBytes() uint64 {
 	if m != nil {
 		return m.LimitMemoryBytes
 	}
 	return 0
 }
 
-func (m *VirtualMachineSpec) GetBlockStorageNames() []string {
+func (m *VirtualMachine) GetBlockStorageNames() []string {
 	if m != nil {
 		return m.BlockStorageNames
 	}
 	return nil
 }
 
-func (m *VirtualMachineSpec) GetNics() []*VirtualMachineSpec_NIC {
+func (m *VirtualMachine) GetNics() []*VirtualMachineNIC {
 	if m != nil {
 		return m.Nics
 	}
 	return nil
 }
 
-type VirtualMachineSpec_NIC struct {
-	NetworkName          string   `protobuf:"bytes,1,opt,name=network_name,json=networkName" json:"network_name,omitempty"`
-	HardwareAddress      string   `protobuf:"bytes,2,opt,name=hardware_address,json=hardwareAddress" json:"hardware_address,omitempty"`
-	Ipv4Address          string   `protobuf:"bytes,3,opt,name=ipv4_address,json=ipv4Address" json:"ipv4_address,omitempty"`
-	Ipv6Address          string   `protobuf:"bytes,4,opt,name=ipv6_address,json=ipv6Address" json:"ipv6_address,omitempty"`
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
-}
-
-func (m *VirtualMachineSpec_NIC) Reset()         { *m = VirtualMachineSpec_NIC{} }
-func (m *VirtualMachineSpec_NIC) String() string { return proto.CompactTextString(m) }
-func (*VirtualMachineSpec_NIC) ProtoMessage()    {}
-func (*VirtualMachineSpec_NIC) Descriptor() ([]byte, []int) {
-	return fileDescriptor_virtual_machine_09de4e89ceda058f, []int{1, 0}
-}
-func (m *VirtualMachineSpec_NIC) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_VirtualMachineSpec_NIC.Unmarshal(m, b)
-}
-func (m *VirtualMachineSpec_NIC) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_VirtualMachineSpec_NIC.Marshal(b, m, deterministic)
-}
-func (dst *VirtualMachineSpec_NIC) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_VirtualMachineSpec_NIC.Merge(dst, src)
-}
-func (m *VirtualMachineSpec_NIC) XXX_Size() int {
-	return xxx_messageInfo_VirtualMachineSpec_NIC.Size(m)
-}
-func (m *VirtualMachineSpec_NIC) XXX_DiscardUnknown() {
-	xxx_messageInfo_VirtualMachineSpec_NIC.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_VirtualMachineSpec_NIC proto.InternalMessageInfo
-
-func (m *VirtualMachineSpec_NIC) GetNetworkName() string {
-	if m != nil {
-		return m.NetworkName
-	}
-	return ""
-}
-
-func (m *VirtualMachineSpec_NIC) GetHardwareAddress() string {
-	if m != nil {
-		return m.HardwareAddress
-	}
-	return ""
-}
-
-func (m *VirtualMachineSpec_NIC) GetIpv4Address() string {
-	if m != nil {
-		return m.Ipv4Address
-	}
-	return ""
-}
-
-func (m *VirtualMachineSpec_NIC) GetIpv6Address() string {
-	if m != nil {
-		return m.Ipv6Address
-	}
-	return ""
-}
-
-type VirtualMachineStatus struct {
-	State                 VirtualMachineStatus_VirtualMachineState `protobuf:"varint,1,opt,name=state,enum=n0stack.provisioning.VirtualMachineStatus_VirtualMachineState" json:"state,omitempty"`
-	Uuid                  string                                   `protobuf:"bytes,2,opt,name=uuid" json:"uuid,omitempty"`
-	ComputeNodeName       string                                   `protobuf:"bytes,3,opt,name=compute_node_name,json=computeNodeName" json:"compute_node_name,omitempty"`
-	ComputeName           string                                   `protobuf:"bytes,4,opt,name=compute_name,json=computeName" json:"compute_name,omitempty"`
-	NetworkInterfaceNames []string                                 `protobuf:"bytes,5,rep,name=network_interface_names,json=networkInterfaceNames" json:"network_interface_names,omitempty"`
-	XXX_NoUnkeyedLiteral  struct{}                                 `json:"-"`
-	XXX_unrecognized      []byte                                   `json:"-"`
-	XXX_sizecache         int32                                    `json:"-"`
-}
-
-func (m *VirtualMachineStatus) Reset()         { *m = VirtualMachineStatus{} }
-func (m *VirtualMachineStatus) String() string { return proto.CompactTextString(m) }
-func (*VirtualMachineStatus) ProtoMessage()    {}
-func (*VirtualMachineStatus) Descriptor() ([]byte, []int) {
-	return fileDescriptor_virtual_machine_09de4e89ceda058f, []int{2}
-}
-func (m *VirtualMachineStatus) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_VirtualMachineStatus.Unmarshal(m, b)
-}
-func (m *VirtualMachineStatus) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_VirtualMachineStatus.Marshal(b, m, deterministic)
-}
-func (dst *VirtualMachineStatus) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_VirtualMachineStatus.Merge(dst, src)
-}
-func (m *VirtualMachineStatus) XXX_Size() int {
-	return xxx_messageInfo_VirtualMachineStatus.Size(m)
-}
-func (m *VirtualMachineStatus) XXX_DiscardUnknown() {
-	xxx_messageInfo_VirtualMachineStatus.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_VirtualMachineStatus proto.InternalMessageInfo
-
-func (m *VirtualMachineStatus) GetState() VirtualMachineStatus_VirtualMachineState {
+func (m *VirtualMachine) GetState() VirtualMachine_VirtualMachineState {
 	if m != nil {
 		return m.State
 	}
-	return VirtualMachineStatus_FAILED
+	return VirtualMachine_FAILED
 }
 
-func (m *VirtualMachineStatus) GetUuid() string {
+func (m *VirtualMachine) GetUuid() string {
 	if m != nil {
 		return m.Uuid
 	}
 	return ""
 }
 
-func (m *VirtualMachineStatus) GetComputeNodeName() string {
+func (m *VirtualMachine) GetComputeNodeName() string {
 	if m != nil {
 		return m.ComputeNodeName
 	}
 	return ""
 }
 
-func (m *VirtualMachineStatus) GetComputeName() string {
+func (m *VirtualMachine) GetComputeName() string {
 	if m != nil {
 		return m.ComputeName
 	}
 	return ""
 }
 
-func (m *VirtualMachineStatus) GetNetworkInterfaceNames() []string {
+func (m *VirtualMachine) GetNetworkInterfaceNames() []string {
 	if m != nil {
 		return m.NetworkInterfaceNames
 	}
 	return nil
 }
 
-type ApplyVirtualMachineRequest struct {
-	Metadata             *v0.Metadata        `protobuf:"bytes,1,opt,name=metadata" json:"metadata,omitempty"`
-	Spec                 *VirtualMachineSpec `protobuf:"bytes,2,opt,name=spec" json:"spec,omitempty"`
-	XXX_NoUnkeyedLiteral struct{}            `json:"-"`
-	XXX_unrecognized     []byte              `json:"-"`
-	XXX_sizecache        int32               `json:"-"`
+type CreateVirtualMachineRequest struct {
+	Name                 string               `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
+	Annotations          map[string]string    `protobuf:"bytes,3,rep,name=annotations" json:"annotations,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	RequestCpuMilliCore  uint32               `protobuf:"varint,10,opt,name=request_cpu_milli_core,json=requestCpuMilliCore" json:"request_cpu_milli_core,omitempty"`
+	LimitCpuMilliCore    uint32               `protobuf:"varint,11,opt,name=limit_cpu_milli_core,json=limitCpuMilliCore" json:"limit_cpu_milli_core,omitempty"`
+	RequestMemoryBytes   uint64               `protobuf:"varint,12,opt,name=request_memory_bytes,json=requestMemoryBytes" json:"request_memory_bytes,omitempty"`
+	LimitMemoryBytes     uint64               `protobuf:"varint,13,opt,name=limit_memory_bytes,json=limitMemoryBytes" json:"limit_memory_bytes,omitempty"`
+	BlockStorageNames    []string             `protobuf:"bytes,14,rep,name=block_storage_names,json=blockStorageNames" json:"block_storage_names,omitempty"`
+	Nics                 []*VirtualMachineNIC `protobuf:"bytes,15,rep,name=nics" json:"nics,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}             `json:"-"`
+	XXX_unrecognized     []byte               `json:"-"`
+	XXX_sizecache        int32                `json:"-"`
 }
 
-func (m *ApplyVirtualMachineRequest) Reset()         { *m = ApplyVirtualMachineRequest{} }
-func (m *ApplyVirtualMachineRequest) String() string { return proto.CompactTextString(m) }
-func (*ApplyVirtualMachineRequest) ProtoMessage()    {}
-func (*ApplyVirtualMachineRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_virtual_machine_09de4e89ceda058f, []int{3}
+func (m *CreateVirtualMachineRequest) Reset()         { *m = CreateVirtualMachineRequest{} }
+func (m *CreateVirtualMachineRequest) String() string { return proto.CompactTextString(m) }
+func (*CreateVirtualMachineRequest) ProtoMessage()    {}
+func (*CreateVirtualMachineRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_virtual_machine_6670dd8c861373c3, []int{2}
 }
-func (m *ApplyVirtualMachineRequest) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_ApplyVirtualMachineRequest.Unmarshal(m, b)
+func (m *CreateVirtualMachineRequest) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_CreateVirtualMachineRequest.Unmarshal(m, b)
 }
-func (m *ApplyVirtualMachineRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_ApplyVirtualMachineRequest.Marshal(b, m, deterministic)
+func (m *CreateVirtualMachineRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_CreateVirtualMachineRequest.Marshal(b, m, deterministic)
 }
-func (dst *ApplyVirtualMachineRequest) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_ApplyVirtualMachineRequest.Merge(dst, src)
+func (dst *CreateVirtualMachineRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_CreateVirtualMachineRequest.Merge(dst, src)
 }
-func (m *ApplyVirtualMachineRequest) XXX_Size() int {
-	return xxx_messageInfo_ApplyVirtualMachineRequest.Size(m)
+func (m *CreateVirtualMachineRequest) XXX_Size() int {
+	return xxx_messageInfo_CreateVirtualMachineRequest.Size(m)
 }
-func (m *ApplyVirtualMachineRequest) XXX_DiscardUnknown() {
-	xxx_messageInfo_ApplyVirtualMachineRequest.DiscardUnknown(m)
+func (m *CreateVirtualMachineRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_CreateVirtualMachineRequest.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_ApplyVirtualMachineRequest proto.InternalMessageInfo
+var xxx_messageInfo_CreateVirtualMachineRequest proto.InternalMessageInfo
 
-func (m *ApplyVirtualMachineRequest) GetMetadata() *v0.Metadata {
+func (m *CreateVirtualMachineRequest) GetName() string {
 	if m != nil {
-		return m.Metadata
+		return m.Name
+	}
+	return ""
+}
+
+func (m *CreateVirtualMachineRequest) GetAnnotations() map[string]string {
+	if m != nil {
+		return m.Annotations
 	}
 	return nil
 }
 
-func (m *ApplyVirtualMachineRequest) GetSpec() *VirtualMachineSpec {
+func (m *CreateVirtualMachineRequest) GetRequestCpuMilliCore() uint32 {
 	if m != nil {
-		return m.Spec
+		return m.RequestCpuMilliCore
+	}
+	return 0
+}
+
+func (m *CreateVirtualMachineRequest) GetLimitCpuMilliCore() uint32 {
+	if m != nil {
+		return m.LimitCpuMilliCore
+	}
+	return 0
+}
+
+func (m *CreateVirtualMachineRequest) GetRequestMemoryBytes() uint64 {
+	if m != nil {
+		return m.RequestMemoryBytes
+	}
+	return 0
+}
+
+func (m *CreateVirtualMachineRequest) GetLimitMemoryBytes() uint64 {
+	if m != nil {
+		return m.LimitMemoryBytes
+	}
+	return 0
+}
+
+func (m *CreateVirtualMachineRequest) GetBlockStorageNames() []string {
+	if m != nil {
+		return m.BlockStorageNames
+	}
+	return nil
+}
+
+func (m *CreateVirtualMachineRequest) GetNics() []*VirtualMachineNIC {
+	if m != nil {
+		return m.Nics
 	}
 	return nil
 }
@@ -380,7 +359,7 @@ func (m *ListVirtualMachinesRequest) Reset()         { *m = ListVirtualMachinesR
 func (m *ListVirtualMachinesRequest) String() string { return proto.CompactTextString(m) }
 func (*ListVirtualMachinesRequest) ProtoMessage()    {}
 func (*ListVirtualMachinesRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_virtual_machine_09de4e89ceda058f, []int{4}
+	return fileDescriptor_virtual_machine_6670dd8c861373c3, []int{3}
 }
 func (m *ListVirtualMachinesRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ListVirtualMachinesRequest.Unmarshal(m, b)
@@ -411,7 +390,7 @@ func (m *ListVirtualMachinesResponse) Reset()         { *m = ListVirtualMachines
 func (m *ListVirtualMachinesResponse) String() string { return proto.CompactTextString(m) }
 func (*ListVirtualMachinesResponse) ProtoMessage()    {}
 func (*ListVirtualMachinesResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_virtual_machine_09de4e89ceda058f, []int{5}
+	return fileDescriptor_virtual_machine_6670dd8c861373c3, []int{4}
 }
 func (m *ListVirtualMachinesResponse) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ListVirtualMachinesResponse.Unmarshal(m, b)
@@ -449,7 +428,7 @@ func (m *GetVirtualMachineRequest) Reset()         { *m = GetVirtualMachineReque
 func (m *GetVirtualMachineRequest) String() string { return proto.CompactTextString(m) }
 func (*GetVirtualMachineRequest) ProtoMessage()    {}
 func (*GetVirtualMachineRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_virtual_machine_09de4e89ceda058f, []int{6}
+	return fileDescriptor_virtual_machine_6670dd8c861373c3, []int{5}
 }
 func (m *GetVirtualMachineRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_GetVirtualMachineRequest.Unmarshal(m, b)
@@ -477,18 +456,24 @@ func (m *GetVirtualMachineRequest) GetName() string {
 }
 
 type UpdateVirtualMachineRequest struct {
-	Metadata             *v0.Metadata        `protobuf:"bytes,1,opt,name=metadata" json:"metadata,omitempty"`
-	Spec                 *VirtualMachineSpec `protobuf:"bytes,2,opt,name=spec" json:"spec,omitempty"`
-	XXX_NoUnkeyedLiteral struct{}            `json:"-"`
-	XXX_unrecognized     []byte              `json:"-"`
-	XXX_sizecache        int32               `json:"-"`
+	Name                 string               `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
+	Annotations          map[string]string    `protobuf:"bytes,3,rep,name=annotations" json:"annotations,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	RequestCpuMilliCore  uint32               `protobuf:"varint,10,opt,name=request_cpu_milli_core,json=requestCpuMilliCore" json:"request_cpu_milli_core,omitempty"`
+	LimitCpuMilliCore    uint32               `protobuf:"varint,11,opt,name=limit_cpu_milli_core,json=limitCpuMilliCore" json:"limit_cpu_milli_core,omitempty"`
+	RequestMemoryBytes   uint64               `protobuf:"varint,12,opt,name=request_memory_bytes,json=requestMemoryBytes" json:"request_memory_bytes,omitempty"`
+	LimitMemoryBytes     uint64               `protobuf:"varint,13,opt,name=limit_memory_bytes,json=limitMemoryBytes" json:"limit_memory_bytes,omitempty"`
+	BlockStorageNames    []string             `protobuf:"bytes,14,rep,name=block_storage_names,json=blockStorageNames" json:"block_storage_names,omitempty"`
+	Nics                 []*VirtualMachineNIC `protobuf:"bytes,15,rep,name=nics" json:"nics,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}             `json:"-"`
+	XXX_unrecognized     []byte               `json:"-"`
+	XXX_sizecache        int32                `json:"-"`
 }
 
 func (m *UpdateVirtualMachineRequest) Reset()         { *m = UpdateVirtualMachineRequest{} }
 func (m *UpdateVirtualMachineRequest) String() string { return proto.CompactTextString(m) }
 func (*UpdateVirtualMachineRequest) ProtoMessage()    {}
 func (*UpdateVirtualMachineRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_virtual_machine_09de4e89ceda058f, []int{7}
+	return fileDescriptor_virtual_machine_6670dd8c861373c3, []int{6}
 }
 func (m *UpdateVirtualMachineRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_UpdateVirtualMachineRequest.Unmarshal(m, b)
@@ -508,16 +493,58 @@ func (m *UpdateVirtualMachineRequest) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_UpdateVirtualMachineRequest proto.InternalMessageInfo
 
-func (m *UpdateVirtualMachineRequest) GetMetadata() *v0.Metadata {
+func (m *UpdateVirtualMachineRequest) GetName() string {
 	if m != nil {
-		return m.Metadata
+		return m.Name
+	}
+	return ""
+}
+
+func (m *UpdateVirtualMachineRequest) GetAnnotations() map[string]string {
+	if m != nil {
+		return m.Annotations
 	}
 	return nil
 }
 
-func (m *UpdateVirtualMachineRequest) GetSpec() *VirtualMachineSpec {
+func (m *UpdateVirtualMachineRequest) GetRequestCpuMilliCore() uint32 {
 	if m != nil {
-		return m.Spec
+		return m.RequestCpuMilliCore
+	}
+	return 0
+}
+
+func (m *UpdateVirtualMachineRequest) GetLimitCpuMilliCore() uint32 {
+	if m != nil {
+		return m.LimitCpuMilliCore
+	}
+	return 0
+}
+
+func (m *UpdateVirtualMachineRequest) GetRequestMemoryBytes() uint64 {
+	if m != nil {
+		return m.RequestMemoryBytes
+	}
+	return 0
+}
+
+func (m *UpdateVirtualMachineRequest) GetLimitMemoryBytes() uint64 {
+	if m != nil {
+		return m.LimitMemoryBytes
+	}
+	return 0
+}
+
+func (m *UpdateVirtualMachineRequest) GetBlockStorageNames() []string {
+	if m != nil {
+		return m.BlockStorageNames
+	}
+	return nil
+}
+
+func (m *UpdateVirtualMachineRequest) GetNics() []*VirtualMachineNIC {
+	if m != nil {
+		return m.Nics
 	}
 	return nil
 }
@@ -533,7 +560,7 @@ func (m *DeleteVirtualMachineRequest) Reset()         { *m = DeleteVirtualMachin
 func (m *DeleteVirtualMachineRequest) String() string { return proto.CompactTextString(m) }
 func (*DeleteVirtualMachineRequest) ProtoMessage()    {}
 func (*DeleteVirtualMachineRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_virtual_machine_09de4e89ceda058f, []int{8}
+	return fileDescriptor_virtual_machine_6670dd8c861373c3, []int{7}
 }
 func (m *DeleteVirtualMachineRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_DeleteVirtualMachineRequest.Unmarshal(m, b)
@@ -571,7 +598,7 @@ func (m *BootVirtualMachineRequest) Reset()         { *m = BootVirtualMachineReq
 func (m *BootVirtualMachineRequest) String() string { return proto.CompactTextString(m) }
 func (*BootVirtualMachineRequest) ProtoMessage()    {}
 func (*BootVirtualMachineRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_virtual_machine_09de4e89ceda058f, []int{9}
+	return fileDescriptor_virtual_machine_6670dd8c861373c3, []int{8}
 }
 func (m *BootVirtualMachineRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_BootVirtualMachineRequest.Unmarshal(m, b)
@@ -610,7 +637,7 @@ func (m *RebootVirtualMachineRequest) Reset()         { *m = RebootVirtualMachin
 func (m *RebootVirtualMachineRequest) String() string { return proto.CompactTextString(m) }
 func (*RebootVirtualMachineRequest) ProtoMessage()    {}
 func (*RebootVirtualMachineRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_virtual_machine_09de4e89ceda058f, []int{10}
+	return fileDescriptor_virtual_machine_6670dd8c861373c3, []int{9}
 }
 func (m *RebootVirtualMachineRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_RebootVirtualMachineRequest.Unmarshal(m, b)
@@ -656,7 +683,7 @@ func (m *ShutdownVirtualMachineRequest) Reset()         { *m = ShutdownVirtualMa
 func (m *ShutdownVirtualMachineRequest) String() string { return proto.CompactTextString(m) }
 func (*ShutdownVirtualMachineRequest) ProtoMessage()    {}
 func (*ShutdownVirtualMachineRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_virtual_machine_09de4e89ceda058f, []int{11}
+	return fileDescriptor_virtual_machine_6670dd8c861373c3, []int{10}
 }
 func (m *ShutdownVirtualMachineRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ShutdownVirtualMachineRequest.Unmarshal(m, b)
@@ -701,7 +728,7 @@ func (m *SaveVirtualMachineRequest) Reset()         { *m = SaveVirtualMachineReq
 func (m *SaveVirtualMachineRequest) String() string { return proto.CompactTextString(m) }
 func (*SaveVirtualMachineRequest) ProtoMessage()    {}
 func (*SaveVirtualMachineRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_virtual_machine_09de4e89ceda058f, []int{12}
+	return fileDescriptor_virtual_machine_6670dd8c861373c3, []int{11}
 }
 func (m *SaveVirtualMachineRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_SaveVirtualMachineRequest.Unmarshal(m, b)
@@ -729,21 +756,22 @@ func (m *SaveVirtualMachineRequest) GetName() string {
 }
 
 func init() {
+	proto.RegisterType((*VirtualMachineNIC)(nil), "n0stack.provisioning.VirtualMachineNIC")
 	proto.RegisterType((*VirtualMachine)(nil), "n0stack.provisioning.VirtualMachine")
-	proto.RegisterType((*VirtualMachineSpec)(nil), "n0stack.provisioning.VirtualMachineSpec")
-	proto.RegisterType((*VirtualMachineSpec_NIC)(nil), "n0stack.provisioning.VirtualMachineSpec.NIC")
-	proto.RegisterType((*VirtualMachineStatus)(nil), "n0stack.provisioning.VirtualMachineStatus")
-	proto.RegisterType((*ApplyVirtualMachineRequest)(nil), "n0stack.provisioning.ApplyVirtualMachineRequest")
+	proto.RegisterMapType((map[string]string)(nil), "n0stack.provisioning.VirtualMachine.AnnotationsEntry")
+	proto.RegisterType((*CreateVirtualMachineRequest)(nil), "n0stack.provisioning.CreateVirtualMachineRequest")
+	proto.RegisterMapType((map[string]string)(nil), "n0stack.provisioning.CreateVirtualMachineRequest.AnnotationsEntry")
 	proto.RegisterType((*ListVirtualMachinesRequest)(nil), "n0stack.provisioning.ListVirtualMachinesRequest")
 	proto.RegisterType((*ListVirtualMachinesResponse)(nil), "n0stack.provisioning.ListVirtualMachinesResponse")
 	proto.RegisterType((*GetVirtualMachineRequest)(nil), "n0stack.provisioning.GetVirtualMachineRequest")
 	proto.RegisterType((*UpdateVirtualMachineRequest)(nil), "n0stack.provisioning.UpdateVirtualMachineRequest")
+	proto.RegisterMapType((map[string]string)(nil), "n0stack.provisioning.UpdateVirtualMachineRequest.AnnotationsEntry")
 	proto.RegisterType((*DeleteVirtualMachineRequest)(nil), "n0stack.provisioning.DeleteVirtualMachineRequest")
 	proto.RegisterType((*BootVirtualMachineRequest)(nil), "n0stack.provisioning.BootVirtualMachineRequest")
 	proto.RegisterType((*RebootVirtualMachineRequest)(nil), "n0stack.provisioning.RebootVirtualMachineRequest")
 	proto.RegisterType((*ShutdownVirtualMachineRequest)(nil), "n0stack.provisioning.ShutdownVirtualMachineRequest")
 	proto.RegisterType((*SaveVirtualMachineRequest)(nil), "n0stack.provisioning.SaveVirtualMachineRequest")
-	proto.RegisterEnum("n0stack.provisioning.VirtualMachineStatus_VirtualMachineState", VirtualMachineStatus_VirtualMachineState_name, VirtualMachineStatus_VirtualMachineState_value)
+	proto.RegisterEnum("n0stack.provisioning.VirtualMachine_VirtualMachineState", VirtualMachine_VirtualMachineState_name, VirtualMachine_VirtualMachineState_value)
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -757,7 +785,7 @@ const _ = grpc.SupportPackageIsVersion4
 // Client API for VirtualMachineService service
 
 type VirtualMachineServiceClient interface {
-	CreateVirtualMachine(ctx context.Context, in *ApplyVirtualMachineRequest, opts ...grpc.CallOption) (*VirtualMachine, error)
+	CreateVirtualMachine(ctx context.Context, in *CreateVirtualMachineRequest, opts ...grpc.CallOption) (*VirtualMachine, error)
 	ListVirtualMachines(ctx context.Context, in *ListVirtualMachinesRequest, opts ...grpc.CallOption) (*ListVirtualMachinesResponse, error)
 	GetVirtualMachine(ctx context.Context, in *GetVirtualMachineRequest, opts ...grpc.CallOption) (*VirtualMachine, error)
 	UpdateVirtualMachine(ctx context.Context, in *UpdateVirtualMachineRequest, opts ...grpc.CallOption) (*VirtualMachine, error)
@@ -781,7 +809,7 @@ func NewVirtualMachineServiceClient(cc *grpc.ClientConn) VirtualMachineServiceCl
 	return &virtualMachineServiceClient{cc}
 }
 
-func (c *virtualMachineServiceClient) CreateVirtualMachine(ctx context.Context, in *ApplyVirtualMachineRequest, opts ...grpc.CallOption) (*VirtualMachine, error) {
+func (c *virtualMachineServiceClient) CreateVirtualMachine(ctx context.Context, in *CreateVirtualMachineRequest, opts ...grpc.CallOption) (*VirtualMachine, error) {
 	out := new(VirtualMachine)
 	err := grpc.Invoke(ctx, "/n0stack.provisioning.VirtualMachineService/CreateVirtualMachine", in, out, c.cc, opts...)
 	if err != nil {
@@ -865,7 +893,7 @@ func (c *virtualMachineServiceClient) SaveVirtualMachine(ctx context.Context, in
 // Server API for VirtualMachineService service
 
 type VirtualMachineServiceServer interface {
-	CreateVirtualMachine(context.Context, *ApplyVirtualMachineRequest) (*VirtualMachine, error)
+	CreateVirtualMachine(context.Context, *CreateVirtualMachineRequest) (*VirtualMachine, error)
 	ListVirtualMachines(context.Context, *ListVirtualMachinesRequest) (*ListVirtualMachinesResponse, error)
 	GetVirtualMachine(context.Context, *GetVirtualMachineRequest) (*VirtualMachine, error)
 	UpdateVirtualMachine(context.Context, *UpdateVirtualMachineRequest) (*VirtualMachine, error)
@@ -886,7 +914,7 @@ func RegisterVirtualMachineServiceServer(s *grpc.Server, srv VirtualMachineServi
 }
 
 func _VirtualMachineService_CreateVirtualMachine_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ApplyVirtualMachineRequest)
+	in := new(CreateVirtualMachineRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -898,7 +926,7 @@ func _VirtualMachineService_CreateVirtualMachine_Handler(srv interface{}, ctx co
 		FullMethod: "/n0stack.provisioning.VirtualMachineService/CreateVirtualMachine",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(VirtualMachineServiceServer).CreateVirtualMachine(ctx, req.(*ApplyVirtualMachineRequest))
+		return srv.(VirtualMachineServiceServer).CreateVirtualMachine(ctx, req.(*CreateVirtualMachineRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1093,66 +1121,67 @@ var _VirtualMachineService_serviceDesc = grpc.ServiceDesc{
 }
 
 func init() {
-	proto.RegisterFile("provisioning/v0/virtual_machine.proto", fileDescriptor_virtual_machine_09de4e89ceda058f)
+	proto.RegisterFile("provisioning/v0/virtual_machine.proto", fileDescriptor_virtual_machine_6670dd8c861373c3)
 }
 
-var fileDescriptor_virtual_machine_09de4e89ceda058f = []byte{
-	// 906 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xcc, 0x56, 0xdd, 0x6e, 0xe3, 0x44,
-	0x14, 0x6e, 0x9a, 0x6c, 0x69, 0x4f, 0x97, 0x6d, 0x72, 0x9a, 0x2d, 0xd9, 0x04, 0xa4, 0x62, 0x81,
-	0x54, 0x56, 0x8b, 0x9d, 0x6d, 0x51, 0x25, 0xb4, 0x08, 0xd1, 0xa6, 0xa5, 0x44, 0x6c, 0x0d, 0x72,
-	0x36, 0x20, 0x71, 0x63, 0x39, 0xf6, 0x6c, 0x3a, 0x6a, 0xec, 0x71, 0xed, 0x71, 0xaa, 0x4a, 0xbc,
-	0x00, 0x5c, 0x73, 0xc3, 0xe3, 0xf0, 0x22, 0x5c, 0xf3, 0x18, 0x68, 0x66, 0x9c, 0xa8, 0x69, 0xc6,
-	0x95, 0x2b, 0x24, 0xb4, 0x77, 0xc9, 0xf9, 0xbe, 0xef, 0xfc, 0xcd, 0x7c, 0xd6, 0xc0, 0xa7, 0x71,
-	0xc2, 0xa6, 0x34, 0xa5, 0x2c, 0xa2, 0xd1, 0xd8, 0x9a, 0x76, 0xad, 0x29, 0x4d, 0x78, 0xe6, 0x4d,
-	0xdc, 0xd0, 0xf3, 0x2f, 0x68, 0x44, 0xcc, 0x38, 0x61, 0x9c, 0x61, 0x33, 0xea, 0xa6, 0xdc, 0xf3,
-	0x2f, 0xcd, 0xdb, 0xf4, 0x76, 0x67, 0xcc, 0xd8, 0x78, 0x42, 0x2c, 0xc9, 0x19, 0x65, 0x6f, 0x2d,
-	0x12, 0xc6, 0xfc, 0x46, 0x49, 0xda, 0x8d, 0x69, 0xd7, 0x0a, 0x09, 0xf7, 0x02, 0x8f, 0x7b, 0x2a,
-	0x64, 0xfc, 0x55, 0x81, 0x27, 0x3f, 0xa9, 0xfc, 0xe7, 0x2a, 0x3d, 0x7e, 0x0e, 0xeb, 0x33, 0x52,
-	0xab, 0xb2, 0x5b, 0xd9, 0xdb, 0xdc, 0x6f, 0x98, 0xb3, 0x5a, 0xe7, 0x39, 0xe0, 0xcc, 0x29, 0xf8,
-	0x15, 0xd4, 0xd2, 0x98, 0xf8, 0xad, 0x55, 0x49, 0xdd, 0x33, 0x75, 0x6d, 0x99, 0x8b, 0x25, 0x06,
-	0x31, 0xf1, 0x1d, 0xa9, 0xc2, 0x63, 0x58, 0x4b, 0xb9, 0xc7, 0xb3, 0xb4, 0x55, 0x95, 0xfa, 0xe7,
-	0xa5, 0xf4, 0x52, 0xe1, 0xe4, 0x4a, 0xe3, 0x9f, 0x2a, 0xe0, 0x72, 0x01, 0x3c, 0x80, 0x9d, 0x84,
-	0x5c, 0x65, 0x24, 0xe5, 0xae, 0x1f, 0x67, 0x6e, 0x48, 0x27, 0x13, 0xea, 0xfa, 0x2c, 0x21, 0x72,
-	0xaa, 0xf7, 0x9d, 0xed, 0x1c, 0xed, 0xc5, 0xd9, 0xb9, 0xc0, 0x7a, 0x2c, 0x21, 0x68, 0x41, 0x73,
-	0x42, 0x43, 0xba, 0x24, 0x59, 0x95, 0x92, 0x86, 0xc4, 0x16, 0x04, 0x5d, 0x68, 0xce, 0xaa, 0x84,
-	0x24, 0x64, 0xc9, 0x8d, 0x3b, 0xba, 0xe1, 0x44, 0x8d, 0x53, 0x73, 0x30, 0xc7, 0xce, 0x25, 0x74,
-	0x2c, 0x10, 0x7c, 0x01, 0xa8, 0x4a, 0x2c, 0xf0, 0x6b, 0x92, 0x5f, 0x97, 0xc8, 0x6d, 0xb6, 0x09,
-	0xdb, 0xa3, 0x09, 0xf3, 0x2f, 0xdd, 0x94, 0xb3, 0xc4, 0x1b, 0x13, 0x37, 0xf2, 0x42, 0x92, 0xb6,
-	0x1e, 0xed, 0x56, 0xf7, 0x36, 0x9c, 0x86, 0x84, 0x06, 0x0a, 0xb1, 0x05, 0x80, 0xdf, 0x40, 0x2d,
-	0xa2, 0x7e, 0xda, 0x5a, 0xdb, 0xad, 0xee, 0x6d, 0xee, 0xbf, 0x28, 0x7b, 0x1c, 0xa6, 0xdd, 0xef,
-	0x39, 0x52, 0xd9, 0xfe, 0xb3, 0x02, 0x55, 0xbb, 0xdf, 0xc3, 0x8f, 0xe1, 0x71, 0x44, 0xf8, 0x35,
-	0x4b, 0x2e, 0x65, 0x4d, 0xb9, 0xb5, 0x0d, 0x67, 0x33, 0x8f, 0x89, 0x6a, 0xf8, 0x19, 0xd4, 0x2f,
-	0xbc, 0x24, 0xb8, 0xf6, 0x12, 0xe2, 0x7a, 0x41, 0x90, 0x90, 0x34, 0x95, 0x9b, 0xda, 0x70, 0xb6,
-	0x66, 0xf1, 0x23, 0x15, 0x16, 0xd9, 0x68, 0x3c, 0xfd, 0x62, 0x4e, 0xab, 0xaa, 0x6c, 0x22, 0xb6,
-	0x48, 0x39, 0x9c, 0x53, 0x6a, 0x73, 0xca, 0x61, 0x4e, 0x31, 0xfe, 0x5e, 0x85, 0xa6, 0xee, 0x2e,
-	0xe0, 0x1b, 0x78, 0x24, 0x6e, 0x83, 0xea, 0xf2, 0xc9, 0xfe, 0xd7, 0xe5, 0xaf, 0x91, 0x26, 0x48,
-	0x1c, 0x95, 0x0c, 0x11, 0x6a, 0x59, 0x46, 0x83, 0x7c, 0x26, 0xf9, 0x1b, 0x9f, 0x43, 0xc3, 0x67,
-	0x61, 0x9c, 0x71, 0xe2, 0x46, 0x2c, 0x50, 0xe7, 0x91, 0x4f, 0xb3, 0x95, 0x03, 0x36, 0x0b, 0xe4,
-	0x69, 0x88, 0x89, 0xe6, 0x5c, 0x41, 0xcb, 0x27, 0x9a, 0xd1, 0x04, 0xe5, 0x10, 0x3e, 0x98, 0x6d,
-	0x99, 0x46, 0x9c, 0x24, 0x6f, 0x3d, 0x7f, 0xf1, 0x8c, 0x9f, 0xe6, 0x70, 0x7f, 0x86, 0xca, 0x73,
-	0x36, 0x86, 0xb0, 0xad, 0x69, 0x1c, 0x01, 0xd6, 0xbe, 0x3d, 0xea, 0xbf, 0x3e, 0x3d, 0xa9, 0xaf,
-	0xe0, 0x26, 0xbc, 0x37, 0xb4, 0xbf, 0xb7, 0x7f, 0xf8, 0xd9, 0xae, 0x57, 0xc4, 0x1f, 0x67, 0x68,
-	0xdb, 0x7d, 0xfb, 0xac, 0xbe, 0x8a, 0x8f, 0x61, 0x7d, 0xf0, 0xdd, 0xf0, 0xcd, 0x89, 0x80, 0xaa,
-	0x42, 0xf3, 0xe3, 0xd1, 0x70, 0x70, 0x7a, 0x52, 0xaf, 0x19, 0xbf, 0x55, 0xa0, 0x7d, 0x14, 0xc7,
-	0x93, 0x9b, 0xc5, 0xe4, 0x8e, 0xba, 0xc6, 0xff, 0xeb, 0xb7, 0xc1, 0xf8, 0x10, 0xda, 0xaf, 0x69,
-	0xca, 0x17, 0xf1, 0x34, 0x6f, 0xc5, 0x08, 0xa1, 0xa3, 0x45, 0xd3, 0x98, 0x45, 0x29, 0x41, 0x1b,
-	0xb6, 0xee, 0x40, 0xad, 0x8a, 0xb4, 0xc4, 0x27, 0x65, 0xba, 0x70, 0xee, 0x8a, 0x0d, 0x13, 0x5a,
-	0x67, 0x84, 0xeb, 0xb7, 0x82, 0x50, 0xbb, 0xe5, 0x10, 0xf9, 0xdb, 0xf8, 0xbd, 0x02, 0x9d, 0x61,
-	0x1c, 0x78, 0x9c, 0xbc, 0x03, 0x9b, 0x7c, 0x09, 0x9d, 0x13, 0x32, 0x21, 0x45, 0xbd, 0xe8, 0xfa,
-	0xb7, 0xe0, 0xd9, 0x31, 0x63, 0x0f, 0x18, 0xf8, 0x14, 0x3a, 0x0e, 0x19, 0x3d, 0x44, 0x22, 0x62,
-	0xe2, 0x33, 0x21, 0x87, 0x5a, 0x77, 0xe4, 0x6f, 0xe3, 0x0c, 0x3e, 0x1a, 0x5c, 0x64, 0x3c, 0x60,
-	0xd7, 0xd1, 0x7f, 0x4b, 0x64, 0xc1, 0xb3, 0x81, 0x37, 0x2d, 0x3f, 0xf1, 0xfe, 0x1f, 0xeb, 0xf0,
-	0xf4, 0xce, 0x06, 0x49, 0x32, 0xa5, 0x3e, 0xc1, 0x18, 0x9a, 0xbd, 0x84, 0x2c, 0x1d, 0x25, 0x76,
-	0xf5, 0xc7, 0x50, 0xec, 0x9f, 0x76, 0xa9, 0xcb, 0x67, 0xac, 0xe0, 0xaf, 0xb0, 0xad, 0xb9, 0xdc,
-	0x45, 0x05, 0x8b, 0x5d, 0xd2, 0x7e, 0xf9, 0x00, 0x85, 0x72, 0x8e, 0xb1, 0x82, 0x97, 0xd0, 0x58,
-	0xba, 0xeb, 0x68, 0xea, 0x33, 0x15, 0x99, 0xa2, 0xf4, 0xa8, 0x57, 0xd0, 0xd4, 0xf9, 0x04, 0x0b,
-	0x3a, 0xbf, 0xc7, 0x53, 0xa5, 0x4b, 0xfa, 0xd0, 0xd4, 0xd9, 0xa1, 0xa8, 0xe4, 0x3d, 0xd6, 0x69,
-	0xef, 0x98, 0xea, 0xc1, 0x65, 0xce, 0x1e, 0x5c, 0xe6, 0xa9, 0x78, 0x70, 0x19, 0x2b, 0x18, 0x02,
-	0x2e, 0x1b, 0x08, 0x2d, 0x7d, 0x89, 0x42, 0xab, 0x3d, 0x64, 0x8d, 0x3a, 0xfb, 0x15, 0xcd, 0x74,
-	0x8f, 0x55, 0x4b, 0x97, 0xcc, 0x60, 0x47, 0x6f, 0x55, 0x3c, 0xd0, 0x67, 0xb8, 0xd7, 0xd8, 0xa5,
-	0xcb, 0x86, 0x80, 0xcb, 0xc6, 0x2e, 0x5a, 0x6c, 0xe1, 0x27, 0xa0, 0x6c, 0xb9, 0xe3, 0x57, 0xbf,
-	0x7c, 0x39, 0xa6, 0xfc, 0x22, 0x1b, 0x99, 0x3e, 0x0b, 0xad, 0x5c, 0xa3, 0xde, 0xd7, 0xe6, 0x98,
-	0x59, 0x77, 0x1e, 0xeb, 0xaf, 0xe2, 0xdb, 0x81, 0xd1, 0x9a, 0xe4, 0x1d, 0xfc, 0x1b, 0x00, 0x00,
-	0xff, 0xff, 0xbe, 0xa9, 0x88, 0xdd, 0xd4, 0x0b, 0x00, 0x00,
+var fileDescriptor_virtual_machine_6670dd8c861373c3 = []byte{
+	// 926 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xec, 0x57, 0x5d, 0x6f, 0xe3, 0x44,
+	0x14, 0xad, 0x9b, 0x6c, 0xe9, 0xde, 0x74, 0xdb, 0x64, 0x9a, 0x2d, 0xde, 0x04, 0xa4, 0x60, 0x81,
+	0x08, 0x08, 0xd9, 0xfd, 0xd8, 0xad, 0x16, 0x2a, 0x21, 0xb5, 0x69, 0x28, 0x11, 0x5b, 0x83, 0x1c,
+	0xc2, 0x4a, 0xbc, 0x58, 0x8e, 0x3d, 0x9b, 0x8e, 0x12, 0x7b, 0x5c, 0x7b, 0x9c, 0x2a, 0x12, 0xbf,
+	0x80, 0x77, 0x7e, 0x03, 0xef, 0xfc, 0x42, 0x34, 0x33, 0x4e, 0x49, 0x52, 0x27, 0x72, 0xb4, 0x20,
+	0xf1, 0xd0, 0x37, 0x7b, 0xce, 0xb9, 0xf7, 0x7a, 0xee, 0x9c, 0x73, 0x93, 0x81, 0xcf, 0xc2, 0x88,
+	0x8e, 0x49, 0x4c, 0x68, 0x40, 0x82, 0x81, 0x31, 0x3e, 0x34, 0xc6, 0x24, 0x62, 0x89, 0x33, 0xb2,
+	0x7d, 0xc7, 0xbd, 0x21, 0x01, 0xd6, 0xc3, 0x88, 0x32, 0x8a, 0xaa, 0xc1, 0x61, 0xcc, 0x1c, 0x77,
+	0xa8, 0xcf, 0xd2, 0x6b, 0xf5, 0x01, 0xa5, 0x83, 0x11, 0x36, 0x04, 0xa7, 0x9f, 0xbc, 0x33, 0xb0,
+	0x1f, 0xb2, 0x89, 0x0c, 0xd1, 0xfe, 0x54, 0xa0, 0xf2, 0x8b, 0x4c, 0x76, 0x2d, 0x73, 0x99, 0x9d,
+	0x16, 0xfa, 0x04, 0x76, 0x02, 0xcc, 0xee, 0x68, 0x34, 0xb4, 0x03, 0xc7, 0xc7, 0xaa, 0xd2, 0x50,
+	0x9a, 0x4f, 0xad, 0x52, 0xba, 0x66, 0x3a, 0x3e, 0x46, 0x5f, 0x40, 0xf9, 0xc6, 0x89, 0xbc, 0x3b,
+	0x27, 0xc2, 0xb6, 0xe3, 0x79, 0x11, 0x8e, 0x63, 0x75, 0x53, 0xd0, 0xf6, 0xa6, 0xeb, 0xe7, 0x72,
+	0x99, 0x67, 0x23, 0xe1, 0xf8, 0xe5, 0x3d, 0xad, 0x20, 0xb3, 0xf1, 0xb5, 0x79, 0xca, 0xe9, 0x3d,
+	0xa5, 0x78, 0x4f, 0x39, 0x4d, 0x29, 0xda, 0x5f, 0x5b, 0xb0, 0x3b, 0xff, 0xa5, 0x08, 0x41, 0x71,
+	0xe6, 0xf3, 0xc4, 0x33, 0x7a, 0x0b, 0x25, 0x27, 0x08, 0x28, 0x73, 0x18, 0xa1, 0x01, 0xaf, 0x55,
+	0x68, 0x96, 0x8e, 0x5f, 0xe9, 0x59, 0x9d, 0xd1, 0xe7, 0xd3, 0xe9, 0xe7, 0xff, 0xc4, 0xb5, 0x03,
+	0x16, 0x4d, 0xac, 0xd9, 0x4c, 0xe8, 0x04, 0x0e, 0x22, 0x7c, 0x9b, 0xe0, 0x98, 0xd9, 0x6e, 0x98,
+	0xd8, 0x3e, 0x19, 0x8d, 0x88, 0xed, 0xd2, 0x08, 0xab, 0xd0, 0x50, 0x9a, 0xcf, 0xac, 0xfd, 0x14,
+	0x6d, 0x85, 0xc9, 0x35, 0xc7, 0x5a, 0x34, 0xc2, 0xc8, 0x80, 0xea, 0x88, 0xf8, 0xe4, 0x41, 0x48,
+	0x49, 0x84, 0x54, 0x04, 0x36, 0x17, 0x70, 0x08, 0xd5, 0x69, 0x15, 0x1f, 0xfb, 0x34, 0x9a, 0xd8,
+	0xfd, 0x09, 0xc3, 0xb1, 0xba, 0xd3, 0x50, 0x9a, 0x45, 0x0b, 0xa5, 0xd8, 0xb5, 0x80, 0x2e, 0x38,
+	0x82, 0xbe, 0x02, 0x24, 0x4b, 0xcc, 0xf1, 0x9f, 0x09, 0x7e, 0x59, 0x20, 0xb3, 0x6c, 0x1d, 0xf6,
+	0xfb, 0x23, 0xea, 0x0e, 0xed, 0x98, 0xd1, 0xc8, 0x19, 0x60, 0x71, 0xbe, 0xb1, 0xba, 0xdb, 0x28,
+	0x34, 0x9f, 0x5a, 0x15, 0x01, 0x75, 0x25, 0xc2, 0x4f, 0x39, 0x46, 0x67, 0x50, 0x0c, 0x88, 0x1b,
+	0xab, 0x7b, 0xa2, 0x8f, 0x9f, 0xe7, 0xe9, 0xa3, 0xd9, 0x69, 0x59, 0x22, 0x08, 0x99, 0xf0, 0x24,
+	0x66, 0x0e, 0xc3, 0xea, 0x71, 0x43, 0x69, 0xee, 0x1e, 0xbf, 0xce, 0x75, 0x0a, 0xf3, 0xaf, 0x5d,
+	0x1e, 0x6f, 0xc9, 0x34, 0xfc, 0xbc, 0x93, 0x84, 0x78, 0xea, 0x89, 0x3c, 0x6f, 0xfe, 0x8c, 0xbe,
+	0x84, 0x8a, 0x4b, 0xfd, 0x30, 0x61, 0xd8, 0x0e, 0xa8, 0x27, 0xf7, 0xa3, 0xbe, 0x94, 0x42, 0x4c,
+	0x01, 0x93, 0x7a, 0x62, 0x37, 0x5c, 0x65, 0xf7, 0x5c, 0x4e, 0x7b, 0x25, 0x55, 0x36, 0xa5, 0x71,
+	0xca, 0x29, 0x7c, 0x38, 0x55, 0x3e, 0x09, 0x18, 0x8e, 0xde, 0x39, 0xee, 0xb4, 0x47, 0xa7, 0xa2,
+	0x47, 0xcf, 0x53, 0xb8, 0x33, 0x45, 0x45, 0x9f, 0x6a, 0xdf, 0x42, 0x79, 0x51, 0x3e, 0xa8, 0x0c,
+	0x85, 0x21, 0x9e, 0xa4, 0xea, 0xe4, 0x8f, 0xa8, 0x0a, 0x4f, 0xc6, 0xce, 0x28, 0xc1, 0xa9, 0x53,
+	0xe4, 0xcb, 0x37, 0x9b, 0xaf, 0x15, 0xad, 0x07, 0xfb, 0x19, 0x1b, 0x47, 0x00, 0x5b, 0xdf, 0x9d,
+	0x77, 0xde, 0xb4, 0x2f, 0xcb, 0x1b, 0xa8, 0x04, 0x1f, 0xf4, 0xcc, 0x1f, 0xcc, 0x1f, 0xdf, 0x9a,
+	0x65, 0x85, 0xbf, 0x58, 0x3d, 0xd3, 0xec, 0x98, 0x57, 0xe5, 0x4d, 0xb4, 0x03, 0xdb, 0xdd, 0xef,
+	0x7b, 0x3f, 0x5f, 0x72, 0xa8, 0xc0, 0x63, 0x7e, 0x3a, 0xef, 0x75, 0xdb, 0x97, 0xe5, 0xa2, 0xf6,
+	0x7b, 0x11, 0xea, 0xad, 0x08, 0x3b, 0x0c, 0xcf, 0x67, 0xb7, 0xa4, 0x8e, 0x32, 0x1d, 0xe4, 0x65,
+	0x39, 0xe8, 0x22, 0xfb, 0xec, 0x56, 0xe4, 0x7e, 0xb4, 0xd3, 0xbf, 0x6c, 0xa7, 0xf7, 0xd6, 0xd8,
+	0x47, 0x50, 0x7b, 0x43, 0x62, 0x36, 0x9f, 0x3e, 0x4e, 0x8f, 0x4b, 0xf3, 0xa1, 0x9e, 0x89, 0xc6,
+	0x21, 0x0d, 0x62, 0x8c, 0x4c, 0xd8, 0x5b, 0x80, 0x54, 0x45, 0x6c, 0xe2, 0xd3, 0x3c, 0x9b, 0xb0,
+	0x16, 0x83, 0x35, 0x1d, 0xd4, 0x2b, 0xcc, 0x72, 0xab, 0x52, 0x28, 0xb9, 0x17, 0x7a, 0xff, 0x99,
+	0x92, 0x57, 0xe4, 0x7e, 0x54, 0xf2, 0xff, 0x4d, 0xc9, 0x47, 0x50, 0xbf, 0xc4, 0x23, 0xbc, 0x86,
+	0x16, 0x34, 0x03, 0x5e, 0x5c, 0x50, 0xba, 0x86, 0xe0, 0xda, 0x50, 0xb7, 0x70, 0x7f, 0x9d, 0x10,
+	0xbe, 0xc6, 0xff, 0xfb, 0x88, 0xef, 0xdd, 0xb6, 0xc4, 0xb3, 0x76, 0x05, 0x1f, 0x77, 0x6f, 0x12,
+	0xe6, 0xd1, 0xbb, 0xe0, 0xfd, 0x12, 0x19, 0xf0, 0xa2, 0xeb, 0x8c, 0xf3, 0xef, 0xf8, 0xf8, 0x8f,
+	0x6d, 0x78, 0xbe, 0xf0, 0x9b, 0x82, 0xa3, 0x31, 0x71, 0x31, 0xba, 0x85, 0x6a, 0xd6, 0xe0, 0x46,
+	0x47, 0x6b, 0x0f, 0xf9, 0x5a, 0x2e, 0xf7, 0x6b, 0x1b, 0xe8, 0x37, 0xd8, 0xcf, 0x98, 0x2e, 0xe8,
+	0x30, 0x3b, 0x7c, 0xf9, 0x98, 0xaa, 0x1d, 0xad, 0x11, 0x21, 0x47, 0x97, 0xb6, 0x81, 0x86, 0x50,
+	0x79, 0x30, 0x6c, 0x90, 0x9e, 0x9d, 0x69, 0xd9, 0x54, 0xca, 0xbd, 0xd5, 0x5b, 0xa8, 0x66, 0x0d,
+	0x93, 0x65, 0xdd, 0x5d, 0x31, 0x78, 0x72, 0x97, 0x74, 0xa1, 0x9a, 0xe5, 0x87, 0x65, 0x25, 0x57,
+	0x78, 0xa7, 0x76, 0xa0, 0xcb, 0xeb, 0x82, 0x3e, 0xbd, 0x2e, 0xe8, 0x6d, 0x7e, 0x5d, 0xd0, 0x36,
+	0x90, 0x0f, 0xe8, 0xa1, 0x83, 0x90, 0x91, 0x5d, 0x62, 0xa9, 0xd7, 0xd6, 0x69, 0x63, 0x96, 0xff,
+	0x96, 0xed, 0x69, 0x85, 0x57, 0x73, 0x97, 0x4c, 0xe0, 0x20, 0xdb, 0xab, 0xe8, 0x24, 0x3b, 0xc3,
+	0x4a, 0x67, 0xe7, 0x2e, 0xeb, 0x03, 0x7a, 0xe8, 0xec, 0x65, 0x8d, 0x5d, 0x3a, 0x03, 0xf2, 0x96,
+	0xbb, 0x38, 0xfb, 0xf5, 0xeb, 0x01, 0x61, 0x37, 0x49, 0x5f, 0x77, 0xa9, 0x6f, 0xa4, 0x31, 0xf2,
+	0x76, 0xa8, 0x0f, 0xa8, 0xb1, 0x70, 0xd5, 0x3c, 0x0b, 0x67, 0x17, 0xfa, 0x5b, 0x82, 0x77, 0xf2,
+	0x77, 0x00, 0x00, 0x00, 0xff, 0xff, 0x1b, 0x39, 0xe5, 0x69, 0x92, 0x0e, 0x00, 0x00,
 }
